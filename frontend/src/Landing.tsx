@@ -1,9 +1,8 @@
-//import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Landing.css";
-const Landing = ({ onSignIn }: { onSignIn: () => void }) => {
 
-//const Landing: React.FC = () => {
+const Landing = () => {
   return (
     <div className="landing-page">
       <div className="hero-section">
@@ -16,8 +15,12 @@ const Landing = ({ onSignIn }: { onSignIn: () => void }) => {
                 Increase your sales and keep track of every unit with our powerful stock management, order fulfillment, and inventory control software.
               </p>
               <div className="hero-buttons">
-                <Button variant="primary" className="me-3">Sign Up - It's Free</Button>
-                <Button variant="outline-primary" onClick={onSignIn} className="w-1" >Sign In</Button>
+                <Link to="/Signup">
+                  <Button variant="primary" className="me-3">Sign Up - It's Free</Button>
+                </Link>
+                <Link to="/Login">
+                  <Button variant="outline-primary" className="w-1">Sign In</Button>
+                </Link>
               </div>
             </Col>
           </Row>
@@ -43,7 +46,7 @@ const Landing = ({ onSignIn }: { onSignIn: () => void }) => {
 
       <div className="cta-section">
         <Container className="text-center">
-            <h1>Effortless Inventory, Maximum Control.</h1>
+          <h1>Effortless Inventory, Maximum Control.</h1>
           <h2>Run a More Efficient Business</h2>
         </Container>
       </div>

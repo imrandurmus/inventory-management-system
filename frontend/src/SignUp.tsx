@@ -1,35 +1,42 @@
 import { useState } from "react";
 import { /*Link,*/ useNavigate } from "react-router-dom";
 import { Form, Container, Card } from "react-bootstrap";
-import "./Login.css";
+import React from "react";
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Hook for navigation
 
   /*
-  Commented this part so we use it when we need user authentication, 
-  we dont need that rn so i made the login button just direct to the main menu of an account
-  
-  If u want to Login just fill in the email and pass part and click login
-
-  --needed for backend-- do not delete
+  Same as Login --------- do not delete
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log("Logging in with:", email, password);
   };
 */
-
-const handleSubmit = (event: React.FormEvent) => {
-  event.preventDefault();
-  navigate("/menu"); // Redirect to Menu.tsx
-};
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    navigate("/menu"); // Redirect to Menu.tsx
+  };
 
   return (
-    <Container fluid className="login-container">
-      <Card style={{ width: "22rem" }} className="p-4 shadow">
-        <h3 className="text-center mb-3">Login</h3>
+    <Container
+      fluid
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: "url('/src/assets/stock_img2.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Card style={{ width: "65rem" }} className="p-4 shadow">
+        <h3 className="text-center mb-3">Sign up</h3>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="email">
             <Form.Label>Email</Form.Label>
@@ -52,12 +59,12 @@ const handleSubmit = (event: React.FormEvent) => {
             />
           </Form.Group>
           <button type="submit" className="btn btn-outline-primary w-100 mb-2">
-            Login
+            Sign Up!
           </button>
           <button
             type="button"
             className="btn btn-outline-secondary w-100"
-            onClick={() => navigate("/")} //navigates back to Landing page
+            onClick={() => navigate("/")} // Navigates back to Landing page
           >
             Back
           </button>
@@ -67,4 +74,4 @@ const handleSubmit = (event: React.FormEvent) => {
   );
 };
 
-export default Login;
+export default SignUp; // Default export
