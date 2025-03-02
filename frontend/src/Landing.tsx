@@ -100,7 +100,7 @@ const Landing = () => {
         <img src="/src/assets/example_2.png" alt="image of an example inventory account" />
         <img src="/src/assets/example_3.png" alt="image of an example inventory account" />
     </Container>
-
+{/*example pictures */}
 
 
 

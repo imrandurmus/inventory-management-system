@@ -23,7 +23,8 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background-color: white;
+    background: linear-gradient(to bottom, #ff7e5f, #281549);
+    /* Top to bottom blend */
     padding: 10px 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -73,7 +74,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #191919;
+    background-color: #281549;
 }
 
 /* Main title (SIMple) */
