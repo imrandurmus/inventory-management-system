@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Landing, Login, SignUp } from "./";
-import Authentication from "/Users/afagh/Desktop/cmpe356/frontend/src/Authentication";
-import DashboardRouter from "/Users/afagh/Desktop/cmpe356/frontend/src/DashboardRouter.tsx";
-import "./colors.css";
+import Authentication from "./Authentication";
+import DashboardRouter from "./DashboardRouter.tsx";
+//import "./colors.css";
 import Menu from "./Menu";
 import React from "react";
 

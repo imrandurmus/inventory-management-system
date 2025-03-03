@@ -15,7 +15,7 @@ const Landing = () => {
     <div className="header">
         <div className="header-image">
           <Link to="/">
-          <img src="/logo.jpg" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
+          <img src="/logo_png.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
           </Link>
         </div>
 
@@ -71,7 +71,7 @@ const Landing = () => {
 
 
 {/*features section */}
-    <Container className="features-section">
+    <div className="features-section">
              <h2 className="features-title">Run a More Efficient Business</h2>
             <Row>
               <Col md={4} className="feature-card">
@@ -90,17 +90,20 @@ const Landing = () => {
                 <p>Track items with batch and serial number tracking.</p>
               </Col>
             </Row>
-    </Container>
+    </div>
 {/* features section */}
 
 
 {/*example pictures */}
+   <div className="Example-Images-Section">     
     <Container className="Example-Images">
         <img src="/src/assets/example_1.png" alt="image of an example inventory account" />
         <img src="/src/assets/example_2.png" alt="image of an example inventory account" />
         <img src="/src/assets/example_3.png" alt="image of an example inventory account" />
     </Container>
+   </div>
 {/*example pictures */}
+
 
 
 
