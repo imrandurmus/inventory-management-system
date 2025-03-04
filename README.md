@@ -10,6 +10,7 @@ cd frontend //navigate to frontend files
 step 2:
 npm install 
 npm install react-router-dom
+npm install @splinetool/react-spline
 
 step 3:       //Then after you do all the steps once, use step 1 then 3 from now on to run the frontend 
 npm run dev

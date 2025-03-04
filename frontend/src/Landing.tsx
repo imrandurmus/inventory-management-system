@@ -1,6 +1,10 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Landing.css";
+import Spline from '@splinetool/react-spline';
+import { Carousel} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Landing = () => {
   return (
@@ -41,6 +45,13 @@ const Landing = () => {
 
 {/* main section */}
       <div className="main-section">
+        {/*2 main-section bc i couldnt get it to look the way i wanted to lol */}
+      <div className="main-section">
+        <div className="Splice_1">
+        <Spline scene="https://prod.spline.design/7G7o2OJeUqDNm4PM/scene.splinecode" />
+        </div>
+      </div>  
+
         <Row>
             <div> <h1 className="main-title">SIMple</h1>
               <div className="main-subtitle">
@@ -61,36 +72,48 @@ const Landing = () => {
           </Col>
         </Row>
       </div>
-    <Container>
-      <div className="main-image">
-        <img src="/src/assets/stock_dash.png" alt="Warehouse image" />
-      </div>
-    </Container>
+    
     
 {/* main section */}
 
 
 {/*features section */}
-    <div className="features-section">
-             <h2 className="features-title">Run a More Efficient Business</h2>
-            <Row>
-              <Col md={4} className="feature-card">
-                <img src="/square-outline.jpg" alt="image idk yet" />
-                <h3>Increase Sales</h3>
-                <p>Track. Manage. Optimize.</p>
-              </Col>
-              <Col md={4} className="feature-card">
-                <img src="/square-outline.jpg" alt="s" />
-                <h3>Manage Orders</h3>
-                <p>Handle online and offline orders in one place.</p>
-              </Col>
-              <Col md={4} className="feature-card">
-                <img src="/square-outline.jpg" alt="s" />
-                <h3>Track Inventory</h3>
-                <p>Track items with batch and serial number tracking.</p>
-              </Col>
-            </Row>
+<div className="features-section">
+  <div className="scroll-container">
+    <div className="scroll-images">
+      <div className="image-wrapper">
+        <img src="/Features_3.png" alt="Increase Sales" />
+        <h3>Increase Sales</h3>
+        <p>Track. Manage. Optimize.</p>
+      </div>
+      <div className="image-wrapper">
+      <img src="/Features_2.png" alt="Increase Sales" />
+      <h3>Manage Orders</h3>
+        <p>Handle online and offline orders in one place.</p>
+      </div>
+      <div className="image-wrapper">
+      <img src="/Features_1.png" alt="Increase Sales" />
+      <h3>Track Inventory</h3>
+        <p>Track items with batch and serial number tracking.</p>
+      </div>
+      <div className="image-wrapper">
+      <img src="/Features_3.png" alt="Increase Sales" />
+      <h3>Increase Sales</h3>
+        <p>Track. Manage. Optimize.</p>
+      </div>
+      <div className="image-wrapper">
+      <img src="/Features_2.png" alt="Increase Sales" />
+      <h3>Manage Orders</h3>
+        <p>Handle online and offline orders in one place.</p>
+      </div>
+      <div className="image-wrapper">
+      <img src="/Features_4.png" alt="Increase Sales" />
+      <h3>Manage Remotely</h3>
+        <p>Monitor inventory levels in real-time and ensure stock availability is always up to date.</p>
+      </div>
     </div>
+  </div>
+</div>
 {/* features section */}
 
 
@@ -98,8 +121,11 @@ const Landing = () => {
    <div className="Example-Images-Section">     
     <Container className="Example-Images">
         <img src="/src/assets/example_1.png" alt="image of an example inventory account" />
+          <h1>more explainations</h1>
         <img src="/src/assets/example_2.png" alt="image of an example inventory account" />
+          <h1>even more explainations</h1>
         <img src="/src/assets/example_3.png" alt="image of an example inventory account" />
+          <h1>even even more explainations</h1>
     </Container>
    </div>
 {/*example pictures */}
