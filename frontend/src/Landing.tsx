@@ -27,7 +27,7 @@ const Landing = () => {
           <Row>
             <Col>
             <div className="header-buttons">
-              <Link to="/AboutUs">
+              <Link to="/aboutus">
               <Button variant=""> About us</Button>
               </Link> 
               <Link to="/Features">
