@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStore, FaTruck, FaIndustry, FaShoppingCart } from "react-icons/fa";
-import "./style.css"; 
+import "./SignupFormstyle.css"; 
 import confetti from "canvas-confetti";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";

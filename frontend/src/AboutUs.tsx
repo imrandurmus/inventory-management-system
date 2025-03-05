@@ -85,7 +85,7 @@ const AboutUs = () => {
               <div className="cta-box">
                 <p>Join SIMple and take control of your inventory today!</p>
               </div>
-              <Link to="/signup">
+              <Link to="/SignupForm">
                 <Button variant=""className="main-signup-button">Get Started</Button>
               </Link>
             </Col>
