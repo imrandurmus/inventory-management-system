@@ -54,19 +54,24 @@ const AboutUs = () => {
           <h2>Meet Our Team</h2>
           <div className="team-container">
             <div className="team-member">
-              <img src="/team_member_1.png" alt="John Doe" />
-              <h3>John Doe</h3>
-              <p>Co-Founder & CEO</p>
+              <img src="/imran.png" alt="Imran" />
+              <h3>Imran</h3>
+              <p>Group Leader & Backend Lead</p>
             </div>
             <div className="team-member">
-              <img src="/team_member_2.png" alt="Jane Smith" />
-              <h3>Jane Smith</h3>
-              <p>CTO</p>
+              <img src="/Afagh.png" alt="Afagh" />
+              <h3>Afagh</h3>
+              <p>Front-End Lead</p>
             </div>
             <div className="team-member">
-              <img src="/team_member_3.png" alt="Emily Johnson" />
-              <h3>Emily Johnson</h3>
-              <p>Head of Product</p>
+              <img src="/team_member_3.png" alt="Oussema" />
+              <h3>Oussema</h3>
+              <p>Testing Lead</p>
+            </div>
+            <div className="team-member">
+              <img src="/team_member_3.png" alt="Jihad" />
+              <h3>Jihad</h3>
+              <p>Documentation Lead</p>
             </div>
           </div>
         </div>
@@ -75,13 +80,13 @@ const AboutUs = () => {
       {/* Call to Action */}
       <div className="cta-section" style={{ padding: "10px 0" }}>
         <Container fluid className="text-center">
-          <Row className="justify-content-center">
-            <Col md={8} className="cta-content cta-height py-1">
+          <Row className="backgroundcta">
+            <Col md={8} className="cta-content">
               <div className="cta-box">
                 <p>Join SIMple and take control of your inventory today!</p>
               </div>
               <Link to="/signup">
-                <Button className="main-signup-button">Sign Up - It's Free</Button>
+                <Button variant=""className="main-signup-button">Get Started</Button>
               </Link>
             </Col>
           </Row>
