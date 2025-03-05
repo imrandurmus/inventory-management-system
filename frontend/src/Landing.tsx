@@ -2,21 +2,13 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Landing.css";
 import Spline from '@splinetool/react-spline';
-import { Carousel} from 'react-bootstrap';
+//import { Carousel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const Landing = () => {
   return (
   <div className="landing-page">
-      
-      {/* Background video not sure if ill keep so commented for now
-      <video autoPlay loop muted playsInline className="background-video">
-        <source src="/watermarked_preview.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-       Background Video */}
-    <div className="header">
+      <div className="header">
         <div className="header-image">
           <Link to="/">
           <img src="/logo_png.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
@@ -65,7 +57,7 @@ const Landing = () => {
 
           <Col md={8} className="mx-auto text-center">
             <div className="main-buttons">
-              <Link to="/Signup">
+              <Link to="/SignUpForm">
                 <Button variant="" className="me-3">Sign Up - It's Free</Button>
               </Link>
             </div>

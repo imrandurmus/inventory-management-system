@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Landing, Login, SignUp } from "./";
+import { Landing, Login } from "./";
 import Authentication from "./Authentication";
 import DashboardRouter from "./DashboardRouter.tsx";
 import AboutUs from "./AboutUs.tsx";
+import SignupForm from "./SignupForm";
 //import "./colors.css";
 import Menu from "./Menu";
 import React from "react";
+import TermsAndConditions from "./pages/TermsAndConditions.tsx";
 
 
 //function App() {      //old one, new one is oussema's below
@@ -15,12 +17,14 @@ import React from "react";
       <Routes>
         <Route path="/" element={<Landing />} /> //default page is landing
         <Route path="/Login" element={<Login />} />
-        <Route path="/Signup" element={<SignUp />} />
+       {/**/}<Route path="/SignupForm" element={<SignupForm />} />
         <Route path="/" element={<Login />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/" element={<Authentication />} />
         <Route path="/dashboard" element={<DashboardRouter />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
       </Routes>
     </Router>
   );
