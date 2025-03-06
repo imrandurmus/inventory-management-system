@@ -1,0 +1,97 @@
+/* General Styling */
+.customers-page {
+  padding: 40px;
+  background-color: #f9f9f9;
+  /* Light grey background */
+  max-height: 100vh;
+  margin-left: 250px;
+  /*  border: 2px solid red;         for debug*/
+}
+
+/* Fix: Merge Styles to Avoid Conflicts */
+.customers-page h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #4B0082;
+  /* Purple color for the title */
+  text-transform: uppercase;
+}
+
+/* Table Styling */
+.customers-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background-color: white;
+  /* White background for the table */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for modern look */
+  border-radius: 8px;
+  /* Rounded corners */
+}
+
+.customers-table th,
+.customers-table td {
+  padding: 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+  /* Light grey border */
+}
+
+.customers-table th {
+  background-color: #4B0082;
+  /* Purple background for header */
+  color: white;
+  /* White text for header */
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.customers-table tbody tr {
+  transition: background-color 0.3s ease;
+  /* Smooth transition for hover effect */
+}
+
+.customers-table tbody tr:nth-child(even) {
+  background-color: #f4f4f4;
+  /* Light grey for even rows */
+}
+
+.customers-table tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
+.customers-table td {
+  font-size: 14px;
+  color: #333;
+}
+
+.customers-table td,
+.customers-table th {
+  font-weight: 400;
+}
+
+
+.empty-data {
+  text-align: center;
+  color: #777;
+  font-size: 18px;
+  font-weight: 300;
+  padding: 50px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .customers-page {
+    padding: 20px;
+    margin-left: 0px;
+  }
+
+  .customers-table th,
+  .customers-table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}

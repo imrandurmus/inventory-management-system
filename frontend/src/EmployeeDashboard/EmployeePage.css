@@ -1,0 +1,206 @@
+/* EmployeePage.css 
+
+Commented these bc these are global styles, they affect other pages
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Prevent unwanted horizontal scrolling 
+}
+*/
+
+.employee-page-container {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f4f4f4;
+  /*width: calc(100% - 250px); Fix: Adjust width dynamically */
+
+}
+
+/*
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #4B0082;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  /* Allows scrolling if content exceeds height 
+}
+*/
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background-color: #4B0082;
+  color: white;
+  padding: 20px;
+  height: 100%;
+  position: fixed;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar h2 {
+  color: white;
+}
+
+.sidebar-logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  /* Enable scrolling */
+}
+
+.sidebar ul li {
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Regular sidebar links */
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.sidebar ul li a:hover {
+  background-color: #6A0DAD;
+}
+
+/* Active link */
+.sidebar ul li a.active {
+  background-color: #6A0DAD;
+  color: white;
+}
+
+/* Dropdown Menu Styling */
+.sidebar ul li.dropdown {
+  position: relative;
+}
+
+/* Hide dropdown by default */
+.sidebar ul li .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #6A0DAD;
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 1;
+}
+
+/* Fix: Style the "Sales" button to match sidebar links */
+.sidebar ul li button {
+  background: none;
+  border: none;
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Hover effect for button */
+.sidebar ul li button:hover {
+  background-color: #6A0DAD;
+}
+
+/* Active state */
+.sidebar ul li button.active {
+  background-color: #6A0DAD;
+  color: white;
+}
+
+/* Dropdown menu */
+.sidebar ul li .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #6A0DAD;
+  width: 100%;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 1;
+}
+
+/* Show dropdown when hovered */
+.sidebar ul li.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Style dropdown links */
+.sidebar ul li .dropdown-menu a {
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* Hover effect for dropdown items */
+.sidebar ul li .dropdown-menu a:hover {
+  background-color: #8A2BE2;
+}
+
+button {
+  background-color: #6A0DAD;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #8A2BE2;
+}
+
+.content-container {
+  width: calc(100% - 250px);
+  /* Fill remaining space */
+  height: 100%;
+  /* Full height of the parent */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Center content */
+  align-items: center;
+  overflow-y: auto;
+  /* Allow content to scroll if needed */
+  background-color: white;
+}

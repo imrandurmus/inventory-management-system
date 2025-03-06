@@ -1,0 +1,64 @@
+/* SalesOrdersPage.css */
+
+.sales-orders-page {
+  padding: 20px;
+  background-color: #f8f8f8;
+  max-height: 100vh;
+  margin-left: 250px;
+}
+
+.sales-orders-page h1 {
+  color: #4b4b4b;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.filter-container label {
+  font-size: 1.1rem;
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.sales-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.sales-orders-table th,
+.sales-orders-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.sales-orders-table th {
+  background-color: #5e3c7e;
+  /* Purple header */
+  color: white;
+}
+
+.sales-orders-table tr:nth-child(even) {
+  background-color: #f4f4f4;
+}
+
+.sales-orders-table tr:hover {
+  background-color: #e0e0e0;
+}
+
+.sales-orders-table td {
+  color: #333;
+}

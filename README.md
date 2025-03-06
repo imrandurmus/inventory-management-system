@@ -13,6 +13,7 @@ npm install react-router-dom
 npm install @splinetool/react-spline
 npm install react-icons
 npm install canvas-confetti
+npm install react-chartjs-2 chart.js
 
 step 3:       //Then after you do all the steps once, use step 1 then 3 from now on to run the frontend 
 npm run dev

@@ -1,20 +1,92 @@
-/* Login.css */
-.login-container {
-    position: fixed;
+/*login.css*/
+
+
+.login-container-spline {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
     height: 100vh;
-    /* Full viewport width */
-    min-height: 100vh;
-    width: 100vw;
     display: flex;
+    width: 100vw;
     justify-content: center;
     align-items: center;
-    background-image: url("/src/assets/stock_img1.jpg");
     background-size: cover;
     background-position: center;
 }
+
+.spline-background {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.spline-background canvas {
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    pointer-events: none;
+
+}
+
+.login-container {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.2);
+    /* Transparent white */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+ß.login-container input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #6A0DAD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background-color: #4B0082;
+}
+
+
+.Header-Text {
+    color: #F8F9FA;
+}
+
+.mb-3 {
+    color: #F8F9FA;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 
 /* general styles */
 body {
@@ -95,4 +167,14 @@ body {
     background: #333;
     padding: 20px;
     color: white;
+}
+
+button:disabled {
+    background-color: #6a0dadb0 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+}
+
+.btn w-100 mb-2 {
+    color: #F8F9FA;
 }
