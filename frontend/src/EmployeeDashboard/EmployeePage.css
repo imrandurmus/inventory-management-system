@@ -1,206 +1,203 @@
-/* EmployeePage.css 
-
-Commented these bc these are global styles, they affect other pages
-
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden; /* Prevent unwanted horizontal scrolling 
-}
-*/
+/* EmployeePage.css */
 
 .employee-page-container {
   display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
   min-height: 100vh;
   width: 100%;
   background-color: #f4f4f4;
-  /*width: calc(100% - 250px); Fix: Adjust width dynamically */
-
+  transition: margin-left 0.3s ease-in-out;
 }
 
-/*
+/* Sidebar */
 .sidebar {
-  width: 250px;
-  height: 100%;
+  width: 320px;
   background-color: #4B0082;
   color: white;
   padding: 20px;
+  height: 100vh;
+  position: fixed;
+  transition: width 0.3s ease-in-out;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto;
-  /* Allows scrolling if content exceeds height 
 }
-*/
 
-/* Sidebar styles */
-.sidebar {
-  width: 250px;
-  background-color: #4B0082;
-  color: white;
-  padding: 20px;
-  height: 100%;
-  position: fixed;
+.sidebar.collapsed {
+  width: 60px;
 }
 
 .sidebar-header {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
-.sidebar h2 {
-  color: white;
-}
-
 .sidebar-logo {
-  width: 100px;
-  margin-bottom: 10px;
+  width: 80px;
+  height: auto;
+  transition: width 0.3s ease-in-out;
 }
 
-.sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  /* Enable scrolling */
+.sidebar.collapsed .sidebar-logo {
+  width: 40px;
 }
 
-.sidebar ul li {
-  width: 100%;
-  padding: 10px 0;
-  text-align: center;
-}
-
-/* Regular sidebar links */
-.sidebar ul li a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.sidebar ul li a:hover {
-  background-color: #6A0DAD;
-}
-
-/* Active link */
-.sidebar ul li a.active {
-  background-color: #6A0DAD;
-  color: white;
-}
-
-/* Dropdown Menu Styling */
-.sidebar ul li.dropdown {
-  position: relative;
-}
-
-/* Hide dropdown by default */
-.sidebar ul li .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #6A0DAD;
-  width: 100%;
-  border-radius: 5px;
-  padding: 10px;
-  z-index: 1;
-}
-
-/* Fix: Style the "Sales" button to match sidebar links */
-.sidebar ul li button {
+.toggle-sidebar {
   background: none;
   border: none;
   color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sidebar-menu li {
+  padding: 10px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.sidebar-menu li a,
+.dropdown-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   text-decoration: none;
-  display: block;
   padding: 10px;
   border-radius: 5px;
-  font-size: 16px;
+  transition: background 0.3s, width 0.3s;
   width: 100%;
   cursor: pointer;
-  text-align: center;
 }
 
-/* Hover effect for button */
-.sidebar ul li button:hover {
-  background-color: #6A0DAD;
-}
-
-/* Active state */
-.sidebar ul li button.active {
-  background-color: #6A0DAD;
-  color: white;
-}
-
-/* Dropdown menu */
-.sidebar ul li .dropdown-menu {
+.sidebar.collapsed .sidebar-menu li a,
+.sidebar.collapsed .logout-button,
+.sidebar.collapsed .dropdown-button {
   display: none;
+}
+
+.sidebar-menu li a:hover,
+.dropdown-button:hover {
+  background-color: #6A0DAD;
+}
+
+/* Dropdown Menu Fix */
+.dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-menu {
+  display: none;
+  background-color: #6A0DAD;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #6A0DAD;
-  width: 100%;
-  border-radius: 5px;
-  padding: 10px;
-  z-index: 1;
+  z-index: 1000;
 }
 
-/* Show dropdown when hovered */
-.sidebar ul li.dropdown:hover .dropdown-menu {
+.dropdown.open .dropdown-menu {
   display: block;
+  position: relative;
 }
 
-/* Style dropdown links */
-.sidebar ul li .dropdown-menu a {
-  padding: 8px;
-  text-align: left;
-  font-size: 14px;
+.dropdown-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
 }
 
-/* Hover effect for dropdown items */
-.sidebar ul li .dropdown-menu a:hover {
-  background-color: #8A2BE2;
+.sidebar.collapsed .dropdown-menu {
+  display: none !important;
 }
 
-button {
+/* Logout Button */
+.logout-button {
   background-color: #6A0DAD;
   color: white;
   border: none;
   padding: 10px 15px;
-  margin-top: 20px;
+  margin-top: auto;
   cursor: pointer;
   border-radius: 5px;
+  width: 100%;
+  transition: opacity 0.3s ease-in-out;
 }
 
-button:hover {
+.logout-button:hover {
   background-color: #8A2BE2;
 }
 
+/* Content Area */
 .content-container {
-  width: calc(100% - 250px);
-  /* Fill remaining space */
-  height: 100%;
-  /* Full height of the parent */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* Center content */
-  align-items: center;
-  overflow-y: auto;
-  /* Allow content to scroll if needed */
-  background-color: white;
+  margin-left: 320px;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+  width: calc(100% - 320px);
+}
+
+.sidebar.collapsed + .content-container {
+  margin-left: 60px;
+  width: calc(100% - 60px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+    padding: 10px;
+  }
+
+  .sidebar.collapsed {
+    width: 0;
+    padding: 0;
+  }
+
+  .sidebar-logo {
+    width: 50px;
+  }
+
+  .sidebar-menu li a {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .dropdown-button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .logout-button {
+    font-size: 14px;
+  }
+
+  .content-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+
+  .sidebar.collapsed + .content-container {
+    margin-left: 0;
+    width: 100%;
+  }
 }

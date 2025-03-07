@@ -7,43 +7,53 @@ const EmployeePage: React.FC = () => {
   const location = useLocation();
   const [isHomePage, setIsHomePage] = useState(false);
   const [isSalesDropdownOpen, setIsSalesDropdownOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
 
-  // Check if on Home Page
   useEffect(() => {
     setIsHomePage(location.pathname === "/employee/home");
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem("userRole"); // Clear user role
-    navigate("/"); // Redirect to login
+    localStorage.removeItem("userRole");
+    navigate("/");
   };
 
   const toggleSalesDropdown = () => {
     setIsSalesDropdownOpen(!isSalesDropdownOpen);
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="employee-page-container">
+    <div className={`employee-page-container ${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
       {/* Sidebar */}
-      <div className="sidebar">
+      <aside className={`sidebar ${isSidebarOpen ? "expanded" : "collapsed"}`}>
         <div className="sidebar-header">
-          <img src="/logo.png" alt="SIMple Logo" className="sidebar-logo" />
-          <h2>SIMple</h2>
+          <button className="toggle-sidebar" onClick={toggleSidebar}>
+            {isSidebarOpen ? "❮" : "❯"}
+          </button>
+          {isSidebarOpen && (
+            <Link to="/employee/home">
+              <img src="/logo.png" alt="SIMple Logo" className="sidebar-logo" />
+            </Link>
+          )}
+          {isSidebarOpen && <h2>SIMple</h2>}
         </div>
-        <ul>
-          <li>
-            <Link to="/employee/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/employee/inventory">Inventory</Link>
-          </li>
-          {/* Sales Link with Dropdown */}
-          <li className={`dropdown ${isSalesDropdownOpen ? "open" : ""}`}>
-            <button className="dropdown-button" onClick={toggleSalesDropdown}>
-              Sales ▼
-            </button>
-            {isSalesDropdownOpen && (
-              <ul className="dropdown-menu">
+        <nav>
+          <ul className="sidebar-menu">
+            <li>
+              <Link to="/employee/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/employee/inventory">Inventory</Link>
+            </li>
+            <li className={`dropdown ${isSalesDropdownOpen ? "open" : ""}`}>
+              <button className="dropdown-button" onClick={toggleSalesDropdown}>
+                Sales ▼
+              </button>
+              <ul className={`dropdown-menu ${isSalesDropdownOpen ? "show" : "hide"}`}>
                 <li><Link to="/employee/sales/customers">Customers</Link></li>
                 <li><Link to="/employee/sales/orders">Sales Orders</Link></li>
                 <li><Link to="/employee/sales/packages">Packages</Link></li>
@@ -52,26 +62,23 @@ const EmployeePage: React.FC = () => {
                 <li><Link to="/employee/sales/payments">Payments Received</Link></li>
                 <li><Link to="/employee/sales/returns">Sales Returned</Link></li>
               </ul>
-            )}
-          </li>
-          <li>
-            <Link to="/employee/purchases">Purchases</Link>
-          </li>
-          <li>
-            <Link to="/employee/reports">Reports</Link>
-          </li>
-        </ul>
+            </li>
+            <li>
+              <Link to="/employee/purchases">Purchases</Link>
+            </li>
+            <li>
+              <Link to="/employee/reports">Reports</Link>
+            </li>
+          </ul>
+        </nav>
         <button onClick={handleLogout} className="logout-button">Logout</button>
-      </div>
+      </aside>
 
       {/* Content Area */}
-      <div className="content-container">
-        {/* Show Top Navbar only on Home Page */}
+      <main className="content-container">
         {isHomePage && <div className="top-navbar"></div>}
-
-        {/* Render Child Routes */}
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 };
