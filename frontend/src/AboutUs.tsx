@@ -19,9 +19,9 @@ const AboutUs = () => {
                 <Link to="/aboutus">
                   <Button variant="">About Us</Button>
                 </Link>
-                <Link to="/features">
+      {/**       <Link to="/features">
                   <Button variant="">Features</Button>
-                </Link>
+                </Link> */}
                 <Link to="/login">
                   <Button variant="">Login</Button>
                 </Link>

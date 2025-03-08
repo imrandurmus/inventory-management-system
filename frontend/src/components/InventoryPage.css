@@ -18,20 +18,20 @@ body {
 */
 
 .inventory-page-container {
-  position: absolute;
-  top: 0;
-  left: 250px;
-  /* Start AFTER the sidebar */
+  position: relative;
+  /* Change from absolute */
+  margin-left: 250px;
+  /* Ensure it starts after the sidebar */
   width: calc(100% - 250px);
-  /* Take full width after sidebar */
+  /* Adjust width after sidebar */
   height: 100vh;
-  /* Full height */
   background-color: #f4f4f4;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 
 h1 {
   text-align: center;

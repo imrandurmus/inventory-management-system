@@ -63,10 +63,10 @@ const EmployeePage: React.FC = () => {
                   <li><Link to="/employee/sales/customers">Customers</Link></li>
                   <li><Link to="/employee/sales/orders">Sales Orders</Link></li>
                   <li><Link to="/employee/sales/packages">Packages</Link></li>
-                  <li><Link to="/employee/sales/shipments">Shipments</Link></li>
+        {/**      <li><Link to="/employee/sales/shipments">Shipments</Link></li>
                   <li><Link to="/employee/sales/invoices">Invoices</Link></li>
                   <li><Link to="/employee/sales/payments">Payments Received</Link></li>
-                  <li><Link to="/employee/sales/returns">Sales Returned</Link></li>
+                  <li><Link to="/employee/sales/returns">Sales Returned</Link></li>*/}
                 </ul>
               )}
             </li>

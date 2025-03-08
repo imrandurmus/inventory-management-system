@@ -22,9 +22,9 @@ const Landing = () => {
               <Link to="/aboutus">
               <Button variant=""> About us</Button>
               </Link> 
-              <Link to="/Features">
+              {/* <Link to="/Features">
               <Button variant="">Features</Button>
-              </Link>
+              </Link>*/}
               <Link to="/Login">
               <Button variant="">Login</Button>
               </Link>

@@ -63,10 +63,10 @@ const ManagerPage: React.FC = () => {
                   <li><Link to="/manager/sales/customers">Customers</Link></li>
                   <li><Link to="/manager/sales/orders">Sales Orders</Link></li>
                   <li><Link to="/manager/sales/packages">Packages</Link></li>
-                  <li><Link to="/manager/sales/shipments">Shipments</Link></li>
+      {/**        <li><Link to="/manager/sales/shipments">Shipments</Link></li>
                   <li><Link to="/manager/sales/invoices">Invoices</Link></li>
                   <li><Link to="/manager/sales/payments">Payments Received</Link></li>
-                  <li><Link to="/manager/sales/returns">Sales Returned</Link></li>
+                  <li><Link to="/manager/sales/returns">Sales Returned</Link></li>*/}
                 </ul>
               )}
             </li>
