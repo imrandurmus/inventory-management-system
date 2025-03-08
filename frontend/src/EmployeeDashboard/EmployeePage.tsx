@@ -36,7 +36,7 @@ const EmployeePage: React.FC = () => {
           </button>
           {isSidebarOpen && (
             <Link to="/employee/home">
-              <img src="/logo.png" alt="SIMple Logo" className="sidebar-logo" />
+              <img src="/Draft_logo.png" alt="SIMple Logo" className="sidebar-logo" />
             </Link>
           )}
           {isSidebarOpen && <h2>SIMple</h2>}

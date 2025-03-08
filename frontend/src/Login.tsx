@@ -42,7 +42,7 @@ const Login = () => {
   return (
     <div className="login-container-spline">
       <div className="spline-background">
-        <Spline scene="https://prod.spline.design/7G7o2OJeUqDNm4PM/scene.splinecode" />
+      <Spline scene="/Spline_2.spline" />
       </div>
       <div className="login-container">
         <Card style={{ width: "22rem" }} className="p-4 shadow">

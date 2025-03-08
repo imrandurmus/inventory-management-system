@@ -135,7 +135,7 @@ export default function SignupForm() {
           <div className="header">
                 <div className="header-image">
                     <Link to="/">
-                    <img src="/logo_png.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
+                    <img src="/Draft_logo.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
                     </Link>
                 </div>
             </div>

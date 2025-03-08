@@ -12,7 +12,7 @@
 .sidebar {
   width: 320px;
   background-color: #4B0082;
-  color: white;
+  color: #f4f4f4;
   padding: 20px;
   height: 100vh;
   position: fixed;
@@ -36,7 +36,7 @@
 }
 
 .sidebar-logo {
-  width: 80px;
+  width: 60px;
   height: auto;
   transition: width 0.3s ease-in-out;
 }
@@ -156,7 +156,7 @@
   width: calc(100% - 320px);
 }
 
-.sidebar.collapsed + .content-container {
+.sidebar.collapsed+.content-container {
   margin-left: 60px;
   width: calc(100% - 60px);
 }
@@ -196,7 +196,7 @@
     width: calc(100% - 80px);
   }
 
-  .sidebar.collapsed + .content-container {
+  .sidebar.collapsed+.content-container {
     margin-left: 0;
     width: 100%;
   }

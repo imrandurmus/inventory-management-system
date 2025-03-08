@@ -11,7 +11,7 @@ const Landing = () => {
       <div className="header">
         <div className="header-image">
           <Link to="/">
-          <img src="/logo_png.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
+          <img src="/Draft_logo.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
           </Link>
         </div>
 
@@ -40,7 +40,7 @@ const Landing = () => {
         {/*2 main-section bc i couldnt get it to look the way i wanted to lol */}
       <div className="main-section">
         <div className="Splice_1">
-        <Spline scene="https://prod.spline.design/7G7o2OJeUqDNm4PM/scene.splinecode" />
+        <Spline scene="/Spline_2.spline" />
         </div>
       </div>  
 
@@ -113,11 +113,11 @@ const Landing = () => {
    <div className="Example-Images-Section">     
     <Container className="Example-Images">
         <img src="/src/assets/example_1.png" alt="image of an example inventory account" />
-          <h1>more explainations</h1>
+          <h1>Inventory Tracking</h1>
         <img src="/src/assets/example_2.png" alt="image of an example inventory account" />
-          <h1>even more explainations</h1>
+          <h1>Manage Your Team</h1>
         <img src="/src/assets/example_3.png" alt="image of an example inventory account" />
-          <h1>even even more explainations</h1>
+          <h1>Stock Alerts & Notifications</h1>
     </Container>
    </div>
 {/*example pictures */}
@@ -133,7 +133,6 @@ const Landing = () => {
         </Container>
       </div>
 {/*cta-section*/}
-
       <div className="footer">
         <p>© 2025 SIMple. All Rights Reserved.</p>
       </div>

@@ -103,6 +103,19 @@
     width: 95%;
     height: 100%;
     pointer-events: none;
+    object-fit: cover;
+
+}
+
+.Splice_1 canvas {
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    pointer-events: none;
+    transform: scale(1.2);
+    /* Increase value for more zoom */
+
 }
 
 
@@ -241,6 +254,7 @@
 /*  Example images section*/
 .Example-Images-Section {
     background-color: #000000;
+    color: #f8f9fa;
 }
 
 .Example-Images {
@@ -252,6 +266,10 @@
     gap: 50px;
     margin-bottom: 0%;
     text-align: right;
+    color: #f8f9fa;
+}
+
+.Example-Images h1 {
     color: #f8f9fa;
 }
 

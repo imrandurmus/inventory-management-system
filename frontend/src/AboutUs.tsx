@@ -9,7 +9,7 @@ const AboutUs = () => {
       <div className="header" style={{ width: "100%" }}>
         <div className="header-image">
           <Link to="/">
-            <img src="/logo_png.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
+            <img src="/Draft_logo.png" alt="Clickable image redirects back to landing page. Logo of the website, a pink outline of a box" />
           </Link>
         </div>
         <div className="top-right-options">
