@@ -64,12 +64,12 @@ const AboutUs = () => {
               <p>Front-End Lead</p>
             </div>
             <div className="team-member">
-              <img src="/team_member_3.png" alt="Oussema" />
+              <img src="/Oussama.png" alt="Oussema" />
               <h3>Oussema</h3>
               <p>Testing Lead</p>
             </div>
             <div className="team-member">
-              <img src="/team_member_3.png" alt="Jihad" />
+              <img src="/Jihad.png" alt="Jihad" />
               <h3>Jihad</h3>
               <p>Documentation Lead</p>
             </div>

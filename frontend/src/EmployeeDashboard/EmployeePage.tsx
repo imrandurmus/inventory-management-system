@@ -7,11 +7,16 @@ const EmployeePage: React.FC = () => {
   const location = useLocation();
   const [isHomePage, setIsHomePage] = useState(false);
   const [isSalesDropdownOpen, setIsSalesDropdownOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
-    setIsHomePage(location.pathname === "/employee/home");
-  }, [location]);
+    // Redirect only if user is at "/Employee-Dashboard" (without sub-route)
+    if (location.pathname === "/Employee-Dashboard") {
+      navigate("/employee/home", { replace: true });
+    } else {
+      setIsHomePage(location.pathname === "/employee/home");
+    }
+  }, [location.pathname, navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("userRole");
@@ -53,15 +58,17 @@ const EmployeePage: React.FC = () => {
               <button className="dropdown-button" onClick={toggleSalesDropdown}>
                 Sales ▼
               </button>
-              <ul className={`dropdown-menu ${isSalesDropdownOpen ? "show" : "hide"}`}>
-                <li><Link to="/employee/sales/customers">Customers</Link></li>
-                <li><Link to="/employee/sales/orders">Sales Orders</Link></li>
-                <li><Link to="/employee/sales/packages">Packages</Link></li>
-                <li><Link to="/employee/sales/shipments">Shipments</Link></li>
-                <li><Link to="/employee/sales/invoices">Invoices</Link></li>
-                <li><Link to="/employee/sales/payments">Payments Received</Link></li>
-                <li><Link to="/employee/sales/returns">Sales Returned</Link></li>
-              </ul>
+              {isSalesDropdownOpen && (
+                <ul className="dropdown-menu">
+                  <li><Link to="/employee/sales/customers">Customers</Link></li>
+                  <li><Link to="/employee/sales/orders">Sales Orders</Link></li>
+                  <li><Link to="/employee/sales/packages">Packages</Link></li>
+                  <li><Link to="/employee/sales/shipments">Shipments</Link></li>
+                  <li><Link to="/employee/sales/invoices">Invoices</Link></li>
+                  <li><Link to="/employee/sales/payments">Payments Received</Link></li>
+                  <li><Link to="/employee/sales/returns">Sales Returned</Link></li>
+                </ul>
+              )}
             </li>
             <li>
               <Link to="/employee/purchases">Purchases</Link>
