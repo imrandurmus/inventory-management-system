@@ -21,6 +21,7 @@ import AnnouncementsPage from "./components/AnnouncementsPage.tsx";
 import PurchasesPage from "./components/PurchasesPage.tsx";
 import CustomersPage from "./components/CustomersPage.tsx";
 import DashboardPage from "./components/DashboardPage.tsx";
+import Staff from "./components/Staff.tsx";
 
 
 //function App() {      //old one, new one is oussema's below
@@ -39,18 +40,14 @@ import DashboardPage from "./components/DashboardPage.tsx";
         <Route path="/Admin-Dashboard" element={<AdminPage />} />
         <Route path="/Manager-Dashboard" element={<ManagerPage />} />
         <Route path="/Employee-Dashboard" element={<EmployeePage />} />
+        <Route path="/manager" element={<ManagerPage />} />
 
          {/* Employee Dashboard Layout */}
-
-         <Route path="/employee" element={<EmployeePage />}>
+        <Route path="/employee" element={<EmployeePage />}>
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="sales/customers" element={<CustomersPage />} />
           <Route path="sales/orders" element={<SalesOrdersPage />} />
           <Route path="sales/packages" element={<PackagesPage />} />
-          {/*</Route><Route path="sales/shipments" element={<Shipments />} />
-          <Route path="sales/invoices" element={<Invoices />} />
-          <Route path="sales/payments" element={<Payments />} />
-          <Route path="sales/returns" element={<Returns />} />*/}
           <Route path="purchases" element={<PurchasesPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="home" element={<HomePage />} />
@@ -58,10 +55,25 @@ import DashboardPage from "./components/DashboardPage.tsx";
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="announcements" element={<AnnouncementsPage />} />
           <Route path="recent-updates" element={<RecentUpdatesPage />} />
+        </Route>
 
-          </Route>
-
-
+         {/* Manager Dashboard Layout */}
+        <Route path="/manager" element={<ManagerPage />}>
+          <Route path="inventory" element={<InventoryPage />} />
+          <Route path="sales/customers" element={<CustomersPage />} />
+          <Route path="sales/orders" element={<SalesOrdersPage />} />
+          <Route path="sales/packages" element={<PackagesPage />} />
+          <Route path="purchases" element={<PurchasesPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="home" element={<HomePage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="announcements" element={<AnnouncementsPage />} />
+          <Route path="recent-updates" element={<RecentUpdatesPage />} />
+          <Route path="staff" element={<Staff />} />
+          
+        </Route>
+          
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         

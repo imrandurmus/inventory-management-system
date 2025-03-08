@@ -1,0 +1,96 @@
+#staff-page {
+    padding: 20px;
+    color: #000000;
+}
+
+.Staff-Title {
+    text-align: left;
+}
+
+#staff-table {
+    width: 170%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.091);
+    overflow: hidden;
+}
+
+
+#staff-table th,
+#staff-table td {
+    border: 1px solid #e6151500;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.3rem;
+    color: drgb(102, 102, 102)
+}
+
+#staff-table td:nth-child(3) {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #7bec8c;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 1.2rem;
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+/* tab styles */
+.add-employee-form {
+    padding: 20px;
+    color: #000000;
+    gap: 90px;
+}
+
+#requests-table {
+    width: 170%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.091);
+    overflow: hidden;
+}
+
+.add-employee-form {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-employee-form h3 {
+    margin-bottom: 20px;
+    /* Space between the title and form */
+    font-size: 1.8rem;
+}
+
+.add-employee-form .form-group {
+    width: 100%;
+    max-width: 500px;
+    /* Limit form width */
+    margin-bottom: 20px;
+    /* Add space between form fields */
+}
+
+.add-employee-form .form-group label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.add-employee-form .form-group input {
+    font-size: 1rem;
+}
+
+.add-employee-form .btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 500px;
+}
