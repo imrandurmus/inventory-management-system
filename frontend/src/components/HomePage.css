@@ -1,4 +1,12 @@
 /* HomePage.css */
+body {
+  background-color: #F4F4F4;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100vw;
+}
+
 .home-page-container {
   padding: 20px;
   display: flex;
