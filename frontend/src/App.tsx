@@ -37,6 +37,7 @@ import Staff from "./components/Staff.tsx";
 {/*     <Route path="/" element={<Authentication />} />
         <Route path="/dashboard" element={<DashboardRouter />} />
 */}
+
         <Route path="/Admin-Dashboard" element={<AdminPage />} />
         <Route path="/Manager-Dashboard" element={<ManagerPage />} />
         <Route path="/Employee-Dashboard" element={<EmployeePage />} />
@@ -73,6 +74,10 @@ import Staff from "./components/Staff.tsx";
           <Route path="staff" element={<Staff />} />
           
         </Route>
+
+         {/* Admin Dashboard Layout */}
+         
+
           
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
