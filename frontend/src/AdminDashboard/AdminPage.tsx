@@ -12,8 +12,8 @@ const AdminPage: React.FC = () => {
             <li><Link to="/Admin-Dashboard">Dashboard</Link></li>
             {/*<li><Link to="/Admin-Dashboard/manage-companies">Manage Companies</Link></li>
             <li><Link to="/Admin-Dashboard/manage-managers">Manage Managers</Link></li>*/}
-            <li><Link to="/Employee-Dashboard/home">Employee Dashboard</Link></li>
-            <li><Link to="/Manager-Dashboard/home">Manager Dashboard</Link></li>
+            <li><Link to="/employee/home">Employee Dashboard</Link></li>
+            <li><Link to="/manager/home">Manager Dashboard</Link></li>
           </ul>
         </nav>
       </aside>
