@@ -1,181 +1,141 @@
-/*login.css*/
-
-
-.login-container-spline {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
+.login-container {
+    background-color: #ffffff;
+    background-image: url('/LoginBG.png');
+    background-size: cover;
+    min-width: 100vw;
+    min-height: 100%;
     display: flex;
-    width: 100vw;
     justify-content: center;
     align-items: center;
-    background-size: cover;
-    background-position: center;
-}
-
-.spline-background {
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 1;
-}
-
-.spline-background canvas {
-    position: absolute;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-    pointer-events: none;
-    transform: scale(1.2);
+    height: 100vh;
 
 }
 
-.login-container {
-    position: relative;
-    z-index: 2;
-    background: rgba(255, 255, 255, 0.2);
-    /* Transparent white */
+.login-left {
+    text-align: left;
+}
+
+.login-form {
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    text-align: center;
+    width: 400px;
+    padding: 24px;
 }
 
-.login-container input {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
+
+.LoginSumbitButton button {
+    background-color: #ffffff;
+    color: black;
 }
 
-.login-container button {
-    width: 100%;
-    padding: 10px;
-    background-color: #6A0DAD;
+.purple-button button {
+    background-color: #4c0082;
     color: white;
-    border: none;
-    border-radius: 5px;
+}
+
+.purple-button:hover {
+    background-color: #4c0082;
+    color: #ffffff;
+}
+
+/* Google button */
+.google-button:hover {
+    background-color: #4c0082;
+    color: white;
+}
+
+
+.forgot-password,
+.sign-up {
+    color: #4c0082;
     cursor: pointer;
 }
 
-.login-container button:hover {
-    background-color: #4B0082;
+.forgot-password:hover,
+.sign-up:hover {
+    color: #6a1e9c;
 }
 
-
-.Header-Text {
-    color: #F8F9FA;
-}
-
-.mb-3 {
-    color: #F8F9FA;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-    font-style: italic;
-}
-
-.form-control::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-
-/* general styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #F8F9FA;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-/*bg size is that for funny*/
-
-.login-card {
-    width: 22rem;
-    padding: 1rem;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.btn-full {
-    width: 100%;
-    margin-bottom: 0.5rem;
-}
-
-
-/* Role selection buttons */
-.role-buttons button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #E63250;
-    color: white;
-    transition: 0.3s;
-}
-
-.role-buttons button:hover {
-    background-color: #B02A40;
-}
-
-/* Dashboard container */
-.dashboard-container {
-    padding: 20px;
-}
-
-/* Logout button */
-.logout-btn {
-    margin-bottom: 20px;
-    padding: 10px 15px;
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background: #555;
-}
-
-/* Dashboard styles*/
-.admin {
-    background: #E63250;
-    padding: 20px;
-    color: white;
-}
-
-.manager {
-    background: #B02A40;
-    padding: 20px;
-    color: white;
-}
-
-.employee {
-    background: #333;
-    padding: 20px;
-    color: white;
-}
-
-button:disabled {
-    background-color: #6a0dadb0 !important;
-    cursor: not-allowed !important;
-    opacity: 0.6;
-}
-
-.btn w-100 mb-2 {
-    color: #F8F9FA;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+      flex-direction: column; /* Stack the columns vertically on smaller screens */
+      background-size: cover; /* Ensure the background image still covers the area */
+      background-position: center;
+    }
+  
+    .promo-section {
+      padding: 30px !important;
+      text-align: center;
+      width: 100%;
+    }
+  
+    .promo-title {
+      font-size: 2rem; /* Reduce font size for smaller screens */
+    }
+  
+    .promo-subtitle {
+      font-size: 1rem;
+    }
+  
+    .company-logos {
+      justify-content: center;
+    }
+  
+    .form-container {
+      padding: 20px;
+      max-width: 100%; /* Allow the form to take full width on smaller screens */
+      width: 90%; /* Slightly reduce width for padding */
+    }
+  
+    .form-container h5 {
+      font-size: 1.5rem;
+    }
+  
+    .google-button,
+    .submit-button {
+      padding: 10px !important; /* Slightly reduce padding for smaller screens */
+      font-size: 0.9rem !important;
+    }
+  
+    .forgot-password,
+    .toggle-link,
+    .terms-link {
+      font-size: 0.8rem; /* Reduce font size for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .promo-title {
+      font-size: 1.8rem;
+    }
+  
+    .promo-subtitle {
+      font-size: 0.9rem;
+    }
+  
+    .testimonial {
+      padding: 15px;
+    }
+  
+    .stars {
+      font-size: 1rem;
+    }
+  
+    .company-logo {
+      max-height: 30px; /* Reduce logo size for smaller screens */
+    }
+  
+    .form-container {
+      padding: 15px;
+    }
+  
+    .form-container h5 {
+      font-size: 1.3rem;
+    }
+  
+    .form-container .MuiTextField-root .MuiInputLabel-root,
+    .form-container .MuiTextField-root .MuiInputBase-input {
+      font-size: 0.9rem; /* Reduce input font size for smaller screens */
+    }
+  }

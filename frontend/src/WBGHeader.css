@@ -1,0 +1,41 @@
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 5px 15px; /* Reduce vertical padding */
+    height: 50px; /* Set a fixed height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  /* Reduce top-right button section padding */
+  .top-right-options {
+    padding: 5px 10px;
+    gap: 8px;
+  }
+  
+  /* Adjust logo size */
+  .header-image img {
+    width: 40px; /* Reduce width */
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Reduce button size */
+  .header-buttons-login button {
+    font-size: 0.9rem;
+    background-color: transparent;
+    color: rgb(10, 10, 10);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+  }
+
+  

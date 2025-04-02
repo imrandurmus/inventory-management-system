@@ -10,10 +10,15 @@ cd frontend //navigate to frontend files
 step 2:
 npm install 
 npm install react-router-dom
-npm install @splinetool/react-spline
 npm install react-icons
-npm install canvas-confetti
 npm install react-chartjs-2 chart.js
+npm install @coreui/react @coreui/react-chartjs chart.js react-icons
+npm install react-animated-numbers
+npm install @fortawesome/fontawesome-free
+npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
+npm install firebase
+
+
 
 step 3:       //Then after you do all the steps once, use step 1 then 3 from now on to run the frontend 
 npm run dev

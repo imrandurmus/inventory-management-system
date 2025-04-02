@@ -1,0 +1,192 @@
+/* Login Page */
+.login-page {
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container {
+    flex: 1;
+  }
+  
+  /* Promotional Section (Left Column) */
+  .promo-section {
+    background-color: #f8f9fa;
+    padding: 50px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .promo-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  
+  .promo-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .google-buttonn {
+    background-color: #4285f4 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+  }
+  
+  .google-button:hover {
+    background-color: #3267d6 !important;
+  }
+  
+  /* Testimonial */
+  .testimonial {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+  }
+  
+  .stars {
+    color: #f5c518;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Trusted Companies */
+  .trusted-text {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  .company-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .company-logo {
+    max-height: 40px;
+    filter: grayscale(100%);
+    opacity: 0.7;
+  }
+  
+  .company-logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+  
+  /* Form Section (Right Column) */
+  .form-container {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .form-container h5 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+  }
+  
+  .form-container .MuiDivider-root {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .form-container .MuiTextField-root {
+    margin-bottom: 20px !important;
+  }
+  
+  .form-container .MuiTextField-root .MuiInputBase-root {
+    border-radius: 8px;
+  }
+  
+  .form-container .MuiTextField-root .MuiInputLabel-root {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .form-container .MuiTextField-root .MuiInputBase-input {
+    font-size: 1rem;
+  }
+  
+  .submit-buttonn {
+    background-color: #5a0091 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+  }
+  
+  .submit-button:hover {
+    background-color: #e6393b !important;
+  }
+  
+  .toggle-link {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .toggle-link:hover {
+    text-decoration: underline;
+  }
+  
+  .terms-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .terms-link:hover {
+    text-decoration: underline;
+  }
+  
+  .forgot-password {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .login-container {
+      flex-direction: column;
+    }
+  
+    .promo-section {
+      padding: 30px !important;
+      text-align: center;
+    }
+  
+    .promo-title {
+      font-size: 2rem;
+    }
+  
+    .promo-subtitle {
+      font-size: 1rem;
+    }
+  
+    .company-logos {
+      justify-content: center;
+    }
+  
+    .form-container {
+      padding: 30px;
+    }
+  
+    .form-container h5 {
+      font-size: 1.5rem;
+    }
+  }

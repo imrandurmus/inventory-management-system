@@ -1,29 +1,34 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Landing, Login } from "./";
-//import Authentication from "./Authentication";
-//import DashboardRouter from "./DashboardRouter.tsx";
+import { Landing } from "./";
 import AboutUs from "./AboutUs.tsx";
-import SignupForm from "./SignupForm";
 import Menu from "./Menu";
 import React from "react";
-import TermsAndConditions from "./pages/TermsAndConditions.tsx";
 import EmployeePage from "./EmployeeDashboard/EmployeePage.tsx";
-import AdminPage from "./AdminDashboard/AdminPage.tsx";
 import ManagerPage from "./ManagerDashboard/ManagerPage.tsx";
-import HomePage from "./components/HomePage.tsx";
-import InventoryPage from "./components/InventoryPage.tsx";
-import PackagesPage from "./components/PackagesPage.tsx";
-import RecentUpdatesPage from "./components/RecentUpdatesPage.tsx";
-import ProfilePage from "./components/ProfilePage.tsx";
-import ReportsPage from "./components/ReportsPage.tsx";
-import SalesOrdersPage from "./components/SalesOrdersPage.tsx";
-import AnnouncementsPage from "./components/AnnouncementsPage.tsx";
-import PurchasesPage from "./components/PurchasesPage.tsx";
-import CustomersPage from "./components/CustomersPage.tsx";
-import DashboardPage from "./components/DashboardPage.tsx";
-import Staff from "./components/Staff.tsx";
+import Login from "./Login.tsx";
+import SignUp from "./SignUp.tsx";
+import Contact from "./Contact.tsx";
+import LearnMore from "./LearnMore.tsx";
+import PrivacyPolicy from "./PrivacyPolicy.tsx";
+import ForgotPassword from "./ForgotPassword.tsx";
 
+//import "@fortawesome/fontawesome-free/css/all.min.css";
 
+/**
+import HomePage from "./dele/HomePage.tsx";
+import InventoryPage from "./dele/InventoryPage.tsx";
+import PackagesPage from "./dele/PackagesPage.tsx";
+import RecentUpdatesPage from "./dele/RecentUpdatesPage.tsx";
+import ProfilePage from "./dele/ProfilePage.tsx";
+import ReportsPage from "./dele/ReportsPage.tsx";
+import SalesOrdersPage from "./dele/SalesOrdersPage.tsx";
+import AnnouncementsPage from "./dele/AnnouncementsPage.tsx";
+import PurchasesPage from "./dele/PurchasesPage.tsx";
+import CustomersPage from "./dele/CustomersPage.tsx";
+import DashboardPage from "./dele/DashboardPage.tsx";
+import Staff from "./dele/Staff.tsx";
+
+ */
 //function App() {      //old one, new one is oussema's below
   const App: React.FC = () => {
   return (
@@ -31,19 +36,28 @@ import Staff from "./components/Staff.tsx";
       <Routes>
         <Route path="/" element={<Landing />} /> //default page is landing
         <Route path="/Login" element={<Login />} />
-       <Route path="/SignupForm" element={<SignupForm />} />
+        <Route path="/SignUp" element={<SignUp />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/Landing" element={<Landing />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/LearnMore" element={<LearnMore />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/forgot-password" element={<ForgotPassword onClose={function (): void {
+          throw new Error("Function not implemented.");
+        } } />} />
 
 {/*     <Route path="/" element={<Authentication />} />
         <Route path="/dashboard" element={<DashboardRouter />} />
-*/}
+
 
         <Route path="/Admin-Dashboard" element={<AdminPage />} />
+*/}
         <Route path="/Manager-Dashboard" element={<ManagerPage />} />
         <Route path="/Employee-Dashboard" element={<EmployeePage />} />
         <Route path="/manager" element={<ManagerPage />} />
 
-         {/* Employee Dashboard Layout */}
+         {/* Employee Dashboard Layout
         <Route path="/employee" element={<EmployeePage />}>
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="sales/customers" element={<CustomersPage />} />
@@ -58,7 +72,7 @@ import Staff from "./components/Staff.tsx";
           <Route path="recent-updates" element={<RecentUpdatesPage />} />
         </Route>
 
-         {/* Manager Dashboard Layout */}
+          Manager Dashboard Layout
         <Route path="/manager" element={<ManagerPage />}>
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="sales/customers" element={<CustomersPage />} />
@@ -74,13 +88,11 @@ import Staff from "./components/Staff.tsx";
           <Route path="staff" element={<Staff />} />
           
         </Route>
-
+ */}
          {/* Admin Dashboard Layout */}
          
 
-          
-        <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+         
         
       </Routes>
     </Router>
