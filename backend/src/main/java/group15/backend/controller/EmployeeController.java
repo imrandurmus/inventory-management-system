@@ -55,4 +55,16 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id) {
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); //204
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); //404
+        }
+
+    }
 }
