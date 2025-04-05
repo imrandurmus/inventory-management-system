@@ -36,18 +36,21 @@ public class Employee {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
     public Employee() {}
 
-    public Employee(String firstName, String lastName, String email, String password, Role role) {
+    public Employee(String firstName, String lastName, String email, String password, Role role, String profileImageUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.profileImageUrl = profileImageUrl;
     }
 
-    // Getters
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -81,6 +84,8 @@ public class Employee {
     public void setRole(Role role) {
         this.role = role;
     }
+    public String getProfileImageUrl() { return profileImageUrl;}
+    public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl;}
 
 
 
@@ -105,7 +110,8 @@ public class Employee {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", role=" + role +
+                ", role=" + role + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
                 '}';
     }
 

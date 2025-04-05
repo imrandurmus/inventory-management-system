@@ -30,6 +30,11 @@ public class Product {
     @DecimalMin(value = "0.0",inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
 
+    @Transient
+    public BigDecimal getTotalValue() {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
     @Column(name = "created_at", nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
