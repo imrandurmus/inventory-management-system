@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TextField, Button, Typography, Box, Divider } from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
-import "./CSS/SignUp.css";
+import './CSS/SignUp.css';
 import { signInWithGoogle } from "./firebaseConfig"; // Import Google Sign-In function
 import { createUserWithEmailAndPassword } from "firebase/auth"; // Firebase authentication
 import { Link } from "react-router-dom";

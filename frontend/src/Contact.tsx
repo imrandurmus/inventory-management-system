@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, TextField, MenuItem, Button, Alert } from "@mui/material";
 import { Container, Row, Col } from "react-bootstrap";
-import "./CSS/Contact.css";
+import './CSS/Contact.css';
 import WBGHeader from "./WBGHeader";
 
 const ContactUs = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TextField, Checkbox, Button, FormControlLabel, Typography, Paper, Box, Divider, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";
-import "./CSS/Login.css";
+import './CSS/Login.css';
 import { signInWithGoogle } from "./firebaseConfig"; // Import Google Sign-In function
 import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword component
 import { signInWithEmailAndPassword } from "firebase/auth"; // Firebase authentication

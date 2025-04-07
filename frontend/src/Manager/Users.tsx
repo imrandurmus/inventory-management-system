@@ -6,8 +6,8 @@ import { Modal, Box, Typography, TextField, MenuItem, IconButton } from "@mui/ma
 import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from "@mui/icons-material";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage imports
 //import { storage } from "./firebaseConfig"; // Import Firebase Storage
-import Header from "../CSS/Header.css";
-import "../CSS/Users.css";
+import Header from "../DashComponents/Header";
+import '../CSS/Users.css';
 
 // Mock data (replace with Firebase or API call)
 interface User {

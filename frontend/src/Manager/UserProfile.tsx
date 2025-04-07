@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { Edit, Delete, ArrowBack } from "@mui/icons-material";
 import Header from "../DashComponents/Header";
-import "../CSS/Users.css";
+import '../CSS/Users.css';
 
 // Mock data (replace with Firebase fetch)
 interface User {

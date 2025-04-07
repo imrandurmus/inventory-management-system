@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Row, Col } from "react-bootstrap";
-import "./CSS/WBGHeader.css";
+import './CSS/WBGHeader.css';
 
 const HHeader = () => {
   return (

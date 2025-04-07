@@ -1,5 +1,7 @@
+console.log("✅ Landing page rendered!");
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Landing } from "./";
+import Landing from './Landing';
 import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
 import React from "react";
@@ -22,6 +24,7 @@ import EditUser from "./Manager/EditUser.tsx";
 //function App() {      //old one, new one is oussema's below
   const App: React.FC = () => {
   return (
+    
 <Router>
     <Routes>
         <Route path="/" element={<Landing />} /> //default page is landing

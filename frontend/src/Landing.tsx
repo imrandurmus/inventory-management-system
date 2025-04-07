@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./CSS/Landing.css";
+import './CSS/Landing.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaBox, FaFolderOpen, FaTools, FaStar } from "react-icons/fa";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./CSS/Login.css";
+import './CSS/Login.css';
 
 const Authentication: React.FC = () => {
     const navigate = useNavigate();
