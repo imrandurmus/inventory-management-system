@@ -1,0 +1,34 @@
+/* Header.css */
+.navigationBarr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure it stays on top of other content */
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+}
+  
+  /* Ensure proper alignment of profile picture */
+  .profile-img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  @media (max-width: 767px) {
+    .menu-toggle {
+      display: block; /* Make sure the menu toggle is visible on smaller screens */
+    }
+  
+    .header-icon {
+      font-size: 18px; /* Smaller icons on mobile */
+    }
+  }
+  
+  /* Optional: You can hide the profile picture in small screens */
+  @media (max-width: 767px) {
+    .profile-img {
+      display: none;
+    }
+  }
+  

@@ -4,36 +4,26 @@ import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
 import React from "react";
 import EmployeePage from "./EmployeeDashboard/EmployeePage.tsx";
-import ManagerPage from "./ManagerDashboard/ManagerPage.tsx";
 import Login from "./Login.tsx";
 import SignUp from "./SignUp.tsx";
 import Contact from "./Contact.tsx";
 import LearnMore from "./LearnMore.tsx";
 import PrivacyPolicy from "./PrivacyPolicy.tsx";
 import ForgotPassword from "./ForgotPassword.tsx";
+import Manager from "./Manager/Manager.tsx";
+import Items from "./Manager/Items.tsx";
+import Orders from "./Manager/Orders.tsx";
+import Invoices from "./Manager/Invoices.tsx";
+import Reports from "./Manager/Reports.tsx";
+import Users from "./Manager/Users.tsx";
+import UserProfile from "./Manager/UserProfile.tsx";
+import EditUser from "./Manager/EditUser.tsx";
 
-//import "@fortawesome/fontawesome-free/css/all.min.css";
-
-/**
-import HomePage from "./dele/HomePage.tsx";
-import InventoryPage from "./dele/InventoryPage.tsx";
-import PackagesPage from "./dele/PackagesPage.tsx";
-import RecentUpdatesPage from "./dele/RecentUpdatesPage.tsx";
-import ProfilePage from "./dele/ProfilePage.tsx";
-import ReportsPage from "./dele/ReportsPage.tsx";
-import SalesOrdersPage from "./dele/SalesOrdersPage.tsx";
-import AnnouncementsPage from "./dele/AnnouncementsPage.tsx";
-import PurchasesPage from "./dele/PurchasesPage.tsx";
-import CustomersPage from "./dele/CustomersPage.tsx";
-import DashboardPage from "./dele/DashboardPage.tsx";
-import Staff from "./dele/Staff.tsx";
-
- */
 //function App() {      //old one, new one is oussema's below
   const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
+<Router>
+    <Routes>
         <Route path="/" element={<Landing />} /> //default page is landing
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
@@ -47,55 +37,21 @@ import Staff from "./dele/Staff.tsx";
           throw new Error("Function not implemented.");
         } } />} />
 
-{/*     <Route path="/" element={<Authentication />} />
-        <Route path="/dashboard" element={<DashboardRouter />} />
+{/*  Manager page routes    */}
+        <Route path="/User-Dashboard" element={<Manager />} />
+        <Route path="/items/products" element={<Items />} />
+        <Route path="/items/orders" element={<Orders />} />
+        <Route path="/items/invoices" element={<Invoices />} />
+        <Route path="/Reports" element={<Reports />} />
+        <Route path="/Users" element={<Users />} />
+        <Route path="/Users/:id" element={<UserProfile />} />
+        <Route path="/Users/edit/:id" element={<EditUser />} />
 
-
-        <Route path="/Admin-Dashboard" element={<AdminPage />} />
-*/}
-        <Route path="/Manager-Dashboard" element={<ManagerPage />} />
+{/* Employee Dashboard Layout*/}
         <Route path="/Employee-Dashboard" element={<EmployeePage />} />
-        <Route path="/manager" element={<ManagerPage />} />
-
-         {/* Employee Dashboard Layout
-        <Route path="/employee" element={<EmployeePage />}>
-          <Route path="inventory" element={<InventoryPage />} />
-          <Route path="sales/customers" element={<CustomersPage />} />
-          <Route path="sales/orders" element={<SalesOrdersPage />} />
-          <Route path="sales/packages" element={<PackagesPage />} />
-          <Route path="purchases" element={<PurchasesPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="announcements" element={<AnnouncementsPage />} />
-          <Route path="recent-updates" element={<RecentUpdatesPage />} />
-        </Route>
-
-          Manager Dashboard Layout
-        <Route path="/manager" element={<ManagerPage />}>
-          <Route path="inventory" element={<InventoryPage />} />
-          <Route path="sales/customers" element={<CustomersPage />} />
-          <Route path="sales/orders" element={<SalesOrdersPage />} />
-          <Route path="sales/packages" element={<PackagesPage />} />
-          <Route path="purchases" element={<PurchasesPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="announcements" element={<AnnouncementsPage />} />
-          <Route path="recent-updates" element={<RecentUpdatesPage />} />
-          <Route path="staff" element={<Staff />} />
-          
-        </Route>
- */}
-         {/* Admin Dashboard Layout */}
-         
-
-         
-        
-      </Routes>
-    </Router>
+{/* Admin Dashboard Layout */}
+    </Routes>
+</Router>
   );
 }
 

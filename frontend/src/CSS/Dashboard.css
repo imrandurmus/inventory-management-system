@@ -1,0 +1,251 @@
+/* Dashboard Container */
+.dashboard-background {
+    background-color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 50px;
+    padding: 30px 0;
+    min-height: 100%;
+    min-width: auto;
+  }
+
+  .Summary-title{
+    margin-bottom: 20px;
+  }
+  
+/* Stat Card */
+.statt-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(4, 0, 6, 0.149);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.statt-card:hover {
+    transform: translateY(-5px);
+}
+
+.statt-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.statt-icon {
+    font-size: 1.5rem;
+    color: #666;
+    margin-right: 10px;
+}
+
+.statt-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    text-transform: uppercase;
+}
+
+.statt-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.statt-change {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+.Bottom-stats-text{
+    margin-top: 8px;
+    font-size: 20px;
+    color: gray;
+    text-align: center;
+}
+
+
+
+/* Pie chart section */
+.pie-chart-section {
+    text-align: center;
+  }
+  
+  .pie-chart-section h2 {
+    font-size: 24px;
+  }
+  
+  /* Top Selling Items Section */
+  .top-selling-items {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .top-selling-items h2 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+  }
+  
+  .top-selling-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .top-selling-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .top-selling-item span {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .top-selling-item span:first-child {
+    font-weight: bold;
+  }
+  
+  
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-nav .nav-link {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-change {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .dashboard-nav .nav-link {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .stat-value {
+        font-size: 1.3rem;
+    }
+
+    .stat-change {
+        font-size: 0.7rem;
+    }
+}
+
+/* Small Screens (Mobile and Small Tablets) */
+@media (max-width: 768px) {
+    .dashboard-nav .nav-link {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-change {
+        font-size: 0.8rem;
+    }
+
+    .pie-chart-section h2 {
+        font-size: 20px;
+    }
+
+    .top-selling-items h2 {
+        font-size: 20px;
+    }
+
+    .top-selling-item span {
+        font-size: 14px;
+    }
+}
+
+/* Extra Small Screens (Mobile Phones) */
+@media (max-width: 480px) {
+    .dashboard-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .dashboard-nav .nav-link {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-value {
+        font-size: 1.3rem;
+    }
+
+    .stat-change {
+        font-size: 0.7rem;
+    }
+
+    .pie-chart-section h2 {
+        font-size: 18px;
+    }
+
+    .top-selling-items h2 {
+        font-size: 18px;
+    }
+
+    .top-selling-item span {
+        font-size: 12px;
+    }
+
+    .top-selling-items {
+        padding: 0.5rem;
+    }
+}
+
+/* Large Screens (Desktop and Larger Tablets) */
+@media (min-width: 1200px) {
+    .statt-card {
+        padding: 25px;
+    }
+
+    .statt-value {
+        font-size: 2rem;
+    }
+
+    .stat-change {
+        font-size: 1rem;
+    }
+
+    .pie-chart-section h2 {
+        font-size: 26px;
+    }
+
+    .top-selling-items h2 {
+        font-size: 26px;
+    }
+}

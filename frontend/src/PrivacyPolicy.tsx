@@ -1,7 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
-import "./PrivacyPolicy.css";
 import WBGHeader from "./WBGHeader";
 import { useEffect } from "react";
+import "./CSS/PrivacyPolicy.css";
 
 const PrivacyPolicy = () => {
   useEffect(() => {

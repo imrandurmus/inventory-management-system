@@ -1,0 +1,196 @@
+/* Users Container */
+.users-container,
+.user-detail-container,
+.edit-user-container {
+  padding: 30px 0;
+  min-height: 100%;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 70px;
+}
+
+/* Filter Section */
+.AddUserfilter-section {
+  margin-bottom: 30px;
+}
+
+.AddUserfilter-section .form-control,
+.AddUserfilter-section .form-select {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 10px;
+}
+
+/* User List Table */
+.UserListtable {
+  background-color: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.UserListtable th,
+.UserListtable td {
+  font-size: 1rem;
+  padding: 15px;
+  vertical-align: middle;
+}
+
+.UserListtable th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.UserListtable td {
+  color: #666;
+}
+
+.Usersprofile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+
+
+/* Add to Users.css */
+
+/* Profile Picture Preview */
+.User-profile-picture-preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+/* File Input */
+.fform-group .form-control[type="file"] {
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+
+
+
+/* Pagination */
+.pagination {
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination .page-item .page-link {
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+/* Modal */
+.Users-modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+}
+
+/* User Detail */
+.user-detail-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.user-detail-container p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.Users-profile-picture-large {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+/* Edit User */
+.edit-user-container h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.edit-user-container .MuiTextField-root {
+  margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filter-section .form-control,
+  .filter-section .form-select {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .profile-picture {
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-detail-container h2,
+  .edit-user-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-picture-large {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-section .form-control,
+  .filter-section .form-select {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+
+  .profile-picture {
+    width: 25px;
+    height: 25px;
+  }
+
+  .user-detail-container h2,
+  .edit-user-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .profile-picture-large {
+    width: 100px;
+    height: 100px;
+  }
+}

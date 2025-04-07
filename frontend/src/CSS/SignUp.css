@@ -126,15 +126,12 @@
     background-color: #5a0091 !important;
     color: #ffffff !important;
     border-radius: 8px !important;
-    padding: 10px !important;
+    padding: 6px !important;
     font-size: 1rem !important;
     font-weight: 500 !important;
     text-transform: none !important;
   }
-  
-  .submit-button:hover {
-    background-color: #e6393b !important;
-  }
+
   
   .toggle-link {
     color: #007bff;

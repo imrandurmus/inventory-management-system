@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { CCard, CCardBody, CCol, CCardHeader, CRow } from '@coreui/react';
 import { CChartLine } from '@coreui/react-chartjs';
-import './Charts.css';
 import { Container } from 'react-bootstrap';
+import "../CSS/Charts.css";
 
 const Charts: FC = () => {
   // Data for the line chart (mocked)

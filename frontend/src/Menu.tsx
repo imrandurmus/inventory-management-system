@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
-import "./Menu.css"; 
+import "./CSS/Menu.css";
 
 const Menu = () => {
   const navigate = useNavigate(); // Hook for navigation

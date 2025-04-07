@@ -1,8 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
-//const DashboardAdmin = lazy(() => import("./DashboardAdmin"));
-//const DashboardManager = lazy(() => import("./DashboardManager"));
 const DashboardEmployee = lazy(() => import("./DashboardEmployee"));
 
 const DashboardRouter: React.FC = () => {

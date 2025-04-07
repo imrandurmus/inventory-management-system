@@ -1,84 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import './Header.css';
+import { Bell, Mail, Sun, Settings } from 'lucide-react';
+import "../CSS/Header.css";
 
 interface User {
-  profilePic: string;
   username: string;
+  profilePic: string;
 }
 
 const Header: React.FC = () => {
-  const [user] = useState<User | null>({
-    profilePic: '/default_profile.jpg', // Default profile picture
-    username: 'Manager',
-  });
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    fetch('/api/user/me', {
+      credentials: 'include', // Include cookies/session if needed
+    })
+      .then(res => res.json())
+      .then(data => setUser(data))
+      .catch(err => console.error('Failed to fetch user', err));
+  }, []);
 
   return (
-    <Navbar className="navigationBar" expand="lg">
-      <Container>
-        {/* Title header refreshes page on click */}
-        <Navbar.Brand
-          as={Link}
-          to="/"
-          className="header-title fs-3"
-          onClick={() => window.location.reload()}
-        >
-          Inventory Manager
-        </Navbar.Brand>
+    <Navbar className="navigationBarr" expand="lg" fixed="top">
+      <Container fluid className="d-flex align-items-center">
+        {/* Middle Navigation */}
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="me-auto">
+{/**  Static name below for now, delete when backend */}
+          <p className="nav-link-custom ml-2 mr-6 mt-2">Hello, User</p>
+{/**  Static name below for now, delete when backend */}
 
-        <Nav className="ms-auto">
-          {/* Increased text size for Home and Inventory */}
-          <Nav.Link as={Link} to="/" className="nav-link-custom">Home</Nav.Link>
-          <Nav.Link as={Link} to="/inventory" className="nav-link-custom">Inventory</Nav.Link>
+{/**      The backend code for getting username, uncomment when needed
+            {user ? (
+              <p className="nav-link-custom fw-bold ml-2 mr-6 mt-2">Hello, {user.username}</p>
+            ) : (
+              <p className="nav-link-custom fw-bold ml-2 mr-6 mt-2">Hello</p>
+            )}
+            <Nav.Link onClick={() => window.location.reload()} className="nav-link-custom fw-bold">
+  Home
+</Nav.Link>
+*/}
+            <Nav.Link as={Link} to="/User-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
+            <NavDropdown title="Items" className="nav-link-custom" id="items-dropdown">
+              <NavDropdown.Item as={Link} to="/items/products">Products</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/orders">Orders</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/invoices">Invoices</NavDropdown.Item>
+            </NavDropdown>
+            <Nav.Link as={Link} to="/Reports" className="nav-link-custom">Reports</Nav.Link>
+            <Nav.Link as={Link} to="/users" className="nav-link-custom">Users</Nav.Link>
+
+          </Nav>
+        </Navbar.Collapse>
+
+        {/* Right Side Icons */}
+        <div className="d-flex align-items-center">
+          <Bell size={20} className="header-icon mx-2" />
+          <Mail size={20} className="header-icon mx-2" />
+          <Sun size={20} className="header-icon mx-2" />
+          <Settings size={20} className="header-icon mx-2" />
 
           {user && (
-            <NavDropdown
-              className="navDropdown"
-              title={
-                <img
-                  src={user.profilePic}
-                  alt="Profile"
-                  width="40"
-                  height="40"
-                  className="rounded-circle profile-img"
-                />
-              }
-              id="basic-nav-dropdown"
-              align="end"
-            >
-              <NavDropdown.Item as={Link} to="/profile">Account</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/settings">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/logout">Logout</NavDropdown.Item>
-            </NavDropdown>
+            <img
+              src={user.profilePic}
+              alt="Profile"
+              width="32"
+              height="32"
+              className="rounded-circle ms-3 profile-img"
+            />
           )}
-        </Nav>
+
+
+{/**  Static prfile below for now, delete when backend */}
+          <img
+              src="/default_profile.jpg" // or whatever default path you’re using
+              alt="Profile"
+              width="32"
+              height="32"
+              className="rounded-circle mr-3 ms-3 profile-img"
+            />
+{/**  Static prfile for now, delete when backend */}
+
+
+        </div>
       </Container>
     </Navbar>
   );
 };
 
 export default Header;
-
-
- /**
-  *{useEffect}
-  * 
-  const Header: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-
-  fetch user data from the backend
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/user');
-        setUser(response.data); 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-*/

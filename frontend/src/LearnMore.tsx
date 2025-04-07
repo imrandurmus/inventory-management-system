@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import AnimatedNumbers from "react-animated-numbers";
 import { useInView } from "react-intersection-observer";
-import "./LearnMore.css";
 import WBGHeader from "./WBGHeader";
+import "./CSS/LearnMore.css";
 
 const LearnMore = () => {
   useEffect(() => {

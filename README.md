@@ -17,6 +17,13 @@ npm install react-animated-numbers
 npm install @fortawesome/fontawesome-free
 npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
 npm install firebase
+npm install lucide-react
+npm install tailwindcss @tailwindcss/vite
+npm install -D tailwindcss postcss autoprefixer
+npm install tailwindcss @tailwindcss/vite
+npm install -D @types/node
+npx shadcn@latest init
+npm install recharts
 
 
 
