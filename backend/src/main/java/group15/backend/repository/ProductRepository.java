@@ -15,28 +15,32 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Query("""
-        SELECT p
-        FROM Product p
-        WHERE
-            (:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))
-             OR LOWER(p.description) LIKE LOWER(CONCAT('%', :query, '%')))
-        AND
-            (:minPrice IS NULL OR p.price >= :minPrice)
-        AND
-            (:maxPrice IS NULL OR p.price <= :maxPrice)
-        AND
-            (:inStock IS NULL OR (:inStock = true AND p.quantity > 0))
-        AND
-            (:maxQuantity IS NULL OR p.quantity <= :maxQuantity)
-    """)
+    SELECT p
+    FROM Product p
+    WHERE
+        (:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))
+         OR LOWER(p.description) LIKE LOWER(CONCAT('%', :query, '%')))
+    AND
+        (:minPrice IS NULL OR p.price >= :minPrice)
+    AND
+        (:maxPrice IS NULL OR p.price <= :maxPrice)
+    AND
+        (:inStock IS NULL OR (:inStock = true AND p.quantity > 0))
+    AND
+        (:maxQuantity IS NULL OR p.quantity <= :maxQuantity)
+    AND
+        (:productTypeId IS NULL OR p.productType.id = :productTypeId)
+""")
     Page<Product> filterProducts(
             @Param("query") String query,
             @Param("minPrice") BigDecimal minPrice,
             @Param("maxPrice") BigDecimal maxPrice,
             @Param("inStock") Boolean inStock,
             @Param("maxQuantity") Integer maxQuantity,
+            @Param("productTypeId") Long productTypeId,
             Pageable pageable
     );
+
 
 
 
@@ -49,6 +53,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByQuantityGreaterThan(int quantity, Pageable pageable);
 
     Page<Product> findByQuantityLessThan(int quantity, Pageable pageable);
+
 
     Page<Product> findAll(Pageable pageable);
 }

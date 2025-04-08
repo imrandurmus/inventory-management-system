@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "employees")
@@ -39,15 +41,24 @@ public class Employee {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
+    @ManyToMany
+    @JoinTable(
+            name = "employee_product_types",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_type_id")
+    )
+    private Set<ProductType> assignedProductTypes = new HashSet<>();
+
+
     public Employee() {}
 
-    public Employee(String firstName, String lastName, String email, String password, Role role, String profileImageUrl) {
+    public Employee(String firstName, String lastName, String email, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = null;
     }
 
     // Getters and Setters
@@ -86,6 +97,13 @@ public class Employee {
     }
     public String getProfileImageUrl() { return profileImageUrl;}
     public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl;}
+
+    public Set<ProductType> getAssignedProductTypes() {
+        return assignedProductTypes;
+    }
+    public void setAssignedProductTypes(Set<ProductType> assignedProductTypes) {
+        this.assignedProductTypes = assignedProductTypes;
+    }
 
 
 

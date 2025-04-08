@@ -3,6 +3,9 @@ package group15.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -31,8 +34,21 @@ public class Product {
     private BigDecimal price;
 
     @Transient
+    @JsonProperty
     public BigDecimal getTotalValue() {
         return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "product_type_id", nullable = false)
+    private ProductType productType;
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     @Column(name = "created_at", nullable = false,updatable = false)
@@ -54,11 +70,12 @@ public class Product {
 
     public Product() {}
 
-    public Product(String name, String description, int quantity, BigDecimal price) {
+    public Product(String name, String description, int quantity, BigDecimal price, ProductType type) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.productType = type;
     }
 
     public long getId() {
@@ -126,8 +143,12 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
+                ", totalValue=" + getTotalValue() +
+                ", type=" + (productType != null ? productType.getName() : "null") +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
     }
+
+
 }
