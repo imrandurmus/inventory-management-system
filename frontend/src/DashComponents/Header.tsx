@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from 'react';
+import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Bell, Mail, Sun, Settings } from 'lucide-react';
+import { Bell, Sun } from 'lucide-react';
 import "../CSS/Header.css";
 
 interface User {
@@ -9,16 +9,54 @@ interface User {
   profilePic: string;
 }
 
+interface Announcement {
+  id: string;
+  title: string;
+  message: string;
+}
+
 const Header: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   useEffect(() => {
-    fetch('/api/user/me', {
-      credentials: 'include', // Include cookies/session if needed
-    })
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/user/me', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(err => console.error('Failed to fetch user', err));
+
+    fetch('/api/announcements/unread-count')
+      .then(res => res.json())
+      .then(data => setUnreadCount(data.count))
+      .catch(err => console.error('Failed to fetch unread count', err));
+
+    fetch('/api/announcements/unread')
+      .then(res => res.json())
+      .then(data => {
+        setAnnouncements(data);
+        setUnreadCount(data.length);
+      })
+      .catch(err => console.error('Failed to fetch announcements', err));
   }, []);
 
   return (
@@ -28,61 +66,119 @@ const Header: React.FC = () => {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
-{/**  Static name below for now, delete when backend */}
-          <p className="nav-link-custom ml-2 mr-6 mt-2">Hello, User</p>
-{/**  Static name below for now, delete when backend */}
-
-{/**      The backend code for getting username, uncomment when needed
-            {user ? (
-              <p className="nav-link-custom fw-bold ml-2 mr-6 mt-2">Hello, {user.username}</p>
-            ) : (
-              <p className="nav-link-custom fw-bold ml-2 mr-6 mt-2">Hello</p>
-            )}
-            <Nav.Link onClick={() => window.location.reload()} className="nav-link-custom fw-bold">
-  Home
-</Nav.Link>
-*/}
+            <p className="nav-link-custom ml-2 mr-6 mt-2">Hello, User</p>
             <Nav.Link as={Link} to="/User-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
             <NavDropdown title="Items" className="nav-link-custom" id="items-dropdown">
-              <NavDropdown.Item as={Link} to="/items/products">Products</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/products">Product Types</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/items/orders">Orders</NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/items/invoices">Invoices</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link as={Link} to="/Reports" className="nav-link-custom">Reports</Nav.Link>
             <Nav.Link as={Link} to="/users" className="nav-link-custom">Users</Nav.Link>
-
+            <Nav.Link as={Link} to="/announcements" className="nav-link-custom">Announcements</Nav.Link>
           </Nav>
         </Navbar.Collapse>
 
         {/* Right Side Icons */}
         <div className="d-flex align-items-center">
-          <Bell size={20} className="header-icon mx-2" />
-          <Mail size={20} className="header-icon mx-2" />
-          <Sun size={20} className="header-icon mx-2" />
-          <Settings size={20} className="header-icon mx-2" />
+          <div className="position-relative" ref={dropdownRef}>
+            {/* Bell Icon with Dropdown */}
+            <Dropdown show={showDropdown} onToggle={toggleDropdown}>
+              <Dropdown.Toggle
+                as="button"
+                className="icon-button no-caret" // Add a custom class to target this toggle
+                style={{ background: 'none', border: 'none', padding: 0 }}
+                aria-label="Toggle announcements dropdown"
+              >
+                <Bell size={20} className="Dheader-icon mx-2 clickable-icon" />
+                {unreadCount > 0 && (
+                  <Badge
+                    pill
+                    bg="danger"
+                    className="position-absolute top-0 start-100 translate-middle badge-sm"
+                  >
+                    {unreadCount}
+                  </Badge>
+                )}
+              </Dropdown.Toggle>
 
-          {user && (
-            <img
-              src={user.profilePic}
-              alt="Profile"
-              width="32"
-              height="32"
-              className="rounded-circle ms-3 profile-img"
-            />
+              <Dropdown.Menu align="end" className="announcements-dropdown">
+                {unreadCount > 0 ? (
+                  <>
+                    {announcements.slice(0, 5).map((announcement) => (
+                      <Dropdown.Item
+                        key={announcement.id}
+                        as={Link}
+                        to={`/announcement/${announcement.id}`}
+                        onClick={() => setShowDropdown(false)}
+                      >
+                        <h6 className="mb-1">{announcement.title}</h6>
+                        <p className="mb-0 text-muted">{announcement.message}</p>
+                      </Dropdown.Item>
+                    ))}
+                    <Dropdown.Divider />
+                    <Dropdown.Item
+                      as={Link}
+                      to="/announcements"
+                      onClick={() => setShowDropdown(false)}
+                      className="text-center"
+                    >
+                      See All
+                    </Dropdown.Item>
+                  </>
+                ) : (
+                  <Dropdown.ItemText className="text-center">
+                    <p className="text-muted mb-0">No unread announcements</p>
+                  </Dropdown.ItemText>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+
+          <Sun size={20} className="Dheader-icon mb-2 mx-2" />
+
+          {user ? (
+            <NavDropdown
+              title={
+                <img
+                  className="Mprofile"
+                  src={user.profilePic}
+                  alt="Profile"
+                />
+              }
+              id="profile-dropdown"
+              align="end"
+              className="profile-dropdown"
+            >
+              <NavDropdown.Item as={Link} to="/settings">
+                Settings
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/logout">
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          ) : (
+            <NavDropdown
+              title={
+                <img
+                  src="/default_profile.jpg"
+                  alt="Profile"
+                  width="32"
+                  height="32"
+                  className="rounded-circle ms-3 profile-img"
+                />
+              }
+              id="profile-dropdown"
+              align="end"
+              className="profile-dropdown"
+            >
+              <NavDropdown.Item as={Link} to="/settings">
+                Settings
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/logout">
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
           )}
-
-
-{/**  Static prfile below for now, delete when backend */}
-          <img
-              src="/default_profile.jpg" // or whatever default path you’re using
-              alt="Profile"
-              width="32"
-              height="32"
-              className="rounded-circle mr-3 ms-3 profile-img"
-            />
-{/**  Static prfile for now, delete when backend */}
-
-
         </div>
       </Container>
     </Navbar>

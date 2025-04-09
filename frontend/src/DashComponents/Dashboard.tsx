@@ -56,9 +56,11 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
+  <>
+  <Header />
     <div className="dashboard-background">
       <Container className="dashboardContainer">
-        <Header />
+        
 
         {/* stats section */}
         <div className="Summary">
@@ -153,6 +155,7 @@ const Dashboard: React.FC = () => {
         </Row>
       </Container>
     </div>
+    </>
   );
 };
 

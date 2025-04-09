@@ -10,7 +10,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: "Regular" | "Manager" | "Admin";
+  role: "Regular" | "Manager";
   profilePicture?: string;
   createdAt: string;
   updatedAt: string;
@@ -21,7 +21,7 @@ const UserProfile: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const currentUserRole = "Admin"; // Replace with actual role from auth context
+  const currentUserRole = "Regular"; // Replace with actual role from auth context
 
   useEffect(() => {
     // Mock data (same as in Users.tsx, replace with Firebase fetch)
@@ -30,7 +30,7 @@ const UserProfile: React.FC = () => {
         id: "1",
         name: "John Doe",
         email: "john.doe@example.com",
-        role: "Admin",
+        role: "Manager",
         profilePicture: "https://via.placeholder.com/150",
         createdAt: "2025-01-01",
         updatedAt: "2025-03-01",
@@ -125,8 +125,9 @@ const UserProfile: React.FC = () => {
   const isOwnProfile = true; // Replace with actual check (e.g., user.id === currentUser.id)
 
   return (
+    <>
+    <Header />
     <Container className="user-detail-container">
-      <Header />
       <Row className="mb-3">
         <Col>
           <Button
@@ -174,6 +175,7 @@ const UserProfile: React.FC = () => {
         </Col>
       </Row>
     </Container>
+    </>
   );
 };
 

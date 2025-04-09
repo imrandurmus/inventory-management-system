@@ -1,34 +1,126 @@
 /* Header.css */
 .navigationBarr {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000; /* Ensure it stays on top of other content */
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  /* dis ensures it stays on top of other content, dont remove */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-  
-  /* Ensure proper alignment of profile picture */
+
+.Mprofile img{
+  margin-inline-start: 12px;
+  width: 32px;
+  height: 32px;
+}
+
+.Dheader-icon{
+  margin-top: 10px;
+}
+.clickable-icon {
+  cursor: pointer;
+  color: #4C0082;
+}
+
+.badge-sm {
+  font-size: 0.6rem;
+  padding: 0.25em 0.4em;
+  z-index: 1;
+}
+
+/* hidin the default dropdown arrow */
+.profile-dropdown .dropdown-toggle::after {
+  display: none;
+}
+
+.no-caret.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Announcements dropdown styling */
+.announcements-dropdown {
+  width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.announcements-dropdown .dropdown-item {
+  padding: 12px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.announcements-dropdown .dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.announcements-dropdown .dropdown-item h6 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 5px;
+}
+
+.announcements-dropdown .dropdown-item p {
+  font-size: 13px;
+  color: #6c757d;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.announcements-dropdown .dropdown-divider {
+  margin: 0;
+}
+
+.announcements-dropdown .dropdown-item.text-center {
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+  padding: 10px;
+}
+
+.announcements-dropdown .dropdown-item.text-center:hover {
+  background-color: #f8f9fa;
+  color: #0056b3;
+}
+
+/* empty state for dropdown */
+.announcements-dropdown .dropdown-item-text {
+  padding: 15px;
+  text-align: center;
+}
+
+.announcements-dropdown .dropdown-item-text p {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+
+
+
+@media (max-width: 767px) {
+  .menu-toggle {
+    display: block;
+    /* Make sure the menu toggle is visible on smaller screens */
+  }
+
+  .header-icon {
+    font-size: 18px;
+    /* Smaller icons on mobile */
+  }
+}
+
+/* Optional: You can hide the profile picture in small screens */
+@media (max-width: 767px) {
   .profile-img {
-    width: 32px;
-    height: 32px;
+    display: none;
   }
-  
-  @media (max-width: 767px) {
-    .menu-toggle {
-      display: block; /* Make sure the menu toggle is visible on smaller screens */
-    }
-  
-    .header-icon {
-      font-size: 18px; /* Smaller icons on mobile */
-    }
+  .announcements-dropdown {
+    width: 250px;
   }
-  
-  /* Optional: You can hide the profile picture in small screens */
-  @media (max-width: 767px) {
-    .profile-img {
-      display: none;
-    }
-  }
-  
+}

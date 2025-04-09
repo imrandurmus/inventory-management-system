@@ -1,5 +1,4 @@
-console.log("✅ Landing page rendered!");
-
+console.log("landing page rendered! yayy");
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from './Landing';
 import AboutUs from "./AboutUs.tsx";
@@ -20,6 +19,10 @@ import Reports from "./Manager/Reports.tsx";
 import Users from "./Manager/Users.tsx";
 import UserProfile from "./Manager/UserProfile.tsx";
 import EditUser from "./Manager/EditUser.tsx";
+import Announcements from "./Manager/Announcements.tsx";
+import CreateAnnouncement from "./Manager/CreateAnnouncement.tsx";
+import AnnouncementModal from "./Manager/AnnouncementModal.tsx";
+import MSettings from "./Manager/MSettings.tsx";
 
 //function App() {      //old one, new one is oussema's below
   const App: React.FC = () => {
@@ -49,6 +52,13 @@ import EditUser from "./Manager/EditUser.tsx";
         <Route path="/Users" element={<Users />} />
         <Route path="/Users/:id" element={<UserProfile />} />
         <Route path="/Users/edit/:id" element={<EditUser />} />
+        <Route path="/announcements" element={<Announcements />} />
+        <Route path="/announcements/new" element={<CreateAnnouncement />} />
+        <Route path="/announcements/:id" element={<AnnouncementModal />} />
+        <Route path="/settings" element={<MSettings />} />
+
+        {/* Route for the modal, it will render on top */}
+        <Route path="/announcements/:id" element={<AnnouncementModal />} />
 
 {/* Employee Dashboard Layout*/}
         <Route path="/Employee-Dashboard" element={<EmployeePage />} />

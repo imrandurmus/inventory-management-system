@@ -1,0 +1,32 @@
+.invoice-preview {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.invoice-preview h4 {
+    margin-bottom: 20px;
+}
+
+.invoice-preview p {
+    margin: 5px 0;
+}
+
+.invoice-preview table {
+    margin: 20px 0;
+}
+
+.status-badge {
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+.status-badge.clickable {
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.Iinfo {
+    color: #ffffff00;
+}

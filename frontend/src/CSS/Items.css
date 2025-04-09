@@ -1,8 +1,21 @@
 .Items-background {
-    background-color: #ffffff;
-    font-family: 'Poppins', sans-serif;
-    margin-top: 50px;
-    padding: 30px 0;
-    min-height: 100%;
-    min-width: auto;
-  }
+  height: 100vh;
+  overflow: hidden;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.Items-Title-Section h2{
+  padding: 30px 0;
+}
+.ProductManagemnetTitle{
+  margin-top: 26px;
+  color: #ffffff;
+}
+
+.NewProductTypeButton{
+  background-color: #4C0082;
+}
+.NewProductTypeButton:hover{
+  background-color: #6A0CAD;
+}

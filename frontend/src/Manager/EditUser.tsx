@@ -6,12 +6,14 @@ import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from
 import Header from "../DashComponents/Header";
 import '../CSS/Users.css';
 
+//IDK should i remove manager as an option??
+
 // Mock data (replace with Firebase fetch)
 interface User {
   id: string;
   name: string;
   email: string;
-  role: "Regular" | "Manager" | "Admin";
+  role: "Regular" | "Manager";
   profilePicture?: string;
   createdAt: string;
   updatedAt: string;
@@ -26,7 +28,7 @@ const EditUser: React.FC = () => {
     name: "",
     email: "",
     password: "",
-    role: "Regular" as "Regular" | "Manager" | "Admin",
+    role: "Regular" as "Regular" | "Manager",
     profilePicture: "",
     assignedProductTypes: [] as string[],
   });
@@ -38,7 +40,7 @@ const EditUser: React.FC = () => {
       id: id || "",
       name: "John Doe",
       email: "john.doe@example.com",
-      role: "Admin",
+      role: "Regular",
       profilePicture: "https://via.placeholder.com/50",
       createdAt: "2025-01-01",
       updatedAt: "2025-03-01",
@@ -66,8 +68,10 @@ const EditUser: React.FC = () => {
   }
 
   return (
+  <>
+  <Header />
     <Container className="edit-user-container">
-      <Header />
+      
       <Row>
         <Col>
           <h2>Edit User</h2>
@@ -105,15 +109,14 @@ const EditUser: React.FC = () => {
             fullWidth
             select
             label="Role"
-            value={formData.role}
+            value={formData.role === "Manager" ? "Regular" : formData.role}
             onChange={(e) =>
-              setFormData({ ...formData, role: e.target.value as "Regular" | "Manager" | "Admin" })
+              setFormData({ ...formData, role: e.target.value as "Regular" | "Manager" })
             }
             margin="normal"
           >
             <MenuItem value="Regular">Regular</MenuItem>
             <MenuItem value="Manager">Manager</MenuItem>
-            <MenuItem value="Admin">Admin</MenuItem>
           </TextField>
           <TextField
             fullWidth
@@ -129,7 +132,7 @@ const EditUser: React.FC = () => {
               label="Assigned Product Types"
               value={formData.assignedProductTypes}
               onChange={(e) =>
-                setFormData({ ...formData, assignedProductTypes: e.target.value as any })
+                setFormData({ ...formData, assignedProductTypes: [] as string[] })
               }
               SelectProps={{ multiple: true }}
               margin="normal"
@@ -149,6 +152,7 @@ const EditUser: React.FC = () => {
         </Col>
       </Row>
     </Container>
+    </>
   );
 };
 

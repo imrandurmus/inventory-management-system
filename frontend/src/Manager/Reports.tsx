@@ -74,8 +74,9 @@ const Reports: React.FC = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="Items-background">
-      <Header />
       <Container>
         <h2 className="my-4">Reports</h2>
 
@@ -149,6 +150,7 @@ const Reports: React.FC = () => {
         </Row>
       </Container>
     </div>
+    </>
   );
 };
 
