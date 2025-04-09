@@ -152,7 +152,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item as={Link} to="/settings">
                 Settings
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/logout">
+              <NavDropdown.Item as={Link} to="/Landing">
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
@@ -174,7 +174,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item as={Link} to="/settings">
                 Settings
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/logout">
+              <NavDropdown.Item as={Link} to="/Landing">
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
