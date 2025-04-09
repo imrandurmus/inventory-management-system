@@ -1,5 +1,6 @@
 package group15.backend.controller;
 
+import group15.backend.dto.SignupRequest;
 import group15.backend.model.Employee;
 import group15.backend.repository.EmployeeRepository;
 import group15.backend.security.jwt.JwtUtil;
@@ -8,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -21,6 +23,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -53,4 +58,36 @@ public class AuthController {
                     .body(Map.of("error", "Invalid credentials"));
         }
     }
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequest req) {
+        if (employeeRepository.existsByEmail(req.getEmail())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("Email already in use.");
+        }
+
+        // Restrict manager signup to @company.com emails
+        if (req.getRole() == group15.backend.model.Role.MANAGER &&
+                !req.getEmail().endsWith("@company.com")) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("Only internal emails can register as MANAGER.");
+        }
+
+        Employee newEmployee = new Employee();
+        newEmployee.setFirstName(req.getFirstName());
+        newEmployee.setLastName(req.getLastName());
+        newEmployee.setEmail(req.getEmail());
+        newEmployee.setPassword(passwordEncoder.encode(req.getPassword()));
+        newEmployee.setProfileImageUrl(req.getProfileImageUrl());
+
+        newEmployee.setRole(
+                req.getRole() != null ? req.getRole() : group15.backend.model.Role.REGULAR
+        );
+
+        employeeRepository.save(newEmployee);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Signup successful!");
+    }
+
 }

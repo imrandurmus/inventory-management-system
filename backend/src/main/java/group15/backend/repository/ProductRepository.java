@@ -1,6 +1,7 @@
 package group15.backend.repository;
 
 import group15.backend.model.Product;
+import group15.backend.model.ProductType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -43,6 +45,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
 
+    Page<Product> findByProductTypeIn(Set<ProductType> types, Pageable pageable);
 
     Page<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description, Pageable pageable);
 

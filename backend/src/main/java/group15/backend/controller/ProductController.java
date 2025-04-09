@@ -52,7 +52,7 @@ public class ProductController {
 
         // REGULAR users can only add products for their assigned types
         if (currentEmployee.getRole() == Role.REGULAR &&
-                (product.getProductType() == null || !currentEmployee.getAssignedProductTypes().contains(product.getProductType()))) {
+                (product.getProductType() == null || !currentEmployee.getAssignedTypes().contains(product.getProductType()))) {
             return new ResponseEntity<>("You are not allowed to add products of this type.", HttpStatus.FORBIDDEN);
         }
 
@@ -78,10 +78,21 @@ public class ProductController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy
     ) {
+        Employee currentEmployee = getCurrentEmployee();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Product> products = productRepository.findAll(pageable);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+
+        // REGULAR: restrict to assigned product types
+        if (currentEmployee.getRole() == Role.REGULAR) {
+            return new ResponseEntity<>(
+                    productRepository.findByProductTypeIn(currentEmployee.getAssignedTypes(), pageable),
+                    HttpStatus.OK
+            );
+        }
+
+        // MANAGER or GUEST: see everything
+        return new ResponseEntity<>(productRepository.findAll(pageable), HttpStatus.OK);
     }
+
 
     @GetMapping("/filter")
     public ResponseEntity<Page<Product>> filterProducts(
@@ -174,7 +185,7 @@ public class ProductController {
 
         // REGULAR restriction
         if (currentEmployee.getRole() == Role.REGULAR &&
-                !currentEmployee.getAssignedProductTypes().contains(existingProduct.getProductType())) {
+                !currentEmployee.getAssignedTypes().contains(existingProduct.getProductType())) {
             return new ResponseEntity<>("You are not allowed to update this product.", HttpStatus.FORBIDDEN);
         }
 
@@ -204,7 +215,7 @@ public class ProductController {
         }
 
         if (currentEmployee.getRole() == Role.REGULAR &&
-                !currentEmployee.getAssignedProductTypes().contains(product.getProductType())) {
+                !currentEmployee.getAssignedTypes().contains(product.getProductType())) {
             return new ResponseEntity<>("You are not allowed to delete this product.", HttpStatus.FORBIDDEN);
         }
 

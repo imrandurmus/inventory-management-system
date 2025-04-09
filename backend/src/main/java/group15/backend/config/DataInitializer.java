@@ -7,14 +7,19 @@ import group15.backend.model.Role;
 import group15.backend.repository.EmployeeRepository;
 import group15.backend.repository.ProductRepository;
 import group15.backend.repository.ProductTypeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 
 @Configuration
 public class DataInitializer {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
     CommandLineRunner initData(
@@ -42,15 +47,26 @@ public class DataInitializer {
 
             // --- Employees ---
             if (employeeRepo.findByEmail("alice@company.com").isEmpty()) {
-                employeeRepo.save(new Employee("Alice", "Johnson", "alice@company.com", "alice123", Role.MANAGER));
+                Employee alice = new Employee("Alice", "Johnson", "alice@company.com",
+                        passwordEncoder.encode("alice123"), Role.MANAGER);
+                employeeRepo.save(alice);
             }
 
             if (employeeRepo.findByEmail("bob@company.com").isEmpty()) {
-                employeeRepo.save(new Employee("Bob", "Smith", "bob@company.com", "bob123", Role.REGULAR));
+                Employee bob = new Employee("Bob", "Smith", "bob@company.com",
+                        passwordEncoder.encode("bob123"), Role.REGULAR);
+
+                bob.assignType(electronics);
+                bob.assignType(books);
+
+                employeeRepo.save(bob);
             }
 
+
             if (employeeRepo.findByEmail("charlie@company.com").isEmpty()) {
-                employeeRepo.save(new Employee("Charlie", "Guest", "charlie@company.com", "charlie123", Role.GUEST));
+                Employee charlie = new Employee("Charlie", "Guest", "charlie@company.com",
+                        passwordEncoder.encode("charlie123"), Role.GUEST);
+                employeeRepo.save(charlie);
             }
 
             System.out.println("✅ Sample data loaded safely.");

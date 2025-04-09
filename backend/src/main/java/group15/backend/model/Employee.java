@@ -41,14 +41,6 @@ public class Employee {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @ManyToMany
-    @JoinTable(
-            name = "employee_product_types",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_type_id")
-    )
-    private Set<ProductType> assignedProductTypes = new HashSet<>();
-
 
     public Employee() {}
 
@@ -98,11 +90,25 @@ public class Employee {
     public String getProfileImageUrl() { return profileImageUrl;}
     public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl;}
 
-    public Set<ProductType> getAssignedProductTypes() {
-        return assignedProductTypes;
+        // Assign product types
+    @ManyToMany
+    @JoinTable(
+            name = "employee_product_types",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_type_id")
+    )
+    private Set<ProductType> assignedTypes = new HashSet<>();
+
+    public Set<ProductType> getAssignedTypes() {
+        return assignedTypes;
     }
-    public void setAssignedProductTypes(Set<ProductType> assignedProductTypes) {
-        this.assignedProductTypes = assignedProductTypes;
+
+    public void setAssignedTypes(Set<ProductType> assignedTypes) {
+        this.assignedTypes = assignedTypes;
+    }
+
+    public void assignType(ProductType type) {
+        this.assignedTypes.add(type);
     }
 
 
