@@ -1,6 +1,7 @@
 package group15.backend.repository;
 
 import group15.backend.model.Product;
+import group15.backend.model.ProductStatus;
 import group15.backend.model.ProductType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -57,6 +59,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findByQuantityLessThan(int quantity, Pageable pageable);
 
+    List<Product> findByStatus(ProductStatus status);
 
     Page<Product> findAll(Pageable pageable);
 }

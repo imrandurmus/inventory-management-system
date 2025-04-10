@@ -33,10 +33,26 @@ public class Product {
     @DecimalMin(value = "0.0",inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductStatus status;
+
+    @Column(nullable = false)
+    @Min(value = 0)
+    private int salesCount = 0;
+
     @Transient
     @JsonProperty
     public BigDecimal getTotalValue() {
         return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @Transient
+    @JsonProperty
+    public String getStockLevel() {
+        if (quantity == 0) return "OUT_OF_STOCK";
+        if (quantity < 5) return "LOW_STOCK";
+        return "IN_STOCK";
     }
 
     @ManyToOne
@@ -120,6 +136,14 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int getSalesCount() {
+        return salesCount;
+    }
+
+    public void setSalesCount(int salesCount) {
+        this.salesCount = salesCount;
     }
 
     @Override

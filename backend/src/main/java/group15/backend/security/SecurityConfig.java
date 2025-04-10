@@ -33,6 +33,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/announcements").hasRole("MANAGER")
+
+                        // 🔓 Allow REGULARs and MANAGERs to update employees
+                        .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("MANAGER", "REGULAR")
+
                         .requestMatchers("/employees/**").hasRole("MANAGER")
                         .anyRequest().authenticated()
                 )

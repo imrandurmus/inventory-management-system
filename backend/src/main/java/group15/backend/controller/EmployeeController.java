@@ -1,13 +1,16 @@
 package group15.backend.controller;
 
 import group15.backend.model.Employee;
+import group15.backend.model.Role;
 import group15.backend.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import java.net.URLEncoder;
@@ -20,6 +23,12 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeRepository employeeRepository; //Automatic instance of EmployeeRepository so that we don't have to create it manually
+
+    private Employee getCurrentEmployee() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Authenticated employee not found"));
+    }
 
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
@@ -53,6 +62,13 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+
+        Employee currentUser = getCurrentEmployee();
+
+        if (currentUser.getRole() == Role.REGULAR && !Objects.equals(currentUser.getId(), id)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Optional<Employee> existingEmployee = employeeRepository.findById(id);
         if (existingEmployee.isPresent()) {
             Employee employee = existingEmployee.get();
