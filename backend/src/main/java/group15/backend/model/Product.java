@@ -92,6 +92,7 @@ public class Product {
         this.quantity = quantity;
         this.price = price;
         this.productType = type;
+        this.status = ProductStatus.TO_BE_PACKED;
     }
 
     public long getId() {
