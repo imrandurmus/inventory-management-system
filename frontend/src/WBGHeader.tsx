@@ -18,14 +18,6 @@ const HHeader = () => {
         <Row>
           <Col>
             <div className="header-buttons-login">
-              <Link to="/"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = "/"; 
-                }}>
-               <Button variant="">Home Page</Button>
-              </Link>
-
               <Link to="/aboutus">
                 <Button variant="">About us</Button>
               </Link>

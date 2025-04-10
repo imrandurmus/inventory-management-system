@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Container, Table, Button, Row, Col, Form, Modal, Toast } from 'react-bootstrap';
-import { Edit, Delete } from '@mui/icons-material';
+import { Container, Table, Button, Row, Col, Form, Modal, Toast, Pagination } from 'react-bootstrap';
+import { Delete } from '@mui/icons-material';
 import Header from '../DashComponents/Header';
 import '../CSS/Orders.css';
-//This is the products page
-
 
 // Mock Data for Orders
 const initialOrders = [
@@ -13,6 +11,11 @@ const initialOrders = [
   { id: 3, customerName: 'Samuel Johnson', product: 'Product C', quantity: 1, totalPrice: 15.5, status: 'Delivered' },
   { id: 4, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150, status: 'Pending' },
   { id: 5, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100, status: 'Shipped' },
+  { id: 6, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20, status: 'Pending' },
+  { id: 7, customerName: 'Jane Smith', product: 'Product V', quantity: 3, totalPrice: 60, status: 'Shipped' },
+  { id: 8, customerName: 'Samuel Johnson', product: 'Product R', quantity: 1, totalPrice: 15.5, status: 'Delivered' },
+  { id: 9, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150, status: 'Pending' },
+  { id: 10, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100, status: 'Shipped' },
 ];
 
 const Orders: React.FC = () => {
@@ -30,6 +33,9 @@ const Orders: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'success' | 'danger'>('success');
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => {
@@ -58,11 +64,11 @@ const Orders: React.FC = () => {
 
     const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
     setOrders([{ id: newId, ...newOrder }, ...orders]);
-
     setToastVariant('success');
     setToastMessage('Order added successfully!');
     setShowToast(true);
     handleCloseModal();
+    setCurrentPage(1);
   };
 
   const handleStatusUpdate = (orderId: number, status: string) => {
@@ -73,21 +79,49 @@ const Orders: React.FC = () => {
     );
   };
 
-  const filteredOrders = orders.filter(
-    (order) =>
-      order.customerName.toLowerCase().includes(search.toLowerCase()) ||
-      order.product.toLowerCase().includes(search.toLowerCase()) ||
-      order.id.toString().includes(search.toLowerCase()) ||
-      (statusFilter && order.status === statusFilter)
-  );
-
-  const handleEdit = (orderId: number) => {
-    // Implement your edit functionality here
-    console.log(`Editing order ${orderId}`);
-  };
-
   const handleDelete = (orderId: number) => {
     setOrders(orders.filter((order) => order.id !== orderId));
+    if (filteredOrders.length <= itemsPerPage && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Updated filter logic
+  const filteredOrders = orders.filter((order) => {
+    const matchesSearch =
+      order.customerName.toLowerCase().includes(search.toLowerCase()) ||
+      order.product.toLowerCase().includes(search.toLowerCase()) ||
+      order.id.toString().includes(search.toLowerCase());
+    
+    const matchesStatus = statusFilter ? order.status === statusFilter : true;
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const paginationItems = [];
+  for (let number = 1; number <= totalPages; number++) {
+    paginationItems.push(
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => paginate(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+
+  // Function to reset pagination when applying filters
+  const applyFilters = () => {
+    setCurrentPage(1); // Reset to first page when filters change
   };
 
   return (
@@ -98,8 +132,8 @@ const Orders: React.FC = () => {
           <h2 className="ManageOrdersPage">Manage Orders</h2>
 
           {/* Search and Filter */}
-          <Row className="mb-3">
-            <Col>
+          <Row className="mb-3 align-items-end">
+            <Col md={5}>
               <Form.Control
                 type="text"
                 placeholder="Search orders (ID, Customer, Product)"
@@ -107,18 +141,22 @@ const Orders: React.FC = () => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Col>
-            <Col>
+            <Col md={5}>
               <Form.Control
                 as="select"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                placeholder="Filter by Status"
               >
-                <option value="">Filter by Status</option>
+                <option value="">All Statuses</option>
                 <option value="Pending">Pending</option>
                 <option value="Shipped">Shipped</option>
                 <option value="Delivered">Delivered</option>
               </Form.Control>
+            </Col>
+            <Col md={2}>
+              <Button variant="primary" onClick={applyFilters}>
+                Apply Filters
+              </Button>
             </Col>
           </Row>
 
@@ -139,7 +177,7 @@ const Orders: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map((order) => (
+              {currentItems.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.customerName}</td>
@@ -156,9 +194,6 @@ const Orders: React.FC = () => {
                     </Button>
                   </td>
                   <td>
-                    <Button variant="warning" size="sm" onClick={() => handleEdit(order.id)}>
-                      <Edit />
-                    </Button>{' '}
                     <Button variant="danger" size="sm" onClick={() => handleDelete(order.id)}>
                       <Delete />
                     </Button>
@@ -167,6 +202,25 @@ const Orders: React.FC = () => {
               ))}
             </tbody>
           </Table>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <Row className="mt-3">
+              <Col>
+                <Pagination className="justify-content-center">
+                  <Pagination.Prev
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  />
+                  {paginationItems}
+                  <Pagination.Next
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                  />
+                </Pagination>
+              </Col>
+            </Row>
+          )}
 
           {/* Modal for New Order */}
           <Modal show={showModal} onHide={handleCloseModal}>

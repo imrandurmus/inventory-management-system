@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Table, Button, Row, Col, Form, Modal, Badge, Pagination, Card } from 'react-bootstrap';
-import { Add, Report, Info } from '@mui/icons-material';
+import { Add, Report } from '@mui/icons-material';
 import '../CSS/RDashboard.css';
 
 // Mock Employee Data (in a real app, this would come from an API or context)
@@ -110,6 +110,11 @@ const RDashboard: React.FC = () => {
     setRestockItem(item);
     setRestockQuantity('');
     setShowRestockModal(true);
+  };
+
+  // Handle reporting
+  const handleReport = (item: InventoryItem) => {
+    alert(`Restock Report submitted for ${item.name} (ID: ${item.id}). An administrator will review the issue shortly.`);
   };
 
   const confirmRestock = () => {
@@ -263,11 +268,13 @@ const RDashboard: React.FC = () => {
                     >
                       <Add /> Restock
                     </Button>
-                    <Button variant="warning" size="sm" className="me-1">
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      onClick={() => handleReport(item)}
+                      className="me-1"
+                    >
                       <Report /> Report
-                    </Button>
-                    <Button variant="info" size="sm">
-                      <Info /> Details
                     </Button>
                   </td>
                 </tr>
