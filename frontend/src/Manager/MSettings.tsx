@@ -1,6 +1,6 @@
 import Header from '@/DashComponents/Header';
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Col, Row, Container, Modal } from 'react-bootstrap';
+import { Form, Button, Row, Container, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "../CSS/MSettings.css";
 

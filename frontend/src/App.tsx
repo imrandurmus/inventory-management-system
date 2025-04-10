@@ -4,7 +4,6 @@ import Landing from './Landing';
 import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
 import React from "react";
-import EmployeePage from "./EmployeeDashboard/EmployeePage.tsx";
 import Login from "./Login.tsx";
 import SignUp from "./SignUp.tsx";
 import Contact from "./Contact.tsx";
@@ -23,6 +22,9 @@ import Announcements from "./Manager/Announcements.tsx";
 import CreateAnnouncement from "./Manager/CreateAnnouncement.tsx";
 import AnnouncementModal from "./Manager/AnnouncementModal.tsx";
 import MSettings from "./Manager/MSettings.tsx";
+import Regular from "./RegularDashboard/Regular.tsx";
+import RAnnouncements from "./RegularDashboard/RAnnouncements.tsx";
+import RSettings from "./RegularDashboard/RSettings.tsx";
 
 //function App() {      //old one, new one is oussema's below
   const App: React.FC = () => {
@@ -54,14 +56,16 @@ import MSettings from "./Manager/MSettings.tsx";
         <Route path="/Users/edit/:id" element={<EditUser />} />
         <Route path="/announcements" element={<Announcements />} />
         <Route path="/announcements/new" element={<CreateAnnouncement />} />
+        {/* Route for the modal, it will render on top */}
         <Route path="/announcements/:id" element={<AnnouncementModal />} />
         <Route path="/settings" element={<MSettings />} />
 
-        {/* Route for the modal, it will render on top */}
-        <Route path="/announcements/:id" element={<AnnouncementModal />} />
-
 {/* Employee Dashboard Layout*/}
-        <Route path="/Employee-Dashboard" element={<EmployeePage />} />
+        <Route path="/Regular-Dashboard" element={<Regular />} />
+        <Route path="/RDashboard" element={<Regular />} />
+        <Route path="/My-Announcements" element={<RAnnouncements />} />
+        <Route path="/My-Settings" element={<RSettings />} />
+    
 {/* Admin Dashboard Layout */}
     </Routes>
 </Router>

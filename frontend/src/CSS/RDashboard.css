@@ -1,0 +1,11 @@
+.Rdashboard-background {
+  background-color: #f8f9fa;
+  height: 100vh;
+  /* Set to viewport height */
+  overflow: hidden;
+  /* Prevent scrolling */
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+
+}

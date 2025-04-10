@@ -88,7 +88,7 @@ const Login = () => {
                 </Typography>
               </Box>
               <Button type="submit" fullWidth variant="contained" className="purple-button" sx={{ mt: 2 }}>
-                Sign in
+              <Link to="/Regular-Dashboard" className="sign-up">Sign in </Link>
               </Button>
               <Typography textAlign="center" mt={2}>
                 Don't have an account? <Link to="/signup" className="sign-up">Sign up</Link>
