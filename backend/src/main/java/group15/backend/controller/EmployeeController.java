@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -19,9 +23,18 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        // If profileImageUrl is null or empty, generate a default avatar
+        if (employee.getProfileImageUrl() == null || employee.getProfileImageUrl().isBlank()) {
+            // Construct the default URL using the employee's full name
+            String initialsUrl = "https://ui-avatars.com/api/?name=" +
+                    URLEncoder.encode(employee.getFirstName() + " " + employee.getLastName(), StandardCharsets.UTF_8);
+            employee.setProfileImageUrl(initialsUrl);
+        }
+
         Employee saved = employeeRepository.save(employee);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
+
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -48,6 +61,15 @@ public class EmployeeController {
             employee.setEmail(updatedEmployee.getEmail());
             employee.setPassword(updatedEmployee.getPassword());
             employee.setRole(updatedEmployee.getRole());
+
+            // ✅ If no profile picture provided, assign one using their initials
+            if (updatedEmployee.getProfileImageUrl() == null || updatedEmployee.getProfileImageUrl().isBlank()) {
+                String fallbackUrl = "https://ui-avatars.com/api/?name=" +
+                        URLEncoder.encode(updatedEmployee.getFirstName() + " " + updatedEmployee.getLastName(), StandardCharsets.UTF_8);
+                employee.setProfileImageUrl(fallbackUrl);
+            } else {
+                employee.setProfileImageUrl(updatedEmployee.getProfileImageUrl());
+            }
 
             Employee saved = employeeRepository.save(employee);
             return new ResponseEntity<>(saved, HttpStatus.OK);

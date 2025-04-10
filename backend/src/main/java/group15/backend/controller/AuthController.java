@@ -2,8 +2,10 @@ package group15.backend.controller;
 
 import group15.backend.dto.SignupRequest;
 import group15.backend.model.Employee;
+import group15.backend.model.Role;
 import group15.backend.repository.EmployeeRepository;
 import group15.backend.security.jwt.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.authentication.*;
@@ -13,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -59,35 +65,34 @@ public class AuthController {
         }
     }
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest req) {
-        if (employeeRepository.existsByEmail(req.getEmail())) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .body("Email already in use.");
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest req) {
+        // Check if email is already used
+        if (employeeRepository.findByEmail(req.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "Email is already registered."));
         }
 
-        // Restrict manager signup to @company.com emails
-        if (req.getRole() == group15.backend.model.Role.MANAGER &&
-                !req.getEmail().endsWith("@company.com")) {
-            return ResponseEntity
-                    .status(HttpStatus.FORBIDDEN)
-                    .body("Only internal emails can register as MANAGER.");
-        }
-
+        // Create new employee
         Employee newEmployee = new Employee();
         newEmployee.setFirstName(req.getFirstName());
         newEmployee.setLastName(req.getLastName());
         newEmployee.setEmail(req.getEmail());
-        newEmployee.setPassword(passwordEncoder.encode(req.getPassword()));
-        newEmployee.setProfileImageUrl(req.getProfileImageUrl());
+        newEmployee.setPassword(req.getPassword()); // NOTE: hash this in production
+        newEmployee.setRole(Role.MANAGER); // everyone who signs up is a manager for now
 
-        newEmployee.setRole(
-                req.getRole() != null ? req.getRole() : group15.backend.model.Role.REGULAR
-        );
+        // ✅ Default profile image if none is provided
+        if (req.getProfileImageUrl() == null || req.getProfileImageUrl().isBlank()) {
+            String initialsUrl = "https://ui-avatars.com/api/?name=" +
+                    URLEncoder.encode(req.getFirstName() + " " + req.getLastName(), StandardCharsets.UTF_8);
+            newEmployee.setProfileImageUrl(initialsUrl);
+        } else {
+            newEmployee.setProfileImageUrl(req.getProfileImageUrl());
+        }
 
+        // Save to database
         employeeRepository.save(newEmployee);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Signup successful!");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Signup successful!"));
     }
-
 }

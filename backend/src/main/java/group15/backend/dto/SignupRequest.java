@@ -1,15 +1,25 @@
 package group15.backend.dto;
 
-import group15.backend.model.Role;
+import jakarta.validation.constraints.*;
 
 public class SignupRequest {
 
+    @NotBlank(message = "First name is required")
     private String firstName;
+
+    @NotBlank(message = "Last name is required")
     private String lastName;
+
+    @Email(message = "Email must be valid")
+    @NotBlank(message = "Email is required")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
+    // Not required — optional profile picture
     private String profileImageUrl;
-    private Role role; // Optional, used only if email ends with @company.com
 
     // Getters
     public String getFirstName() {
@@ -32,10 +42,6 @@ public class SignupRequest {
         return profileImageUrl;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
     // Setters
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -55,9 +61,5 @@ public class SignupRequest {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

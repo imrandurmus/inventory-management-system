@@ -39,7 +39,7 @@ public class Employee {
     private Role role;
 
     @Column(name = "profile_image_url")
-    private String profileImageUrl;
+    private String profileImageUrl = "https://ui-avatars.com/api/?name=Placeholder+User";
 
 
     public Employee() {}
