@@ -27,23 +27,23 @@ public class SecurityConfig {
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private CorsConfigurationSource corsConfigurationSource;
+    private CorsConfigurationSource corsConfigurationSource;  // This is injected from your CorsConfig
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults()) // ✅ Uses your CorsConfigurationSource bean
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))  // Ensure Spring Security uses your custom CORS configuration
+                .csrf(csrf -> csrf.disable())  // Disable CSRF for stateless JWT authentication
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Stateless authentication
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()  // Allow public access to login and signup
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()  // Allow public access to products
                         .requestMatchers(HttpMethod.POST, "/announcements").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("MANAGER", "REGULAR")
                         .requestMatchers("/employees/**").hasRole("MANAGER")
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()  // Secure all other endpoints
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter
 
         return http.build();
     }
