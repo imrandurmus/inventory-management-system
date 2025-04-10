@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
-import { TextField, Checkbox, Button, FormControlLabel, Typography, Paper, Box, Divider, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { Google as GoogleIcon } from "@mui/icons-material";
-import './CSS/Login.css';
-import { signInWithGoogle } from "./firebaseConfig"; // Import Google Sign-In function
-import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword component
-import { signInWithEmailAndPassword } from "firebase/auth"; // Firebase authentication
+import {
+  TextField,
+  Checkbox,
+  Button,
+  FormControlLabel,
+  Typography,
+  Paper,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom"; // For navigation
+import "./CSS/Login.css";
+import ForgotPassword from "./ForgotPassword";
 import { Link } from "react-router-dom";
 import WBGHeader from "./WBGHeader";
 
@@ -12,27 +22,65 @@ const Login = () => {
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when component mounts
   }, []);
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // For redirecting after login
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
     if (!email || !password) {
       setErrorMessage("Both fields are required.");
+      setLoading(false);
       return;
     }
 
     try {
-      // Assuming firebase for email/password login
-      await signInWithEmailAndPassword(auth, email, password); //auth object here
-      setErrorMessage(""); // Clear error if login is successful
-      console.log("Logged in with:", { email, password });
-      // Handle successful login here, e.g., redirect to a dashboard
-    } catch (error) {
-      setErrorMessage("Invalid email or password. Please try again.");
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed");
+      }
+
+      const data = await response.json();
+      const { token, role, fullName } = data;
+
+      // Store token, role, and fullName in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("fullName", fullName);
+
+      setErrorMessage("");
+      console.log("Logged in with:", { email, role, fullName });
+
+      // Redirect based on role (e.g., MANAGER to Manager dashboard, others to Regular dashboard)
+      if (role === "MANAGER") {
+        navigate("/User-Dashboard");
+      } else {
+        navigate("/Regular-Dashboard");
+      }
+    } catch (error: any) {
+      setErrorMessage(error.message || "Invalid email or password. Please try again.");
+      console.error("Login error:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,16 +94,14 @@ const Login = () => {
 
   return (
     <div className="login-container">
-       <WBGHeader /> 
+      <WBGHeader />
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <Box flex={1} p={5} >
+        <Box flex={1} p={5}>
           <Paper elevation={3} className="login-form">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
               Welcome Back!
             </Typography>
-            <Typography>
-            Log in to your account.
-            </Typography>
+            <Typography>Log in to your account.</Typography>
             <form onSubmit={handleSubmit} className="LoginSumbitButton">
               <TextField
                 fullWidth
@@ -67,7 +113,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 error={!!errorMessage}
-                helperText={errorMessage && "Please enter a valid email."} // the error message
+                helperText={errorMessage && "Please enter a valid email."}
               />
               <TextField
                 fullWidth
@@ -77,37 +123,45 @@ const Login = () => {
                 variant="outlined"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required // Make the field required
-                error={!!errorMessage} // Show error if there's an error message
-                helperText={errorMessage && "Please enter a valid password."} // Error message
+                required
+                error={!!errorMessage}
+                helperText={errorMessage && "Please enter a valid password."}
               />
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
                 <FormControlLabel control={<Checkbox />} label="Remember me" />
-                <Typography variant="body2" color="primary" sx={{ cursor: "pointer" }} onClick={handleForgotPasswordOpen} className="forgot-password">
+                <Typography
+                  variant="body2"
+                  color="primary"
+                  sx={{ cursor: "pointer" }}
+                  onClick={handleForgotPasswordOpen}
+                  className="forgot-password"
+                >
                   Forgot your password?
                 </Typography>
               </Box>
-              <Button type="submit" fullWidth variant="contained" className="purple-button" sx={{ mt: 2 }}>
-              <Link to="/Regular-Dashboard" className="sign-up">Sign in </Link>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                className="purple-button"
+                sx={{ mt: 2 }}
+                disabled={loading}
+              >
+                {loading ? "Signing in..." : "Sign in"}
               </Button>
               <Typography textAlign="center" mt={2}>
                 Don't have an account? <Link to="/signup" className="sign-up">Sign up</Link>
               </Typography>
-              <Divider sx={{ my: 2 }}>or</Divider>
-              {/* the google button */}
-              <Button className="google-button" variant="outlined" fullWidth startIcon={<GoogleIcon />}  sx={{ mb: 1 }} onClick={signInWithGoogle}>
-                Sign in with Google
-              </Button>
             </form>
           </Paper>
         </Box>
       </Box>
 
-      {/* forgot password part */}
+      {/* Forgot Password Dialog */}
       <Dialog open={openForgotPassword} onClose={handleForgotPasswordClose}>
         <DialogTitle>Forgot Password</DialogTitle>
         <DialogContent>
-          <ForgotPassword onClose={handleForgotPasswordClose} /> {/* Pass function to close the modal */}
+          <ForgotPassword onClose={handleForgotPasswordClose} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleForgotPasswordClose} color="primary">
@@ -118,15 +172,5 @@ const Login = () => {
     </div>
   );
 };
-
-const Feature = ({ icon, title, description }: { icon: string; title: string; description: string }) => (
-  <Box display="flex" alignItems="center" mb={3}>
-    <Typography variant="h5" sx={{ marginRight: 2 }}>{icon}</Typography>
-    <Box>
-      <Typography variant="h6" fontWeight="bold">{title}</Typography>
-      <Typography variant="body2">{description}</Typography>
-    </Box>
-  </Box>
-);
 
 export default Login;

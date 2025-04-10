@@ -1,6 +1,5 @@
-console.log("landing page rendered! yayy");
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Landing from './Landing';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Landing from "./Landing";
 import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
 import React from "react";
@@ -26,50 +25,182 @@ import Regular from "./RegularDashboard/Regular.tsx";
 import RAnnouncements from "./RegularDashboard/RAnnouncements.tsx";
 import RSettings from "./RegularDashboard/RSettings.tsx";
 
-//function App() {      //old one, new one is oussema's below
-  const App: React.FC = () => {
+// Protected Route: Requires a valid token
+const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/Login" replace />;
+};
+
+// Role-Based Route: Requires a token and specific role
+const RoleBasedRoute: React.FC<{
+  children: JSX.Element;
+  allowedRoles: string[];
+}> = ({ children, allowedRoles }) => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  if (!token) return <Navigate to="/Login" replace />;
+  return role && allowedRoles.includes(role) ? (
+    children
+  ) : (
+    <Navigate to="/Regular-Dashboard" replace />
+  );
+};
+
+const App: React.FC = () => {
   return (
-    
-<Router>
-    <Routes>
-        <Route path="/" element={<Landing />} /> //default page is landing
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/menu" element={<Menu />} />
-        <Route path="/Landing" element={<Landing />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/LearnMore" element={<LearnMore />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/forgot-password" element={<ForgotPassword onClose={function (): void {
-          throw new Error("Function not implemented.");
-        } } />} />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword onClose={() => window.history.back()} />}
+        />
 
-{/*  Manager page routes    */}
-        <Route path="/User-Dashboard" element={<Manager />} />
-        <Route path="/items/products" element={<Items />} />
-        <Route path="/items/orders" element={<Orders />} />
-        <Route path="/items/invoices" element={<Invoices />} />
-        <Route path="/Reports" element={<Reports />} />
-        <Route path="/Users" element={<Users />} />
-        <Route path="/Users/:id" element={<UserProfile />} />
-        <Route path="/Users/edit/:id" element={<EditUser />} />
-        <Route path="/announcements" element={<Announcements />} />
-        <Route path="/announcements/new" element={<CreateAnnouncement />} />
-        {/* Route for the modal, it will render on top */}
-        <Route path="/announcements/:id" element={<AnnouncementModal />} />
-        <Route path="/settings" element={<MSettings />} />
+        {/* Manager Routes (Protected, MANAGER role only) */}
+        <Route
+          path="/User-Dashboard"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Manager />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/items/products"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Items />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/items/orders"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Orders />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/items/invoices"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Invoices />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/Reports"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Reports />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/Users"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Users />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/Users/:id"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <UserProfile />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/Users/edit/:id"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <EditUser />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/announcements"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <Announcements />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/announcements/new"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <CreateAnnouncement />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/announcements/:id"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <AnnouncementModal />
+            </RoleBasedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <RoleBasedRoute allowedRoles={["MANAGER"]}>
+              <MSettings />
+            </RoleBasedRoute>
+          }
+        />
 
-{/* Employee Dashboard Layout*/}
-        <Route path="/Regular-Dashboard" element={<Regular />} />
-        <Route path="/RDashboard" element={<Regular />} />
-        <Route path="/My-Announcements" element={<RAnnouncements />} />
-        <Route path="/My-Settings" element={<RSettings />} />
-    
-{/* Admin Dashboard Layout */}
-    </Routes>
-</Router>
+        {/* Employee Routes */}
+        <Route
+          path="/Regular-Dashboard"
+          element={
+            <ProtectedRoute>
+              <Regular />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/RDashboard"
+          element={
+            <ProtectedRoute>
+              <Regular />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/My-Announcements"
+          element={
+            <ProtectedRoute>
+              <RAnnouncements />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/My-Settings"
+          element={
+            <ProtectedRoute>
+              <RSettings />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Catch-all for 404 */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
