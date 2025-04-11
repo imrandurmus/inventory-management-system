@@ -69,31 +69,7 @@ public class ProductController {
         Product savedProduct = productRepository.save(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
-
-
-    @PostMapping("/{id}/sell")
-    public ResponseEntity<?> sellProduct(@PathVariable Long id, @RequestParam int quantity) {
-        Optional<Product> productOpt = productRepository.findById(id);
-
-        if (productOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
-
-        Product product = productOpt.get();
-
-        if (product.getQuantity() < quantity) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Not enough stock available to complete sale");
-        }
-
-        product.setQuantity(product.getQuantity() - quantity);
-        product.setSalesCount(product.getSalesCount() + quantity);
-        productRepository.save(product);
-
-        return ResponseEntity.ok("✅ Sale recorded. Stock & sales count updated.");
-    }
-
-
+    
     @GetMapping
     public ResponseEntity<Page<Product>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
