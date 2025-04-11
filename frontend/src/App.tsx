@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Landing from "./Landing";
 import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
-import React from "react";
+import React, { JSX } from "react";
 import Login from "./Login.tsx";
 import SignUp from "./SignUp.tsx";
 import Contact from "./Contact.tsx";

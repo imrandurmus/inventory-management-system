@@ -6,37 +6,35 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'; // Import Recha
 import "../CSS/Dashboard.css";
 
 const Dashboard: React.FC = () => {
-
   // Mock data for the stats (replace with actual data from your API)
   const stats = {
-    ToBePacked: {
+    TotalInventory: {
       value: "221",
       icon: <Inventory />,
       text: "Qty",
     },
-    OnRoute: {
+    ProductTypes: {
       value: "2350",
       icon: <People />,
-      text: "Packages",
+      text: "Types",
     },
     sales: {
       value: "+1,234",
       icon: <ShoppingCart />,
       text: "Qty",
     },
-    ToBeShipped: {
+    TotalInventoryValue: {
       value: "573",
       icon: <Notifications />,
-      text: "Packages",
+      text: "Value",
     },
   };
 
-  //pie chart data
+  // Pie chart data for product types
   const pieChartData1 = [
-    { name: 'To Be Packed', value: 221 },
-    { name: 'On Route', value: 2350 },
-    { name: 'Sales', value: 1234 },
-    { name: 'To Be Shipped', value: 573 },
+    { name: 'Electronics', value: 500 },
+    { name: 'Books', value: 300 },
+    { name: 'Groceries', value: 200 },
   ];
   const pieChartData2 = [
     { name: 'Low Stock', value: 201 },
@@ -44,8 +42,8 @@ const Dashboard: React.FC = () => {
     { name: 'Out of Stock', value: 14 },
   ];
 
-  //colors for the chart slices
-  const COLORS = ['#6A0DAD', '#9B30FF', '#800080', '#9932CC'];
+  // Colors for the chart slices
+  const COLORS = ['#6A0DAD', '#9B30FF', '#800080'];
 
   // Mock data for Top Selling Items
   const topSellingItems = [
@@ -56,105 +54,103 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-  <>
-  <Header />
-    <div className="dashboard-background">
-      <Container className="dashboardContainer">
-        
-
-        {/* stats section */}
-        <div className="Summary">
-          <h1 className="Summary-title">Summary</h1>
-          <Row>
-            {Object.entries(stats).map(([key, stat], index) => (
-              <Col xs={12} md={6} lg={3} key={index} className="mb-4">
-                <div className="statt-card">
-                  <div className="statt-header">
-                    <span className="statt-icon">{stat.icon}</span>
-                    <span className="statt-label">
-                      {key
-                        .replace(/([A-Z])/g, " $1")
-                        .replace(/^./, (str) => str.toUpperCase())}
-                    </span>
+    <>
+      <Header />
+      <div className="dashboard-background">
+        <Container className="dashboardContainer">
+          {/* Stats section */}
+          <div className="Summary">
+            <h1 className="Summary-title">Summary</h1>
+            <Row>
+              {Object.entries(stats).map(([key, stat], index) => (
+                <Col xs={12} md={6} lg={3} key={index} className="mb-4">
+                  <div className="statt-card">
+                    <div className="statt-header">
+                      <span className="statt-icon">{stat.icon}</span>
+                      <span className="statt-label">
+                        {key
+                          .replace(/([A-Z])/g, " $1")
+                          .replace(/^./, (str) => str.toUpperCase())}
+                      </span>
+                    </div>
+                    <h3 className="statt-value">{stat.value}</h3>
+                    <p className="statt-change">{stat.change}</p>
+                    <div className="Bottom-stats-text">{stat.text}</div>
                   </div>
-                  <h3 className="statt-value">{stat.value}</h3>
-                  <p className="statt-change">{stat.change}</p>
-                  <div className="Bottom-stats-text">{stat.text}</div>
-                </div>
-              </Col>
-            ))}
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          <Row>
+            {/* 1st pie chart - Product Types */}
+            <Col md={4}>
+              <div className="pie-chart-section">
+                <h2>Product Types</h2>
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={pieChartData1}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                  >
+                    {pieChartData1.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </div>
+            </Col>
+
+            {/* 2nd pie chart */}
+            <Col md={4}>
+              <div className="pie-chart-section">
+                <h2>Stock Count</h2>
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={pieChartData2}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                  >
+                    {pieChartData2.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </div>
+            </Col>
+
+            {/* Top selling items section */}
+            <Col md={4}>
+              <div className="top-selling-items">
+                <h2>Top Selling Items</h2>
+                <ul className="top-selling-list">
+                  {topSellingItems.map((item, index) => (
+                    <li key={index} className="top-selling-item">
+                      <span>{item.name}</span> <span>{item.quantity} sold</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Col>
           </Row>
-        </div>
-
-        <Row>
-          {/* 1st pie chart */}
-          <Col md={4}>
-            <div className="pie-chart-section">
-              <h2>Statistics</h2>
-              <PieChart width={400} height={400}>
-                <Pie
-                  data={pieChartData1}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                >
-                  {pieChartData1.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </div>
-          </Col>
-
-          {/* 2nd p chart */}
-          <Col md={4}>
-            <div className="pie-chart-section">
-              <h2>Stock Count</h2>
-              <PieChart width={400} height={400}>
-                <Pie
-                  data={pieChartData2}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                >
-                  {pieChartData2.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </div>
-          </Col>
-
-          {/* top selling items section */}
-          <Col md={4}>
-            <div className="top-selling-items">
-              <h2>Top Selling Items</h2>
-              <ul className="top-selling-list">
-                {topSellingItems.map((item, index) => (
-                  <li key={index} className="top-selling-item">
-                    <span>{item.name}</span> <span>{item.quantity} sold</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+        </Container>
+      </div>
     </>
   );
 };

@@ -6,29 +6,52 @@ import '../CSS/Orders.css';
 
 // Mock Data for Orders
 const initialOrders = [
-  { id: 1, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20, status: 'Pending' },
-  { id: 2, customerName: 'Jane Smith', product: 'Product B', quantity: 3, totalPrice: 60, status: 'Shipped' },
-  { id: 3, customerName: 'Samuel Johnson', product: 'Product C', quantity: 1, totalPrice: 15.5, status: 'Delivered' },
-  { id: 4, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150, status: 'Pending' },
-  { id: 5, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100, status: 'Shipped' },
-  { id: 6, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20, status: 'Pending' },
-  { id: 7, customerName: 'Jane Smith', product: 'Product V', quantity: 3, totalPrice: 60, status: 'Shipped' },
-  { id: 8, customerName: 'Samuel Johnson', product: 'Product R', quantity: 1, totalPrice: 15.5, status: 'Delivered' },
-  { id: 9, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150, status: 'Pending' },
-  { id: 10, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100, status: 'Shipped' },
+  { id: 1, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20 },
+  { id: 2, customerName: 'Jane Smith', product: 'Product B', quantity: 3, totalPrice: 60 },
+  { id: 3, customerName: 'Samuel Johnson', product: 'Product C', quantity: 1, totalPrice: 15.5 },
+  { id: 4, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150 },
+  { id: 5, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100 },
+  { id: 6, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20 },
+  { id: 7, customerName: 'Jane Smith', product: 'Product V', quantity: 3, totalPrice: 60 },
+  { id: 8, customerName: 'Samuel Johnson', product: 'Product R', quantity: 1, totalPrice: 15.5 },
+  { id: 9, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150 },
+  { id: 10, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100 },
+];
+
+// Mock Product Catalog with Categories
+const productCatalog = [
+  {
+    category: 'Electronics',
+    products: [
+      { name: 'Product A', price: 10 },
+      { name: 'Product B', price: 20 },
+    ],
+  },
+  {
+    category: 'Books',
+    products: [
+      { name: 'Product C', price: 15.5 },
+      { name: 'Product D', price: 30 },
+    ],
+  },
+  {
+    category: 'Groceries',
+    products: [
+      { name: 'Product E', price: 25 },
+      { name: 'Product R', price: 15.5 },
+      { name: 'Product V', price: 20 },
+    ],
+  },
 ];
 
 const Orders: React.FC = () => {
   const [orders, setOrders] = useState(initialOrders);
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [sortByProduct, setSortByProduct] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [newOrder, setNewOrder] = useState({
     customerName: '',
-    product: '',
-    quantity: 1,
-    totalPrice: 0,
-    status: 'Pending',
+    products: [], // Array of { product: string, quantity: number }
   });
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -42,41 +65,80 @@ const Orders: React.FC = () => {
     setShowModal(false);
     setNewOrder({
       customerName: '',
-      product: '',
-      quantity: 1,
-      totalPrice: 0,
-      status: 'Pending',
+      products: [],
     });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setNewOrder({ ...newOrder, [name]: name === 'quantity' || name === 'totalPrice' ? parseFloat(value) : value });
+  // Handle checkbox changes for product selection
+  const handleProductChange = (product: string, checked: boolean) => {
+    setNewOrder((prev) => {
+      let updatedProducts = [...prev.products];
+      if (checked) {
+        if (!updatedProducts.some((p) => p.product === product)) {
+          updatedProducts.push({ product, quantity: 1 });
+        }
+      } else {
+        updatedProducts = updatedProducts.filter((p) => p.product !== product);
+      }
+      return { ...prev, products: updatedProducts };
+    });
+  };
+
+  // Handle quantity changes for a specific product
+  const handleQuantityChange = (product: string, quantity: number) => {
+    setNewOrder((prev) => {
+      const updatedProducts = prev.products.map((p) =>
+        p.product === product ? { ...p, quantity: quantity >= 1 ? quantity : 1 } : p
+      );
+      return { ...prev, products: updatedProducts };
+    });
+  };
+
+  // Calculate total price based on selected products and quantities
+  const calculateTotalPrice = () => {
+    return newOrder.products.reduce((total, { product, quantity }) => {
+      const category = productCatalog.find((cat) => cat.products.some((p) => p.name === product));
+      const productDetails = category?.products.find((p) => p.name === product);
+      const price = productDetails ? productDetails.price : 0;
+      return total + price * quantity;
+    }, 0);
   };
 
   const handleSaveOrder = () => {
-    if (!newOrder.customerName || !newOrder.product || !newOrder.totalPrice) {
+    if (!newOrder.customerName || newOrder.products.length === 0) {
       setToastVariant('danger');
-      setToastMessage('Please fill in all required fields.');
+      setToastMessage('Please fill in customer name and select at least one product.');
       setShowToast(true);
       return;
     }
 
-    const newId = orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1;
-    setOrders([{ id: newId, ...newOrder }, ...orders]);
+    const totalPrice = calculateTotalPrice();
+    if (totalPrice <= 0) {
+      setToastVariant('danger');
+      setToastMessage('Total price must be greater than zero.');
+      setShowToast(true);
+      return;
+    }
+
+    // Create one order per product
+    const newOrders = newOrder.products.map((item, index) => {
+      const category = productCatalog.find((cat) => cat.products.some((p) => p.name === item.product));
+      const productDetails = category?.products.find((p) => p.name === item.product);
+      return {
+        id: orders.length > 0 ? Math.max(...orders.map((o) => o.id)) + 1 + index : 1 + index,
+        customerName: newOrder.customerName,
+        product: item.product,
+        quantity: item.quantity,
+        totalPrice: (productDetails?.price || 0) * item.quantity,
+      };
+    });
+
+    setOrders([...newOrders, ...orders]);
     setToastVariant('success');
-    setToastMessage('Order added successfully!');
+    setToastMessage('Order(s) added successfully!');
     setShowToast(true);
     handleCloseModal();
     setCurrentPage(1);
-  };
-
-  const handleStatusUpdate = (orderId: number, status: string) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === orderId ? { ...order, status: status } : order
-      )
-    );
   };
 
   const handleDelete = (orderId: number) => {
@@ -86,17 +148,23 @@ const Orders: React.FC = () => {
     }
   };
 
-  // Updated filter logic
-  const filteredOrders = orders.filter((order) => {
-    const matchesSearch =
-      order.customerName.toLowerCase().includes(search.toLowerCase()) ||
-      order.product.toLowerCase().includes(search.toLowerCase()) ||
-      order.id.toString().includes(search.toLowerCase());
-    
-    const matchesStatus = statusFilter ? order.status === statusFilter : true;
-    
-    return matchesSearch && matchesStatus;
-  });
+  // Filter and sort logic
+  const filteredOrders = orders
+    .filter((order) => {
+      const matchesSearch =
+        order.customerName.toLowerCase().includes(search.toLowerCase()) ||
+        order.product.toLowerCase().includes(search.toLowerCase()) ||
+        order.id.toString().includes(search.toLowerCase());
+      return matchesSearch;
+    })
+    .sort((a, b) => {
+      if (sortByProduct === 'asc') {
+        return a.product.localeCompare(b.product);
+      } else if (sortByProduct === 'desc') {
+        return b.product.localeCompare(a.product);
+      }
+      return 0;
+    });
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -117,11 +185,10 @@ const Orders: React.FC = () => {
         {number}
       </Pagination.Item>
     );
-  }
+  };
 
-  // Function to reset pagination when applying filters
-  const applyFilters = () => {
-    setCurrentPage(1); // Reset to first page when filters change
+  const applySort = () => {
+    setCurrentPage(1);
   };
 
   return (
@@ -131,7 +198,7 @@ const Orders: React.FC = () => {
         <Container>
           <h2 className="ManageOrdersPage">Manage Orders</h2>
 
-          {/* Search and Filter */}
+          {/* Search and Sort */}
           <Row className="mb-3 align-items-end">
             <Col md={5}>
               <Form.Control
@@ -144,18 +211,17 @@ const Orders: React.FC = () => {
             <Col md={5}>
               <Form.Control
                 as="select"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                value={sortByProduct}
+                onChange={(e) => setSortByProduct(e.target.value)}
               >
-                <option value="">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
+                <option value="">Sort by Product</option>
+                <option value="asc">Product: A-Z</option>
+                <option value="desc">Product: Z-A</option>
               </Form.Control>
             </Col>
             <Col md={2}>
-              <Button variant="primary" onClick={applyFilters}>
-                Apply Filters
+              <Button variant="primary" onClick={applySort}>
+                Apply Sort
               </Button>
             </Col>
           </Row>
@@ -172,7 +238,6 @@ const Orders: React.FC = () => {
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
-                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -184,15 +249,6 @@ const Orders: React.FC = () => {
                   <td>{order.product}</td>
                   <td>{order.quantity}</td>
                   <td>${order.totalPrice.toFixed(2)}</td>
-                  <td>
-                    <Button
-                      variant={order.status === 'Pending' ? 'warning' : order.status === 'Shipped' ? 'info' : 'success'}
-                      size="sm"
-                      onClick={() => handleStatusUpdate(order.id, order.status === 'Pending' ? 'Shipped' : 'Delivered')}
-                    >
-                      {order.status}
-                    </Button>
-                  </td>
                   <td>
                     <Button variant="danger" size="sm" onClick={() => handleDelete(order.id)}>
                       <Delete />
@@ -209,12 +265,12 @@ const Orders: React.FC = () => {
               <Col>
                 <Pagination className="justify-content-center">
                   <Pagination.Prev
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
                   />
                   {paginationItems}
                   <Pagination.Next
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
                   />
                 </Pagination>
@@ -223,7 +279,7 @@ const Orders: React.FC = () => {
           )}
 
           {/* Modal for New Order */}
-          <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal show={showModal} onHide={handleCloseModal} size="lg">
             <Modal.Header closeButton>
               <Modal.Title>Add New Order</Modal.Title>
             </Modal.Header>
@@ -234,50 +290,59 @@ const Orders: React.FC = () => {
                   type="text"
                   name="customerName"
                   value={newOrder.customerName}
-                  onChange={handleInputChange}
+                  onChange={(e) => setNewOrder({ ...newOrder, customerName: e.target.value })}
                   required
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Product</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="product"
-                  value={newOrder.product}
-                  onChange={handleInputChange}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Quantity</Form.Label>
-                <Form.Control
-                  type="number"
-                  name="quantity"
-                  min={1}
-                  value={newOrder.quantity}
-                  onChange={handleInputChange}
-                  required
-                />
+                <Form.Label>Products</Form.Label>
+                <div
+                  style={{
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    border: '1px solid #ced4da',
+                    borderRadius: '4px',
+                    padding: '10px',
+                  }}
+                >
+                  {productCatalog.map((category) => (
+                    <div key={category.category} className="mb-3">
+                      <h6>{category.category}</h6>
+                      {category.products.map((product) => (
+                        <Row key={product.name} className="mb-2 align-items-center">
+                          <Col xs={6}>
+                            <Form.Check
+                              type="checkbox"
+                              label={`${product.name} ($${product.price.toFixed(2)})`}
+                              checked={newOrder.products.some((p) => p.product === product.name)}
+                              onChange={(e) => handleProductChange(product.name, e.target.checked)}
+                            />
+                          </Col>
+                          <Col xs={6}>
+                            {newOrder.products.some((p) => p.product === product.name) && (
+                              <Form.Control
+                                type="number"
+                                min={1}
+                                value={
+                                  newOrder.products.find((p) => p.product === product.name)?.quantity || 1
+                                }
+                                onChange={(e) => handleQuantityChange(product.name, parseInt(e.target.value))}
+                              />
+                            )}
+                          </Col>
+                        </Row>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Total Price</Form.Label>
                 <Form.Control
-                  type="number"
-                  name="totalPrice"
-                  min={0}
-                  step={0.01}
-                  value={newOrder.totalPrice}
-                  onChange={handleInputChange}
-                  required
+                  type="text"
+                  value={`$${calculateTotalPrice().toFixed(2)}`}
+                  readOnly
                 />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Status</Form.Label>
-                <Form.Select name="status" value={newOrder.status} onChange={handleInputChange}>
-                  <option value="Pending">Pending</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                </Form.Select>
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
