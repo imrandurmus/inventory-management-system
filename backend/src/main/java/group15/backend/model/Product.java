@@ -33,9 +33,6 @@ public class Product {
     @DecimalMin(value = "0.0",inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProductStatus status;
 
     @Column(nullable = false)
     @Min(value = 0)
@@ -92,7 +89,6 @@ public class Product {
         this.quantity = quantity;
         this.price = price;
         this.productType = type;
-        this.status = ProductStatus.TO_BE_PACKED;
     }
 
     public long getId() {
