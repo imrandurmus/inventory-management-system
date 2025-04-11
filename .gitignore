@@ -192,3 +192,4 @@ node_modules/@kurkle/color/dist/color.esm.js
 node_modules/@kurkle/color/dist/color.d.ts
 node_modules/@kurkle/color/dist/color.cjs
 node_modules/.package-lock.json
+.vscode/settings.json

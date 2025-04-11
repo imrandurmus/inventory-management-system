@@ -1,70 +1,80 @@
-import React, { useState } from 'react';
-import { Container, Table, Button, Row, Col, Form, Modal, Toast, Pagination } from 'react-bootstrap';
-import { Delete } from '@mui/icons-material';
-import Header from '../DashComponents/Header';
-import '../CSS/Orders.css';
-
-// Mock Data for Orders
-const initialOrders = [
-  { id: 1, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20 },
-  { id: 2, customerName: 'Jane Smith', product: 'Product B', quantity: 3, totalPrice: 60 },
-  { id: 3, customerName: 'Samuel Johnson', product: 'Product C', quantity: 1, totalPrice: 15.5 },
-  { id: 4, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150 },
-  { id: 5, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100 },
-  { id: 6, customerName: 'John Doe', product: 'Product A', quantity: 2, totalPrice: 20 },
-  { id: 7, customerName: 'Jane Smith', product: 'Product V', quantity: 3, totalPrice: 60 },
-  { id: 8, customerName: 'Samuel Johnson', product: 'Product R', quantity: 1, totalPrice: 15.5 },
-  { id: 9, customerName: 'Emily Davis', product: 'Product D', quantity: 5, totalPrice: 150 },
-  { id: 10, customerName: 'Michael Brown', product: 'Product E', quantity: 4, totalPrice: 100 },
-];
-
-// Mock Product Catalog with Categories
-const productCatalog = [
-  {
-    category: 'Electronics',
-    products: [
-      { name: 'Product A', price: 10 },
-      { name: 'Product B', price: 20 },
-    ],
-  },
-  {
-    category: 'Books',
-    products: [
-      { name: 'Product C', price: 15.5 },
-      { name: 'Product D', price: 30 },
-    ],
-  },
-  {
-    category: 'Groceries',
-    products: [
-      { name: 'Product E', price: 25 },
-      { name: 'Product R', price: 15.5 },
-      { name: 'Product V', price: 20 },
-    ],
-  },
-];
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Table,
+  Button,
+  Row,
+  Col,
+  Form,
+  Modal,
+  Toast,
+  Pagination,
+} from "react-bootstrap";
+import { Delete } from "@mui/icons-material";
+import Header from "../DashComponents/Header";
+import "../CSS/Orders.css";
+import {
+  getAllProducts,
+  Product,
+  getOrders,
+  createOrder,
+  Order,
+} from "../../services/api";
 
 const Orders: React.FC = () => {
-  const [orders, setOrders] = useState(initialOrders);
-  const [search, setSearch] = useState('');
-  const [sortByProduct, setSortByProduct] = useState('');
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [search, setSearch] = useState("");
+  const [sortByProduct, setSortByProduct] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [newOrder, setNewOrder] = useState({
-    customerName: '',
-    products: [], // Array of { product: string, quantity: number }
+    customerName: "",
+    products: [] as { product: string; quantity: number }[],
   });
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastVariant, setToastVariant] = useState<'success' | 'danger'>('success');
-  // Pagination states
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<"success" | "danger">(
+    "success"
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Fetch products and orders on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching products and orders...");
+        const [fetchedProducts, fetchedOrders] = await Promise.all([
+          getAllProducts(),
+          getOrders(),
+        ]);
+        console.log("Fetched products:", fetchedProducts);
+        console.log("Fetched orders:", fetchedOrders);
+        setProducts(fetchedProducts);
+        setOrders(fetchedOrders);
+      } catch (error) {
+        console.error("Detailed error:", error);
+        if (error instanceof Error) {
+          console.error("Error message:", error.message);
+          console.error("Error stack:", error.stack);
+        }
+        setToastVariant("danger");
+        setToastMessage(
+          `Failed to load data: ${
+            error instanceof Error ? error.message : "Unknown error"
+          }`
+        );
+        setShowToast(true);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
     setNewOrder({
-      customerName: '',
+      customerName: "",
       products: [],
     });
   };
@@ -88,64 +98,87 @@ const Orders: React.FC = () => {
   const handleQuantityChange = (product: string, quantity: number) => {
     setNewOrder((prev) => {
       const updatedProducts = prev.products.map((p) =>
-        p.product === product ? { ...p, quantity: quantity >= 1 ? quantity : 1 } : p
+        p.product === product
+          ? { ...p, quantity: quantity >= 1 ? quantity : 1 }
+          : p
       );
       return { ...prev, products: updatedProducts };
     });
   };
 
-  // Calculate total price based on selected products and quantities
+  // Update the product catalog to use real products
+  const productCatalog = products.reduce((acc, product) => {
+    const type = product.productType.name;
+    if (!acc[type]) {
+      acc[type] = [];
+    }
+    acc[type].push({ name: product.name, price: product.price });
+    return acc;
+  }, {} as Record<string, { name: string; price: number }[]>);
+
+  // Fix the calculateTotalPrice function
   const calculateTotalPrice = () => {
     return newOrder.products.reduce((total, { product, quantity }) => {
-      const category = productCatalog.find((cat) => cat.products.some((p) => p.name === product));
-      const productDetails = category?.products.find((p) => p.name === product);
-      const price = productDetails ? productDetails.price : 0;
-      return total + price * quantity;
+      // Find the product in our catalog
+      for (const category of Object.values(productCatalog)) {
+        const productDetails = category.find((p) => p.name === product);
+        if (productDetails) {
+          return total + productDetails.price * quantity;
+        }
+      }
+      return total;
     }, 0);
   };
 
-  const handleSaveOrder = () => {
+  const handleSaveOrder = async () => {
     if (!newOrder.customerName || newOrder.products.length === 0) {
-      setToastVariant('danger');
-      setToastMessage('Please fill in customer name and select at least one product.');
+      setToastVariant("danger");
+      setToastMessage(
+        "Please fill in customer name and select at least one product."
+      );
       setShowToast(true);
       return;
     }
 
-    const totalPrice = calculateTotalPrice();
-    if (totalPrice <= 0) {
-      setToastVariant('danger');
-      setToastMessage('Total price must be greater than zero.');
-      setShowToast(true);
-      return;
-    }
+    try {
+      // Find product IDs for the selected products
+      const orderItems = newOrder.products.map((item) => {
+        const product = products.find((p) => p.name === item.product);
+        if (!product) {
+          throw new Error(`Product ${item.product} not found`);
+        }
+        return {
+          productId: product.id,
+          quantity: item.quantity,
+        };
+      });
 
-    // Create one order per product
-    const newOrders = newOrder.products.map((item, index) => {
-      const category = productCatalog.find((cat) => cat.products.some((p) => p.name === item.product));
-      const productDetails = category?.products.find((p) => p.name === item.product);
-      return {
-        id: orders.length > 0 ? Math.max(...orders.map((o) => o.id)) + 1 + index : 1 + index,
+      // Create the order
+      const createdOrder = await createOrder({
         customerName: newOrder.customerName,
-        product: item.product,
-        quantity: item.quantity,
-        totalPrice: (productDetails?.price || 0) * item.quantity,
-      };
-    });
+        items: orderItems,
+      });
 
-    setOrders([...newOrders, ...orders]);
-    setToastVariant('success');
-    setToastMessage('Order(s) added successfully!');
-    setShowToast(true);
-    handleCloseModal();
-    setCurrentPage(1);
+      // Update the orders list
+      setOrders([createdOrder, ...orders]);
+      setToastVariant("success");
+      setToastMessage("Order created successfully!");
+      setShowToast(true);
+      handleCloseModal();
+      setCurrentPage(1);
+    } catch (error) {
+      console.error("Error creating order:", error);
+      setToastVariant("danger");
+      setToastMessage("Failed to create order. Please try again.");
+      setShowToast(true);
+    }
   };
 
-  const handleDelete = (orderId: number) => {
-    setOrders(orders.filter((order) => order.id !== orderId));
-    if (filteredOrders.length <= itemsPerPage && currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleDelete = (orderId: string) => {
+    // TODO: Implement delete order functionality
+    setToastVariant("warning");
+    setToastMessage("Delete functionality not implemented yet");
+    setShowToast(true);
   };
 
   // Filter and sort logic
@@ -153,15 +186,17 @@ const Orders: React.FC = () => {
     .filter((order) => {
       const matchesSearch =
         order.customerName.toLowerCase().includes(search.toLowerCase()) ||
-        order.product.toLowerCase().includes(search.toLowerCase()) ||
+        order.items.some((item) =>
+          item.product.name.toLowerCase().includes(search.toLowerCase())
+        ) ||
         order.id.toString().includes(search.toLowerCase());
       return matchesSearch;
     })
     .sort((a, b) => {
-      if (sortByProduct === 'asc') {
-        return a.product.localeCompare(b.product);
-      } else if (sortByProduct === 'desc') {
-        return b.product.localeCompare(a.product);
+      if (sortByProduct === "asc") {
+        return a.items[0].product.name.localeCompare(b.items[0].product.name);
+      } else if (sortByProduct === "desc") {
+        return b.items[0].product.name.localeCompare(a.items[0].product.name);
       }
       return 0;
     });
@@ -185,7 +220,7 @@ const Orders: React.FC = () => {
         {number}
       </Pagination.Item>
     );
-  };
+  }
 
   const applySort = () => {
     setCurrentPage(1);
@@ -235,9 +270,9 @@ const Orders: React.FC = () => {
               <tr>
                 <th>Order ID</th>
                 <th>Customer Name</th>
-                <th>Product</th>
-                <th>Quantity</th>
+                <th>Products</th>
                 <th>Total Price</th>
+                <th>Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -246,11 +281,21 @@ const Orders: React.FC = () => {
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.customerName}</td>
-                  <td>{order.product}</td>
-                  <td>{order.quantity}</td>
-                  <td>${order.totalPrice.toFixed(2)}</td>
                   <td>
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(order.id)}>
+                    {order.items.map((item, index) => (
+                      <div key={index}>
+                        {item.product.name} (x{item.quantity})
+                      </div>
+                    ))}
+                  </td>
+                  <td>${order.totalPrice.toFixed(2)}</td>
+                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDelete(order.id)}
+                    >
                       <Delete />
                     </Button>
                   </td>
@@ -265,12 +310,16 @@ const Orders: React.FC = () => {
               <Col>
                 <Pagination className="justify-content-center">
                   <Pagination.Prev
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
                     disabled={currentPage === 1}
                   />
                   {paginationItems}
                   <Pagination.Next
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
                     disabled={currentPage === totalPages}
                   />
                 </Pagination>
@@ -290,7 +339,9 @@ const Orders: React.FC = () => {
                   type="text"
                   name="customerName"
                   value={newOrder.customerName}
-                  onChange={(e) => setNewOrder({ ...newOrder, customerName: e.target.value })}
+                  onChange={(e) =>
+                    setNewOrder({ ...newOrder, customerName: e.target.value })
+                  }
                   required
                 />
               </Form.Group>
@@ -298,42 +349,65 @@ const Orders: React.FC = () => {
                 <Form.Label>Products</Form.Label>
                 <div
                   style={{
-                    maxHeight: '300px',
-                    overflowY: 'auto',
-                    border: '1px solid #ced4da',
-                    borderRadius: '4px',
-                    padding: '10px',
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    border: "1px solid #ced4da",
+                    borderRadius: "4px",
+                    padding: "10px",
                   }}
                 >
-                  {productCatalog.map((category) => (
-                    <div key={category.category} className="mb-3">
-                      <h6>{category.category}</h6>
-                      {category.products.map((product) => (
-                        <Row key={product.name} className="mb-2 align-items-center">
-                          <Col xs={6}>
-                            <Form.Check
-                              type="checkbox"
-                              label={`${product.name} ($${product.price.toFixed(2)})`}
-                              checked={newOrder.products.some((p) => p.product === product.name)}
-                              onChange={(e) => handleProductChange(product.name, e.target.checked)}
-                            />
-                          </Col>
-                          <Col xs={6}>
-                            {newOrder.products.some((p) => p.product === product.name) && (
-                              <Form.Control
-                                type="number"
-                                min={1}
-                                value={
-                                  newOrder.products.find((p) => p.product === product.name)?.quantity || 1
+                  {Object.entries(productCatalog).map(
+                    ([category, categoryProducts]) => (
+                      <div key={category} className="mb-3">
+                        <h6>{category}</h6>
+                        {categoryProducts.map((product) => (
+                          <Row
+                            key={product.name}
+                            className="mb-2 align-items-center"
+                          >
+                            <Col xs={6}>
+                              <Form.Check
+                                type="checkbox"
+                                label={`${
+                                  product.name
+                                } ($${product.price.toFixed(2)})`}
+                                checked={newOrder.products.some(
+                                  (p) => p.product === product.name
+                                )}
+                                onChange={(e) =>
+                                  handleProductChange(
+                                    product.name,
+                                    e.target.checked
+                                  )
                                 }
-                                onChange={(e) => handleQuantityChange(product.name, parseInt(e.target.value))}
                               />
-                            )}
-                          </Col>
-                        </Row>
-                      ))}
-                    </div>
-                  ))}
+                            </Col>
+                            <Col xs={6}>
+                              {newOrder.products.some(
+                                (p) => p.product === product.name
+                              ) && (
+                                <Form.Control
+                                  type="number"
+                                  min={1}
+                                  value={
+                                    newOrder.products.find(
+                                      (p) => p.product === product.name
+                                    )?.quantity || 1
+                                  }
+                                  onChange={(e) =>
+                                    handleQuantityChange(
+                                      product.name,
+                                      parseInt(e.target.value)
+                                    )
+                                  }
+                                />
+                              )}
+                            </Col>
+                          </Row>
+                        ))}
+                      </div>
+                    )
+                  )}
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
@@ -358,7 +432,7 @@ const Orders: React.FC = () => {
           {/* Toast notification */}
           <div
             style={{
-              position: 'fixed',
+              position: "fixed",
               top: 20,
               right: 20,
               zIndex: 9999,

@@ -2,9 +2,7 @@ package group15.backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "products")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +29,8 @@ public class Product {
     private int quantity;
 
     @Column(nullable = false)
-    @DecimalMin(value = "0.0",inclusive = false, message = "Price must be greater than zero")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
     private BigDecimal price;
-
 
     @Column(nullable = false)
     @Min(value = 0)
@@ -47,27 +45,34 @@ public class Product {
     @Transient
     @JsonProperty
     public String getStockLevel() {
-        if (quantity == 0) return "OUT_OF_STOCK";
-        if (quantity < 5) return "LOW_STOCK";
+        if (quantity == 0)
+            return "OUT_OF_STOCK";
+        if (quantity < 5)
+            return "LOW_STOCK";
         return "IN_STOCK";
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_type_id", nullable = false)
+    @JsonIgnoreProperties({ "products" })
     private ProductType productType;
 
+    @JsonGetter("productType")
     public ProductType getProductType() {
         return productType;
     }
 
+    @JsonSetter("productType")
     public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 
-    @Column(name = "created_at", nullable = false,updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     @PrePersist
@@ -81,7 +86,8 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Product() {}
+    public Product() {
+    }
 
     public Product(String name, String description, int quantity, BigDecimal price, ProductType type) {
         this.name = name;
@@ -145,8 +151,10 @@ public class Product {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Product product = (Product) o;
         return id == product.id;
     }
@@ -170,6 +178,4 @@ public class Product {
                 ", updatedAt=" + updatedAt +
                 '}';
     }
-
-
 }
