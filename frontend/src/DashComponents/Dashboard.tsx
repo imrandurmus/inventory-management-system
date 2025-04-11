@@ -1,57 +1,109 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "./Header";
-import { People, ShoppingCart, Notifications, Inventory } from "@mui/icons-material"; // MUI icons
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'; // Import Recharts components
+import {
+  People,
+  ShoppingCart,
+  Notifications,
+  Inventory,
+} from "@mui/icons-material"; // MUI icons
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts"; // Import Recharts components
 import "../CSS/Dashboard.css";
+import { getDashboardMetrics, DashboardMetrics } from "../../services/api";
 
 const Dashboard: React.FC = () => {
-  // Mock data for the stats (replace with actual data from your API)
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const data = await getDashboardMetrics();
+        setMetrics(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching dashboard metrics:", err);
+        setError("Failed to load dashboard data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="dashboard-background">
+          <Container className="dashboardContainer">
+            <div className="loading-message">Loading dashboard data...</div>
+          </Container>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="dashboard-background">
+          <Container className="dashboardContainer">
+            <div className="error-message">{error}</div>
+          </Container>
+        </div>
+      </>
+    );
+  }
+
+  if (!metrics) {
+    return null;
+  }
+
   const stats = {
     TotalInventory: {
-      value: "221",
+      value: metrics.totalInventory.toString(),
       icon: <Inventory />,
       text: "Qty",
     },
     ProductTypes: {
-      value: "2350",
+      value: metrics.productTypes.toString(),
       icon: <People />,
       text: "Types",
     },
     sales: {
-      value: "+1,234",
+      value: `+${metrics.totalSales}`,
       icon: <ShoppingCart />,
       text: "Qty",
     },
     TotalInventoryValue: {
-      value: "573",
+      value: `$${metrics.totalInventoryValue.toFixed(2)}`,
       icon: <Notifications />,
       text: "Value",
     },
   };
 
-  // Pie chart data for product types
-  const pieChartData1 = [
-    { name: 'Electronics', value: 500 },
-    { name: 'Books', value: 300 },
-    { name: 'Groceries', value: 200 },
-  ];
-  const pieChartData2 = [
-    { name: 'Low Stock', value: 201 },
-    { name: 'In Stock', value: 250 },
-    { name: 'Out of Stock', value: 14 },
-  ];
+  // Convert product type distribution to pie chart data
+  const pieChartData1 = Object.entries(metrics.productTypeDistribution).map(
+    ([name, value]) => ({
+      name,
+      value,
+    })
+  );
+
+  // Convert stock count distribution to pie chart data
+  const pieChartData2 = Object.entries(metrics.stockCountDistribution).map(
+    ([name, value]) => ({
+      name,
+      value,
+    })
+  );
 
   // Colors for the chart slices
-  const COLORS = ['#6A0DAD', '#9B30FF', '#800080'];
-
-  // Mock data for Top Selling Items
-  const topSellingItems = [
-    { name: "Item A", quantity: 234 },
-    { name: "Item B", quantity: 182 },
-    { name: "Item C", quantity: 150 },
-    { name: "Item D", quantity: 130 },
-  ];
+  const COLORS = ["#6A0DAD", "#9B30FF", "#800080", "#4B0082", "#8A2BE2"];
 
   return (
     <>
@@ -74,7 +126,6 @@ const Dashboard: React.FC = () => {
                       </span>
                     </div>
                     <h3 className="statt-value">{stat.value}</h3>
-                    <p className="statt-change">{stat.change}</p>
                     <div className="Bottom-stats-text">{stat.text}</div>
                   </div>
                 </Col>
@@ -100,7 +151,10 @@ const Dashboard: React.FC = () => {
                     paddingAngle={5}
                   >
                     {pieChartData1.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -109,7 +163,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Col>
 
-            {/* 2nd pie chart */}
+            {/* 2nd pie chart - Stock Distribution */}
             <Col md={4}>
               <div className="pie-chart-section">
                 <h2>Stock Count</h2>
@@ -126,7 +180,10 @@ const Dashboard: React.FC = () => {
                     paddingAngle={5}
                   >
                     {pieChartData2.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
@@ -140,9 +197,10 @@ const Dashboard: React.FC = () => {
               <div className="top-selling-items">
                 <h2>Top Selling Items</h2>
                 <ul className="top-selling-list">
-                  {topSellingItems.map((item, index) => (
+                  {metrics.topSellingItems.map((item, index) => (
                     <li key={index} className="top-selling-item">
-                      <span>{item.name}</span> <span>{item.quantity} sold</span>
+                      <span>{item.itemName}</span>{" "}
+                      <span>{item.soldCount} sold</span>
                     </li>
                   ))}
                 </ul>

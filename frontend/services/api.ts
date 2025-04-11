@@ -65,6 +65,16 @@ export interface OrderItem {
   itemTotal: number;
 }
 
+export interface DashboardMetrics {
+  totalInventory: number;
+  productTypes: number;
+  totalSales: number;
+  totalInventoryValue: number;
+  productTypeDistribution: { [key: string]: number };
+  stockCountDistribution: { [key: string]: number };
+  topSellingItems: { itemName: string; soldCount: number }[];
+}
+
 // Employee Endpoints
 export const getEmployees = async (): Promise<User[]> => {
   const response = await fetch(`${BASE_URL}/employees`, {
@@ -613,6 +623,44 @@ export const createOrder = async (order: {
     };
   } catch (error) {
     console.error('Error in createOrder:', error);
+    throw error;
+  }
+};
+
+export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
+  try {
+    console.log('Fetching dashboard metrics');
+    const response = await fetch(`${BASE_URL}/dashboard/metrics`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error fetching dashboard metrics:', errorText);
+      throw new Error(`Failed to fetch dashboard metrics: ${response.status} ${response.statusText}`);
+    }
+
+    const metrics = await response.json();
+    console.log('Successfully fetched dashboard metrics:', metrics);
+    
+    return {
+      totalInventory: metrics.totalInventory,
+      productTypes: metrics.productTypes,
+      totalSales: metrics.totalSales,
+      totalInventoryValue: Number(metrics.totalInventoryValue),
+      productTypeDistribution: metrics.productTypeDistribution,
+      stockCountDistribution: metrics.stockCountDistribution,
+      topSellingItems: metrics.topSellingItems.map((item: any) => ({
+        itemName: item.itemName,
+        soldCount: item.soldCount
+      }))
+    };
+  } catch (error) {
+    console.error('Error in getDashboardMetrics:', error);
     throw error;
   }
 };
