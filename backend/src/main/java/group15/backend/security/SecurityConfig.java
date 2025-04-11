@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()  // Allow public access to login and signup
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()  // Allow public access to products
+                        .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("MANAGER")  // Only managers can access this dashboard
                         .requestMatchers(HttpMethod.POST, "/announcements").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("MANAGER", "REGULAR")
                         .requestMatchers("/employees/**").hasRole("MANAGER")

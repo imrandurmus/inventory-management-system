@@ -1,10 +1,13 @@
 package group15.backend.controller;
 
+import group15.backend.dto.PasswordResetConfirmation;
+import group15.backend.dto.PasswordResetRequest;
 import group15.backend.dto.SignupRequest;
 import group15.backend.model.Employee;
 import group15.backend.model.Role;
 import group15.backend.repository.EmployeeRepository;
 import group15.backend.security.jwt.JwtUtil;
+import group15.backend.service.PasswordResetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,9 @@ public class AuthController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private PasswordResetService passwordResetService;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> loginRequest) {
         String email = loginRequest.get("email");
@@ -48,16 +54,15 @@ public class AuthController {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-            SecurityContextHolder.getContext().setAuthentication(authentication); // Set authentication in context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // Fetch the Employee object
             Employee employee = employeeRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            // Generate JWT with Employee object (includes email and role)
+            // Generate JWT with Employee object
             String token = jwtUtil.generateToken(employee);
 
-            // Return token (role is in JWT, so no need to include it separately unless frontend needs it)
             return ResponseEntity.ok(Map.of("token", token));
 
         } catch (BadCredentialsException ex) {
@@ -96,5 +101,27 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Signup successful!"));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody PasswordResetRequest request) {
+        try {
+            passwordResetService.initiatePasswordReset(request.getEmail());
+            return ResponseEntity.ok(Map.of("message", "Password reset email sent"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetConfirmation request) {
+        try {
+            passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
+            return ResponseEntity.ok(Map.of("message", "Password reset successful"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 }
