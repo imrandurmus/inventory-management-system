@@ -77,59 +77,31 @@ export interface DashboardMetrics {
 
 // Employee Endpoints
 export const getEmployees = async (): Promise<User[]> => {
-  try {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    console.log('Fetching employees with token:', token ? 'Present' : 'Missing');
-    
-    if (!token) {
-      throw new Error('No authentication token found. Please log in again.');
+  const response = await fetch(`${BASE_URL}/employees`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error('You do not have permission to view employees');
     }
-
-    const response = await fetch(`${BASE_URL}/employees`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    console.log('Employees response status:', response.status);
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Employees error response:', errorText);
-      
-      if (response.status === 401) {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-        window.location.href = '/login';
-        throw new Error('Authentication failed. Please log in again.');
-      }
-      
-      if (response.status === 403) {
-        console.error('Forbidden access. Token:', token);
-        throw new Error('Access denied. You do not have permission to view employees.');
-      }
-      
-      throw new Error(`Failed to fetch employees: ${response.status} ${response.statusText}. ${errorText}`);
-    }
-
-    const employees = await response.json();
-    console.log('Successfully fetched employees:', employees);
-    
-    return employees.map((emp: EmployeeResponse) => ({
-      id: emp.id.toString(),
-      firstName: emp.firstName,
-      lastName: emp.lastName,
-      email: emp.email,
-      role: emp.role === 'REGULAR' ? 'Regular' : 'Manager',
-      profilePicture: emp.profileImageUrl,
-      assignedProductTypes: emp.assignedTypes?.map((type) => type.name) || [],
-    }));
-  } catch (error) {
-    console.error('Error in getEmployees:', error);
-    throw error;
+    throw new Error(`Failed to fetch employees: ${response.statusText} Please contact Tech Support`);
   }
+
+  const employees: EmployeeResponse[] = await response.json();
+  return employees.map((emp) => ({
+    id: emp.id.toString(),
+    firstName: emp.firstName,
+    lastName: emp.lastName,
+    email: emp.email,
+    role: emp.role === 'REGULAR' ? 'Regular' : 'Manager',
+    profilePicture: emp.profileImageUrl,
+    assignedProductTypes: emp.assignedTypes?.map((type) => type.name) || [],
+  }));
 };
 
 export const createEmployee = async (employee: {
@@ -543,7 +515,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 // Order Endpoints
 export const getOrders = async (): Promise<Order[]> => {
   try {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     console.log('Fetching orders with token:', token ? 'Present' : 'Missing');
     
     if (!token) {
@@ -559,15 +531,14 @@ export const getOrders = async (): Promise<Order[]> => {
     });
 
     console.log('Orders response status:', response.status);
-    
-    if (!response.ok) {
+
+  if (!response.ok) {
       const errorText = await response.text();
       console.error('Orders error response:', errorText);
       
-      if (response.status === 401) {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-        window.location.href = '/login';
+    if (response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
         throw new Error('Authentication failed. Please log in again.');
       }
       
@@ -658,40 +629,19 @@ export const createOrder = async (order: {
 
 export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
   try {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    console.log('Fetching dashboard metrics with token:', token ? 'Present' : 'Missing');
-    
-    if (!token) {
-      throw new Error('No authentication token found. Please log in again.');
-    }
-
+    console.log('Fetching dashboard metrics');
     const response = await fetch(`${BASE_URL}/dashboard/metrics`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
       },
     });
 
-    console.log('Dashboard metrics response status:', response.status);
-    
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Dashboard metrics error response:', errorText);
-      
-      if (response.status === 401) {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-        window.location.href = '/login';
-        throw new Error('Authentication failed. Please log in again.');
-      }
-      
-      if (response.status === 403) {
-        console.error('Forbidden access. Token:', token);
-        throw new Error('Access denied. You do not have permission to view dashboard metrics.');
-      }
-      
-      throw new Error(`Failed to fetch dashboard metrics: ${response.status} ${response.statusText}. ${errorText}`);
+      console.error('Error fetching dashboard metrics:', errorText);
+      throw new Error(`Failed to fetch dashboard metrics: ${response.status} ${response.statusText}`);
     }
 
     const metrics = await response.json();
@@ -761,7 +711,7 @@ export const deleteOrder = async (id: string): Promise<void> => {
 
 export const getCurrentUser = async (): Promise<User> => {
   try {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     console.log('Fetching current user with token:', token ? 'Present' : 'Missing');
     
     if (!token) {
@@ -784,7 +734,6 @@ export const getCurrentUser = async (): Promise<User> => {
       
       if (response.status === 401) {
         localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
         window.location.href = '/login';
         throw new Error('Authentication failed. Please log in again.');
       }
@@ -795,7 +744,7 @@ export const getCurrentUser = async (): Promise<User> => {
     const emp: EmployeeResponse = await response.json();
     console.log('Successfully fetched current user:', emp);
     
-    return {
+  return {
       id: emp.id.toString(),
       firstName: emp.firstName,
       lastName: emp.lastName,
