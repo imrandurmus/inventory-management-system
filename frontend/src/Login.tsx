@@ -31,6 +31,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -68,16 +69,24 @@ const Login = () => {
       const data = await response.json();
       const { token } = data;
 
-      // Store token in localStorage
-      localStorage.setItem("token", token);
+      // Store token in localStorage or sessionStorage based on remember me
+      if (rememberMe) {
+        localStorage.setItem("token", token);
+      } else {
+        sessionStorage.setItem("token", token);
+      }
 
       // Decode JWT to get role
       const decoded: JwtPayload = jwtDecode(token);
       const role = decoded.role;
-      const fullName = await fetchFullName(token); // Optional: Fetch fullName if needed
+      const fullName = await fetchFullName(token);
 
-      // Store role in localStorage
-      localStorage.setItem("role", role);
+      // Store role in the same storage as token
+      if (rememberMe) {
+        localStorage.setItem("role", role);
+      } else {
+        sessionStorage.setItem("role", role);
+      }
 
       setErrorMessage("");
       console.log("Logged in with:", { email: decoded.sub, role, fullName, token });
@@ -157,18 +166,25 @@ const Login = () => {
                 error={!!errorMessage}
                 helperText={errorMessage && "Please enter a valid password."}
               />
-              <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
-                <FormControlLabel control={<Checkbox />} label="Remember me" />
-                <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ cursor: "pointer" }}
-                  onClick={handleForgotPasswordOpen}
-                  className="forgot-password"
-                >
-                  Forgot your password?
-                </Typography>
-              </Box>
+              <div className="form-group">
+                <div className="remember-forgot">
+                  <label className="remember-me">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                    />
+                    Remember Me
+                  </label>
+                  <button
+                    type="button"
+                    className="forgot-password"
+                    onClick={() => setOpenForgotPassword(true)}
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
+              </div>
               <Button
                 type="submit"
                 fullWidth

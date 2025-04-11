@@ -56,6 +56,30 @@
     color: #6a1e9c;
 }
 
+/* Remember Me styles */
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: #4c0082;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #4c0082;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .login-container {

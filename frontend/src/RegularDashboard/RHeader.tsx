@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-boot
 import { Link } from 'react-router-dom';
 import { Bell, Sun } from 'lucide-react';
 import "../CSS/Header.css";
+import { handleLogout } from '../utils/auth';
 
 interface User {
   username: string;
@@ -146,7 +147,7 @@ const RHeader: React.FC = () => {
               <NavDropdown.Item as={Link} to="/settings">
                 Settings
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
+              <NavDropdown.Item onClick={handleLogout}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>
@@ -168,7 +169,7 @@ const RHeader: React.FC = () => {
               <NavDropdown.Item as={Link} to="/My-Settings">
                 Settings
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
+              <NavDropdown.Item onClick={handleLogout}>
                 Logout
               </NavDropdown.Item>
             </NavDropdown>

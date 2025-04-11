@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Landing from "./Landing";
 import AboutUs from "./AboutUs.tsx";
 import Menu from "./Menu";
-import React, { JSX } from "react";
+import React, { JSX, useEffect } from "react";
 import Login from "./Login.tsx";
 import SignUp from "./SignUp.tsx";
 import Contact from "./Contact.tsx";
@@ -24,11 +24,18 @@ import MSettings from "./Manager/MSettings.tsx";
 import Regular from "./RegularDashboard/Regular.tsx";
 import RAnnouncements from "./RegularDashboard/RAnnouncements.tsx";
 import RSettings from "./RegularDashboard/RSettings.tsx";
+import { isAuthenticated, getUserRole } from "./utils/auth";
 
 // Protected Route: Requires a valid token
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/Login" replace />;
+  const authenticated = isAuthenticated();
+  
+  // If not authenticated, redirect to login
+  if (!authenticated) {
+    return <Navigate to="/Login" replace />;
+  }
+  
+  return children;
 };
 
 // Role-Based Route: Requires a token and specific role
@@ -36,15 +43,24 @@ const RoleBasedRoute: React.FC<{
   children: JSX.Element;
   allowedRoles: string[];
 }> = ({ children, allowedRoles }) => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-  console.log("RoleBasedRoute check:", { token, role, allowedRoles });
-  if (!token) return <Navigate to="/Login" replace />;
-  return role && allowedRoles.includes(role) ? (
-    children
-  ) : (
-    <Navigate to="/Regular-Dashboard" replace />
-  );
+  const authenticated = isAuthenticated();
+  const role = getUserRole();
+  
+  console.log("RoleBasedRoute check:", { authenticated, role, allowedRoles });
+  
+  // If not authenticated, redirect to login
+  if (!authenticated) {
+    return <Navigate to="/Login" replace />;
+  }
+  
+  // If authenticated but not authorized, redirect to appropriate dashboard
+  if (role && !allowedRoles.includes(role)) {
+    return role === "MANAGER" 
+      ? <Navigate to="/User-Dashboard" replace /> 
+      : <Navigate to="/Regular-Dashboard" replace />;
+  }
+  
+  return children;
 };
 
 const App: React.FC = () => {
