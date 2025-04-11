@@ -27,7 +27,7 @@ import RSettings from "./RegularDashboard/RSettings.tsx";
 
 // Protected Route: Requires a valid token
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
   return token ? children : <Navigate to="/Login" replace />;
 };
 
@@ -36,8 +36,8 @@ const RoleBasedRoute: React.FC<{
   children: JSX.Element;
   allowedRoles: string[];
 }> = ({ children, allowedRoles }) => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const role = localStorage.getItem("role") || sessionStorage.getItem("role");
   console.log("RoleBasedRoute check:", { token, role, allowedRoles });
   if (!token) return <Navigate to="/Login" replace />;
   return role && allowedRoles.includes(role) ? (
