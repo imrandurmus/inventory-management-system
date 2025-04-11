@@ -38,6 +38,7 @@ const RoleBasedRoute: React.FC<{
 }> = ({ children, allowedRoles }) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
+  console.log("RoleBasedRoute check:", { token, role, allowedRoles });
   if (!token) return <Navigate to="/Login" replace />;
   return role && allowedRoles.includes(role) ? (
     children

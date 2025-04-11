@@ -76,14 +76,17 @@ const Login = () => {
       const role = decoded.role;
       const fullName = await fetchFullName(token); // Optional: Fetch fullName if needed
 
+      // Store role in localStorage
+      localStorage.setItem("role", role);
+
       setErrorMessage("");
-      console.log("Logged in with:", { email: decoded.sub, role, fullName });
+      console.log("Logged in with:", { email: decoded.sub, role, fullName, token });
 
       // Redirect based on role
       if (role === "MANAGER") {
-        navigate("/manager/users"); // Adjusted to match earlier context
+        navigate("/User-Dashboard");
       } else {
-        navigate("/regular/dashboard"); // Adjusted for consistency
+        navigate("/Regular-Dashboard");
       }
     } catch (error: any) {
       setErrorMessage(error.message || "Invalid email or password. Please try again.");
@@ -107,7 +110,7 @@ const Login = () => {
       return `${data.firstName} ${data.lastName}`;
     } catch (error) {
       console.error("Error fetching fullName:", error);
-      return ""; // Fallback if endpoint isn’t implemented
+      return ""; // Fallback if endpoint isn't implemented
     }
   };
 
