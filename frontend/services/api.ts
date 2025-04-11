@@ -664,3 +664,47 @@ export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
     throw error;
   }
 };
+
+export const deleteOrder = async (id: string): Promise<void> => {
+  try {
+    const token = localStorage.getItem('token');
+    console.log('Deleting order with token:', token ? 'Present' : 'Missing');
+    
+    if (!token) {
+      throw new Error('No authentication token found. Please log in again.');
+    }
+
+    const response = await fetch(`${BASE_URL}/orders/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    console.log('Delete order response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Delete order error response:', errorText);
+      
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        throw new Error('Authentication failed. Please log in again.');
+      }
+      
+      if (response.status === 403) {
+        console.error('Forbidden access. Token:', token);
+        throw new Error('Access denied. You do not have permission to delete orders.');
+      }
+      
+      throw new Error(`Failed to delete order: ${response.status} ${response.statusText}. ${errorText}`);
+    }
+
+    console.log('Successfully deleted order');
+  } catch (error) {
+    console.error('Error in deleteOrder:', error);
+    throw error;
+  }
+};

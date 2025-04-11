@@ -98,4 +98,23 @@ public class OrderController {
             return new ResponseEntity<>("Error creating order: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
+        logger.info("Received request to delete order with ID: {}", id);
+        try {
+            Optional<Order> optionalOrder = orderRepository.findById(id);
+            if (optionalOrder.isEmpty()) {
+                logger.warn("Order not found with ID: {}", id);
+                return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+            }
+
+            orderRepository.deleteById(id);
+            logger.info("Successfully deleted order with ID: {}", id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error deleting order: ", e);
+            return new ResponseEntity<>("Error deleting order: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

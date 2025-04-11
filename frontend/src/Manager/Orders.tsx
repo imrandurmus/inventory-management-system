@@ -19,6 +19,7 @@ import {
   getOrders,
   createOrder,
   Order,
+  deleteOrder,
 } from "../../services/api";
 
 const Orders: React.FC = () => {
@@ -26,6 +27,8 @@ const Orders: React.FC = () => {
   const [search, setSearch] = useState("");
   const [sortByProduct, setSortByProduct] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
   const [newOrder, setNewOrder] = useState({
     customerName: "",
     products: [] as { product: string; quantity: number }[],
@@ -175,10 +178,33 @@ const Orders: React.FC = () => {
   };
 
   const handleDelete = (orderId: string) => {
-    // TODO: Implement delete order functionality
-    setToastVariant("warning");
-    setToastMessage("Delete functionality not implemented yet");
-    setShowToast(true);
+    setOrderToDelete(orderId);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    if (orderToDelete) {
+      try {
+        await deleteOrder(orderToDelete);
+        setOrders(orders.filter((order) => order.id !== orderToDelete));
+        setToastVariant("success");
+        setToastMessage("Order deleted successfully!");
+        setShowToast(true);
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        setToastVariant("danger");
+        setToastMessage("Failed to delete order. Please try again.");
+        setShowToast(true);
+      }
+      setShowDeleteConfirm(false);
+      setOrderToDelete(null);
+      setCurrentPage(1);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setOrderToDelete(null);
   };
 
   // Filter and sort logic
@@ -425,6 +451,27 @@ const Orders: React.FC = () => {
               </Button>
               <Button variant="primary" onClick={handleSaveOrder}>
                 Save Order
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          {/* Delete Confirmation Modal */}
+          <Modal show={showDeleteConfirm} onHide={cancelDelete}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                Are you sure you want to delete this order? This action cannot
+                be undone.
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={cancelDelete}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={confirmDelete}>
+                Delete
               </Button>
             </Modal.Footer>
           </Modal>
