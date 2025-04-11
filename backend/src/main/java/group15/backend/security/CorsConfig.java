@@ -35,7 +35,8 @@ public class CorsConfig {
         // Apply the CORS configuration for all paths
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
+        
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         return source;
     }
 }

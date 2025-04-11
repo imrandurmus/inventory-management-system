@@ -27,6 +27,7 @@
     "firebase": "^11.6.0",
     "framer-motion": "^12.4.10",
     "jspdf": "^3.0.1",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.487.0",
     "pdfjs-dist": "^5.1.91",
     "react": "^19.1.0",

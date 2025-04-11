@@ -12,11 +12,17 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import "./CSS/Login.css";
 import ForgotPassword from "./ForgotPassword";
 import { Link } from "react-router-dom";
 import WBGHeader from "./WBGHeader";
+
+interface JwtPayload {
+  sub: string; // Email
+  role: string; // "MANAGER" or "REGULAR"
+}
 
 const Login = () => {
   useEffect(() => {
@@ -29,7 +35,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // For redirecting after login
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -60,27 +66,48 @@ const Login = () => {
       }
 
       const data = await response.json();
-      const { token, role, fullName } = data;
+      const { token } = data;
 
-      // Store token, role, and fullName in localStorage
+      // Store token in localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("role", role);
-      localStorage.setItem("fullName", fullName);
+
+      // Decode JWT to get role
+      const decoded: JwtPayload = jwtDecode(token);
+      const role = decoded.role;
+      const fullName = await fetchFullName(token); // Optional: Fetch fullName if needed
 
       setErrorMessage("");
-      console.log("Logged in with:", { email, role, fullName });
+      console.log("Logged in with:", { email: decoded.sub, role, fullName });
 
-      // Redirect based on role (e.g., MANAGER to Manager dashboard, others to Regular dashboard)
+      // Redirect based on role
       if (role === "MANAGER") {
-        navigate("/User-Dashboard");
+        navigate("/manager/users"); // Adjusted to match earlier context
       } else {
-        navigate("/Regular-Dashboard");
+        navigate("/regular/dashboard"); // Adjusted for consistency
       }
     } catch (error: any) {
       setErrorMessage(error.message || "Invalid email or password. Please try again.");
       console.error("Login error:", error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Optional: Fetch fullName from a /me endpoint
+  const fetchFullName = async (token: string): Promise<string> => {
+    try {
+      const response = await fetch("http://localhost:8080/employees/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) throw new Error("Failed to fetch user details");
+      const data = await response.json();
+      return `${data.firstName} ${data.lastName}`;
+    } catch (error) {
+      console.error("Error fetching fullName:", error);
+      return ""; // Fallback if endpoint isn’t implemented
     }
   };
 

@@ -7,18 +7,20 @@ import group15.backend.repository.EmployeeRepository;
 import group15.backend.security.jwt.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.authentication.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,28 +44,28 @@ public class AuthController {
         String password = loginRequest.get("password");
 
         try {
+            // Authenticate the user
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
+            SecurityContextHolder.getContext().setAuthentication(authentication); // Set authentication in context
 
-            // Generate JWT
-            String token = jwtUtil.generateToken(email);
-
-            // Optionally: Include role or name in response
+            // Fetch the Employee object
             Employee employee = employeeRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            return ResponseEntity.ok(Map.of(
-                    "token", token,
-                    "role", employee.getRole().name(),
-                    "fullName", employee.getFirstName() + " " + employee.getLastName()
-            ));
+            // Generate JWT with Employee object (includes email and role)
+            String token = jwtUtil.generateToken(employee);
+
+            // Return token (role is in JWT, so no need to include it separately unless frontend needs it)
+            return ResponseEntity.ok(Map.of("token", token));
 
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid credentials"));
         }
     }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest req) {
         // Check if email is already used
@@ -77,10 +79,10 @@ public class AuthController {
         newEmployee.setFirstName(req.getFirstName());
         newEmployee.setLastName(req.getLastName());
         newEmployee.setEmail(req.getEmail());
-        newEmployee.setPassword(req.getPassword()); // NOTE: hash this in production
-        newEmployee.setRole(Role.MANAGER); // everyone who signs up is a manager for now
+        newEmployee.setPassword(passwordEncoder.encode(req.getPassword())); // Hash the password
+        newEmployee.setRole(Role.MANAGER); // Hardcoded as MANAGER for now
 
-        // ✅ Default profile image if none is provided
+        // Default profile image if none is provided
         if (req.getProfileImageUrl() == null || req.getProfileImageUrl().isBlank()) {
             String initialsUrl = "https://ui-avatars.com/api/?name=" +
                     URLEncoder.encode(req.getFirstName() + " " + req.getLastName(), StandardCharsets.UTF_8);

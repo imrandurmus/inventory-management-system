@@ -5,8 +5,8 @@ import { Edit, Delete, Visibility, Add } from '@mui/icons-material';
 import { Modal, Box, Typography, TextField, MenuItem, IconButton } from '@mui/material';
 import { Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon } from '@mui/icons-material';
 import Header from '../DashComponents/Header';
-import { getEmployees, createEmployee, deleteEmployee } from '@/services/api.ts';
-import '@/CSS/Users.css';
+import { getEmployees, createEmployee, deleteEmployee, getProductTypes } from "../../services/api";
+import '../CSS/Users.css';
 
 interface User {
   id: string;
@@ -90,15 +90,29 @@ const Users: React.FC = () => {
 
   const handleAddUser = async () => {
     try {
-      const newUserData = await createEmployee({
+      if (!newUser.firstName || !newUser.lastName || !newUser.email || !newUser.password) {
+        alert('All fields are required');
+        return;
+      }
+      if (newUser.password.length < 6) {
+        alert('Password must be at least 6 characters');
+        return;
+      }
+  
+      const payload = {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
         password: newUser.password,
         role: newUser.role,
+        profileImageUrl: newUser.profileImageUrl || undefined,
         assignedTypes: newUser.role === 'Regular' ? newUser.assignedProductTypes : [],
-      });
-
+      };
+      console.log('Payload to create employee:', payload); // Debug log
+  
+      const newUserData = await createEmployee(payload);
+      console.log('Response from backend:', newUserData); // Debug log
+  
       setUsers([...users, newUserData]);
       setFilteredUsers([...users, newUserData]);
       setShowAddModal(false);
@@ -134,6 +148,20 @@ const Users: React.FC = () => {
   if (error) {
     return <div>{error}</div>;
   }
+
+const [productTypes, setProductTypes] = useState<string[]>([]);
+
+useEffect(() => {
+  const fetchProductTypes = async () => {
+    try {
+      const types = await getProductTypes();
+      setProductTypes(types);
+    } catch (err: any) {
+      console.error('Failed to fetch product types:', err);
+    }
+  };
+  fetchProductTypes();
+}, []);
 
   return (
     <>
@@ -314,16 +342,16 @@ const Users: React.FC = () => {
                 select
                 label="Assigned Product Types"
                 value={newUser.assignedProductTypes}
-                onChange={(e) => setNewUser({ ...newUser, assignedProductTypes: e.target.value as any })}
-                SelectProps={{ multiple: true }}
+                onChange={(e) => setNewUser({ ...newUser, assignedProductTypes: e.target.value as string[] })}                SelectProps={{ multiple: true }}
                 margin="normal"
               >
-                {/* Hardcoded for now; replace with dynamic fetch */}
-                <MenuItem value="Electronics">Electronics</MenuItem>
-                <MenuItem value="Furniture">Furniture</MenuItem>
+                {productTypes.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
               </TextField>
             )}
-
             <Box mt={3} display="flex" justifyContent="flex-end">
               <Button variant="secondary" onClick={() => setShowAddModal(false)} className="me-2">
                 Cancel

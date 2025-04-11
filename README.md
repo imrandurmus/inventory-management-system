@@ -26,7 +26,7 @@ npx shadcn@latest init
 npm install recharts
 npm install jspdf
 npm install pdfjs-dist
-
+npm install jwt-decode
 
 
 step 3:       //Then after you do all the steps once, use step 1 then 3 from now on to run the frontend 
