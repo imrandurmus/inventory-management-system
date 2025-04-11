@@ -413,6 +413,7 @@ export const deleteProduct = async (id: string): Promise<void> => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
     },
   });
 

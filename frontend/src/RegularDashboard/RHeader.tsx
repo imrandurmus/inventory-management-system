@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Bell, Sun } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import "../CSS/Header.css";
 
 interface User {
@@ -127,8 +127,6 @@ const RHeader: React.FC = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-
-          <Sun size={20} className="Dheader-icon mb-2 mx-2" />
 
           {user ? (
             <NavDropdown
