@@ -20,57 +20,56 @@ import java.util.Set;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository; //Automatic instance of EmployeeRepository so that we don't have to create it manually
+    private EmployeeRepository employeeRepository; // Automatic instance of EmployeeRepository so that we don't have to
+                                                   // create it manually
 
     private Employee getCurrentEmployee() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return employeeRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Current employee not found"));
     }
-    
-@Autowired
-private ProductTypeRepository productTypeRepository;
 
+    @Autowired
+    private ProductTypeRepository productTypeRepository;
 
-@PostMapping
-public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-    Employee currentUser = getCurrentEmployee();
-    if (currentUser.getRole() != Role.MANAGER) {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN); // Only managers can add
-    }
-
-    System.out.println("Received employee: " + employee);
-    System.out.println("Received assignedTypes: " + employee.getAssignedTypes());
-
-    if (employee.getProfileImageUrl() == null || employee.getProfileImageUrl().isBlank()) {
-        String initialsUrl = "https://ui-avatars.com/api/?name=" +
-                URLEncoder.encode(employee.getFirstName() + " " + employee.getLastName(), StandardCharsets.UTF_8);
-        employee.setProfileImageUrl(initialsUrl);
-    }
-
-    if (employee.getAssignedTypes() != null && !employee.getAssignedTypes().isEmpty()) {
-        Set<ProductType> types = new HashSet<>();
-        for (ProductType type : employee.getAssignedTypes()) {
-            System.out.println("Processing type: " + type.getName());
-            ProductType existingType = productTypeRepository.findByName(type.getName())
-                    .orElseThrow(() -> new RuntimeException("Product type not found: " + type.getName()));
-            System.out.println("Found existing type: " + existingType);
-            types.add(existingType);
+    @PostMapping
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee currentUser = getCurrentEmployee();
+        if (currentUser.getRole() != Role.MANAGER) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // Only managers can add
         }
-        System.out.println("Assigned types set: " + types);
-        employee.setAssignedTypes(types);
-    }
 
-    Employee saved = employeeRepository.save(employee);
-    System.out.println("Saved employee: " + saved);
-    return new ResponseEntity<>(saved, HttpStatus.CREATED);
-}
+        System.out.println("Received employee: " + employee);
+        System.out.println("Received assignedTypes: " + employee.getAssignedTypes());
+
+        if (employee.getProfileImageUrl() == null || employee.getProfileImageUrl().isBlank()) {
+            String initialsUrl = "https://ui-avatars.com/api/?name=" +
+                    URLEncoder.encode(employee.getFirstName() + " " + employee.getLastName(), StandardCharsets.UTF_8);
+            employee.setProfileImageUrl(initialsUrl);
+        }
+
+        if (employee.getAssignedTypes() != null && !employee.getAssignedTypes().isEmpty()) {
+            Set<ProductType> types = new HashSet<>();
+            for (ProductType type : employee.getAssignedTypes()) {
+                System.out.println("Processing type: " + type.getName());
+                ProductType existingType = productTypeRepository.findByName(type.getName())
+                        .orElseThrow(() -> new RuntimeException("Product type not found: " + type.getName()));
+                System.out.println("Found existing type: " + existingType);
+                types.add(existingType);
+            }
+            System.out.println("Assigned types set: " + types);
+            employee.setAssignedTypes(types);
+        }
+
+        Employee saved = employeeRepository.save(employee);
+        System.out.println("Saved employee: " + saved);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
@@ -92,7 +91,6 @@ public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
@@ -121,7 +119,8 @@ public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
 
             if (updatedEmployee.getProfileImageUrl() == null || updatedEmployee.getProfileImageUrl().isBlank()) {
                 String fallbackUrl = "https://ui-avatars.com/api/?name=" +
-                        URLEncoder.encode(updatedEmployee.getFirstName() + " " + updatedEmployee.getLastName(), StandardCharsets.UTF_8);
+                        URLEncoder.encode(updatedEmployee.getFirstName() + " " + updatedEmployee.getLastName(),
+                                StandardCharsets.UTF_8);
                 employee.setProfileImageUrl(fallbackUrl);
             } else {
                 employee.setProfileImageUrl(updatedEmployee.getProfileImageUrl());

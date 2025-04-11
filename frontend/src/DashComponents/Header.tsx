@@ -1,13 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { Bell } from 'lucide-react';
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Badge,
+  Dropdown,
+} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Bell } from "lucide-react";
 import "../CSS/Header.css";
-
-interface User {
-  username: string;
-  profilePic: string;
-}
+import { getCurrentUser, User } from "../../services/api";
 
 interface Announcement {
   id: string;
@@ -28,35 +31,44 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setShowDropdown(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   useEffect(() => {
-    fetch('/api/user/me', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setUser(data))
-      .catch(err => console.error('Failed to fetch user', err));
+    const fetchUserData = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      }
+    };
 
-    fetch('/api/announcements/unread-count')
-      .then(res => res.json())
-      .then(data => setUnreadCount(data.count))
-      .catch(err => console.error('Failed to fetch unread count', err));
+    fetchUserData();
 
-    fetch('/api/announcements/unread')
-      .then(res => res.json())
-      .then(data => {
+    fetch("/api/announcements/unread-count")
+      .then((res) => res.json())
+      .then((data) => setUnreadCount(data.count))
+      .catch((err) => console.error("Failed to fetch unread count", err));
+
+    fetch("/api/announcements/unread")
+      .then((res) => res.json())
+      .then((data) => {
         setAnnouncements(data);
         setUnreadCount(data.length);
       })
-      .catch(err => console.error('Failed to fetch announcements', err));
+      .catch((err) => console.error("Failed to fetch announcements", err));
   }, []);
 
   return (
@@ -67,14 +79,34 @@ const Header: React.FC = () => {
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
             <p className="nav-link-custom ml-2 mr-6 mt-2">Welcome!</p>
-            <Nav.Link as={Link} to="/User-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
-            <NavDropdown title="Items" className="nav-link-custom" id="items-dropdown">
-              <NavDropdown.Item as={Link} to="/items/products">Product Types</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/items/orders">Orders</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/items/invoices">Invoices</NavDropdown.Item>
+            <Nav.Link
+              as={Link}
+              to="/User-Dashboard"
+              className="nav-link-custom"
+            >
+              Dashboard
+            </Nav.Link>
+            <NavDropdown
+              title="Items"
+              className="nav-link-custom"
+              id="items-dropdown"
+            >
+              <NavDropdown.Item as={Link} to="/items/products">
+                Product Types
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/orders">
+                Orders
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/invoices">
+                Invoices
+              </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link as={Link} to="/users" className="nav-link-custom">Users</Nav.Link>
-            <Nav.Link as={Link} to="/announcements" className="nav-link-custom">Announcements</Nav.Link>
+            <Nav.Link as={Link} to="/users" className="nav-link-custom">
+              Users
+            </Nav.Link>
+            <Nav.Link as={Link} to="/announcements" className="nav-link-custom">
+              Announcements
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
 
@@ -85,8 +117,8 @@ const Header: React.FC = () => {
             <Dropdown show={showDropdown} onToggle={toggleDropdown}>
               <Dropdown.Toggle
                 as="button"
-                className="icon-button no-caret" // Add a custom class to target this toggle
-                style={{ background: 'none', border: 'none', padding: 0 }}
+                className="icon-button no-caret"
+                style={{ background: "none", border: "none", padding: 0 }}
                 aria-label="Toggle announcements dropdown"
               >
                 <Bell size={20} className="Dheader-icon mx-2 clickable-icon" />
@@ -112,7 +144,9 @@ const Header: React.FC = () => {
                         onClick={() => setShowDropdown(false)}
                       >
                         <h6 className="mb-1">{announcement.title}</h6>
-                        <p className="mb-0 text-muted">{announcement.message}</p>
+                        <p className="mb-0 text-muted">
+                          {announcement.message}
+                        </p>
                       </Dropdown.Item>
                     ))}
                     <Dropdown.Divider />
@@ -133,49 +167,25 @@ const Header: React.FC = () => {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          {user ? (
-            <NavDropdown
-              title={
-                <img
-                  className="Mprofile"
-                  src={user.profilePic}
-                  alt="Profile"
-                />
-              }
-              id="profile-dropdown"
-              align="end"
-              className="profile-dropdown"
-            >
-              <NavDropdown.Item as={Link} to="/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          ) : (
-            <NavDropdown
-              title={
-                <img
-                  src="/default_profile.jpg"
-                  alt="Profile"
-                  width="32"
-                  height="32"
-                  className="rounded-circle ms-3 profile-img"
-                />
-              }
-              id="profile-dropdown"
-              align="end"
-              className="profile-dropdown"
-            >
-              <NavDropdown.Item as={Link} to="/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          )}
+          <NavDropdown
+            title={
+              <img
+                className="Mprofile"
+                src={user?.profilePicture || "/default_profile.jpg"}
+                alt="Profile"
+              />
+            }
+            id="profile-dropdown"
+            align="end"
+            className="profile-dropdown"
+          >
+            <NavDropdown.Item as={Link} to="/settings">
+              Settings
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/Landing">
+              Logout
+            </NavDropdown.Item>
+          </NavDropdown>
         </div>
       </Container>
     </Navbar>

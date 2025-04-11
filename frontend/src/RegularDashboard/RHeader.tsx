@@ -66,7 +66,7 @@ const RHeader: React.FC = () => {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
-            <p className="nav-link-custom ml-2 mr-6 mt-2">Hello, User</p>
+            <p className="nav-link-custom ml-2 mr-6 mt-2">Welcome!</p>
             <Nav.Link as={Link} to="/Regular-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
             <Nav.Link as={Link} to="/My-Announcements" className="nav-link-custom">Announcements</Nav.Link>
           </Nav>
