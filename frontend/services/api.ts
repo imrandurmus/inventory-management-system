@@ -670,11 +670,14 @@ export const createOrder = async (order: {
 export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
   try {
     console.log('Fetching dashboard metrics');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    console.log('Using token:', token ? 'Token present' : 'No token found');
+    
     const response = await fetch(`${BASE_URL}/dashboard/metrics`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        Authorization: `Bearer ${token || ''}`,
       },
     });
 
