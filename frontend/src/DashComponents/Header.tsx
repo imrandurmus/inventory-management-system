@@ -40,17 +40,17 @@ const Header: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetch('/api/user/me', { credentials: 'include' })
+    fetch('/user/me', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setUser(data))
       .catch(err => console.error('Failed to fetch user', err));
 
-    fetch('/api/announcements/unread-count')
+    fetch('/announcements/unread-count')
       .then(res => res.json())
       .then(data => setUnreadCount(data.count))
       .catch(err => console.error('Failed to fetch unread count', err));
 
-    fetch('/api/announcements/unread')
+    fetch('/announcements/unread')
       .then(res => res.json())
       .then(data => {
         setAnnouncements(data);

@@ -26,7 +26,7 @@ const EditUser: React.FC = () => {
     profileImageUrl: '',
     assignedProductTypes: [] as string[],
   });
-  const [productTypes, setProductTypes] = useState<string[]>([]);
+  const [productTypes, setProductTypes] = useState<ProductType[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOwnProfileRestricted, setIsOwnProfileRestricted] = useState(false);
@@ -177,18 +177,18 @@ const EditUser: React.FC = () => {
             />
             {formData.role === 'Regular' && (
               <TextField
-              fullWidth
-              select
-              label="Assigned Product Types"
-              value={formData.assignedProductTypes}
-              onChange={(e) => setFormData({ ...formData, assignedProductTypes: e.target.value as string[] })}
-              SelectProps={{ multiple: true }}
-              margin="normal"
-              disabled={isOwnProfileRestricted}
-                >              
+                fullWidth
+                select
+                label="Assigned Product Types"
+                value={formData.assignedProductTypes || []}
+                onChange={(e) => setFormData({ ...formData, assignedProductTypes: e.target.value })}
+                SelectProps={{ multiple: true }}
+                margin="normal"
+                disabled={isOwnProfileRestricted}
+              >              
                 {productTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
+                  <MenuItem key={type.id} value={type.name}>
+                    {type.name}
                   </MenuItem>
                 ))}
               </TextField>

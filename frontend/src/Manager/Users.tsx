@@ -18,6 +18,11 @@ interface User {
   assignedProductTypes?: string[];
 }
 
+interface ProductType {
+  id: string;
+  name: string;
+}
+
 const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<User[]>([]);
@@ -39,6 +44,7 @@ const Users: React.FC = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [productTypes, setProductTypes] = useState<ProductType[]>([]);
 
   // Fetch employees on mount
   useEffect(() => {
@@ -149,19 +155,17 @@ const Users: React.FC = () => {
     return <div>{error}</div>;
   }
 
-const [productTypes, setProductTypes] = useState<string[]>([]);
-
-useEffect(() => {
-  const fetchProductTypes = async () => {
-    try {
-      const types = await getProductTypes();
-      setProductTypes(types);
-    } catch (err: any) {
-      console.error('Failed to fetch product types:', err);
-    }
-  };
-  fetchProductTypes();
-}, []);
+  useEffect(() => {
+    const fetchProductTypes = async () => {
+      try {
+        const types = await getProductTypes();
+        setProductTypes(types);
+      } catch (err: any) {
+        console.error('Failed to fetch product types:', err);
+      }
+    };
+    fetchProductTypes();
+  }, []);
 
   return (
     <>
@@ -341,13 +345,19 @@ useEffect(() => {
                 fullWidth
                 select
                 label="Assigned Product Types"
-                value={newUser.assignedProductTypes}
-                onChange={(e) => setNewUser({ ...newUser, assignedProductTypes: e.target.value as string[] })}                SelectProps={{ multiple: true }}
+                value={newUser.assignedProductTypes || []}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setNewUser({ ...newUser, assignedProductTypes: value });
+                }}
+                SelectProps={{
+                  multiple: true
+                }}
                 margin="normal"
               >
                 {productTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
+                  <MenuItem key={type.id} value={type.name}>
+                    {type.name}
                   </MenuItem>
                 ))}
               </TextField>

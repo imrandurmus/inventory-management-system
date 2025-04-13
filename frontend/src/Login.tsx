@@ -70,11 +70,8 @@ const Login = () => {
       const { token } = data;
 
       // Store token in localStorage or sessionStorage based on remember me
-      if (rememberMe) {
-        localStorage.setItem("token", token);
-      } else {
-        sessionStorage.setItem("token", token);
-      }
+      localStorage.setItem("token", token);
+
 
       // Decode JWT to get role
       const decoded: JwtPayload = jwtDecode(token);
@@ -82,20 +79,20 @@ const Login = () => {
       const fullName = await fetchFullName(token);
 
       // Store role in the same storage as token
-      if (rememberMe) {
-        localStorage.setItem("role", role);
-      } else {
-        sessionStorage.setItem("role", role);
-      }
+      localStorage.setItem("role", role);
 
       setErrorMessage("");
       console.log("Logged in with:", { email: decoded.sub, role, fullName, token });
 
       // Redirect based on role
+      // ... existing code ...
+      // Redirect based on role
       if (role === "MANAGER") {
         navigate("/User-Dashboard");
-      } else {
+      } else if (role === "REGULAR") {
         navigate("/Regular-Dashboard");
+      } else {
+        setErrorMessage("Invalid role");
       }
     } catch (error: any) {
       setErrorMessage(error.message || "Invalid email or password. Please try again.");
