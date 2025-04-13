@@ -49,25 +49,26 @@ public class DataInitializer {
             if (employeeRepo.findByEmail("alice@company.com").isEmpty()) {
                 Employee alice = new Employee("Alice", "Johnson", "alice@company.com",
                         passwordEncoder.encode("alice123"), Role.MANAGER);
+                alice.setProfileImageUrl("https://ui-avatars.com/api/?name=Alice+Johnson");
                 employeeRepo.save(alice);
             }
 
             if (employeeRepo.findByEmail("bob@company.com").isEmpty()) {
                 Employee bob = new Employee("Bob", "Smith", "bob@company.com",
                         passwordEncoder.encode("bob123"), Role.REGULAR);
-
+                bob.setProfileImageUrl("https://ui-avatars.com/api/?name=Bob+Smith");
                 bob.assignType(electronics);
                 bob.assignType(books);
-
                 employeeRepo.save(bob);
             }
 
-
             if (employeeRepo.findByEmail("charlie@company.com").isEmpty()) {
                 Employee charlie = new Employee("Charlie", "Guest", "charlie@company.com",
-                        passwordEncoder.encode("charlie123"), Role.GUEST);
+                        passwordEncoder.encode("charlie123"), Role.REGULAR);
+                charlie.setProfileImageUrl("https://ui-avatars.com/api/?name=Charlie+Guest");
                 employeeRepo.save(charlie);
             }
+
 
             System.out.println("✅ Sample data loaded safely.");
         };
