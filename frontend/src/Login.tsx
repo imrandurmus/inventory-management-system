@@ -70,7 +70,7 @@ const Login = () => {
       const { token } = data;
 
 
-      sessionStorage.setItem("token", token);
+      localStorage.setItem("token", token);
 
       // Decode JWT to get role
       const decoded: JwtPayload = jwtDecode(token);
