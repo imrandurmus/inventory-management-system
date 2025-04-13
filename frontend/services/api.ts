@@ -996,3 +996,136 @@ export const markAnnouncementAsRead = async (id: string): Promise<void> => {
     throw error;
   }
 };
+
+export interface Invoice {
+  id: string;
+  orderId: string;
+  customerName: string;
+  totalAmount: number;
+  date: string;
+}
+
+export interface InvoiceDetails extends Invoice {
+  items: {
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+  }[];
+}
+
+export interface BusinessInfo {
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+}
+
+export const getInvoices = async (page: number, size: number): Promise<{ content: Invoice[], totalPages: number, totalElements: number }> => {
+  const response = await fetch(`${BASE_URL}/invoices?page=${page}&size=${size}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Session expired' : 'Failed to fetch invoices');
+  }
+  const data = await response.json();
+  console.log('Fetched invoices:', data);
+  return {
+    content: data.content.map((inv: any) => ({
+      id: inv.id.toString(),
+      orderId: inv.orderId.toString(),
+      customerName: inv.customerName,
+      totalAmount: parseFloat(inv.totalAmount),
+      date: inv.date,
+    })),
+    totalPages: data.totalPages,
+    totalElements: data.totalElements,
+  };
+};
+
+export const getInvoice = async (id: string): Promise<InvoiceDetails> => {
+  const response = await fetch(`${BASE_URL}/invoices/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Session expired' : 'Failed to fetch invoice');
+  }
+  const data = await response.json();
+  console.log('Fetched invoice details:', data);
+  return {
+    id: data.id.toString(),
+    orderId: data.orderId.toString(),
+    customerName: data.customerName,
+    totalAmount: parseFloat(data.totalAmount),
+    date: data.date,
+    items: data.items.map((item: any) => ({
+      productName: item.productName,
+      quantity: item.quantity,
+      unitPrice: parseFloat(item.unitPrice),
+      totalPrice: parseFloat(item.totalPrice),
+    })),
+  };
+};
+
+export const createInvoice = async (data: { customerName: string, totalAmount: number, date: string }): Promise<Invoice> => {
+  const response = await fetch(`${BASE_URL}/invoices`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Session expired' : 'Failed to create invoice');
+  }
+  const result = await response.json();
+  console.log('Created invoice:', result);
+  return {
+    id: result.id.toString(),
+    orderId: result.orderId.toString(),
+    customerName: result.customerName,
+    totalAmount: parseFloat(result.totalAmount),
+    date: result.date,
+  };
+};
+
+export const deleteInvoice = async (id: string): Promise<void> => {
+  console.log('Deleting invoice ID:', id); // Debug
+  const response = await fetch(`${BASE_URL}/invoices/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Failed to delete invoice');
+  }
+  console.log('Deleted invoice:', id);
+};
+
+export const getBusinessInfo = async (): Promise<BusinessInfo> => {
+  // Fallback to static data if endpoint unavailable
+  return {
+    name: 'XYZ Corp',
+    address: '1234 Business Rd, Suite 100',
+    phone: '(123) 456-7890',
+    email: 'contact@xyzcorp.com',
+  };
+  // Uncomment if endpoint exists:
+  /*
+  const response = await fetch(`${BASE_URL}/business-info`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(response.status === 401 ? 'Session expired' : 'Failed to fetch business info');
+  }
+  return await response.json();
+  */
+};

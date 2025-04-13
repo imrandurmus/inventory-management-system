@@ -1,5 +1,4 @@
-//DONT FORGET TO CHNAGE IT SO THAT THE PDF VALUES ARE REPLCACED WITH BACKEND VALUES AND NOT AUTO GENERATED
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Table,
@@ -10,315 +9,276 @@ import {
   Modal,
   Badge,
   Pagination,
-} from "react-bootstrap";
-import { Delete, Visibility, FileDownload, Add } from "@mui/icons-material";
-import Header from "../DashComponents/Header";
-import { jsPDF } from "jspdf";
-
-// Mock Data for Invoices
-const initialInvoices = [
-  {
-    id: 1,
-    orderId: 101,
-    customerName: "John Doe",
-    totalAmount: 120,
-    date: "2025-04-01",
-  },
-  {
-    id: 2,
-    orderId: 102,
-    customerName: "Jane Smith",
-    totalAmount: 230,
-    date: "2025-03-28",
-  },
-  {
-    id: 3,
-    orderId: 103,
-    customerName: "Samuel Johnson",
-    totalAmount: 150,
-    date: "2025-04-02",
-  },
-  {
-    id: 4,
-    orderId: 104,
-    customerName: "Emily Davis",
-    totalAmount: 500,
-    date: "2025-03-30",
-  },
-  {
-    id: 5,
-    orderId: 101,
-    customerName: "John wDoe",
-    totalAmount: 120,
-    date: "2025-04-01",
-  },
-  {
-    id: 6,
-    orderId: 102,
-    customerName: "Jane Swmith",
-    totalAmount: 230,
-    date: "2025-03-28",
-  },
-  {
-    id: 7,
-    orderId: 103,
-    customerName: "Samuelw Johnson",
-    totalAmount: 150,
-    date: "2025-04-02",
-  },
-  {
-    id: 8,
-    orderId: 104,
-    customerName: "Emily wDavis",
-    totalAmount: 500,
-    date: "2025-03-30",
-  },
-  {
-    id: 9,
-    orderId: 103,
-    customerName: "Sadmuel Johnson",
-    totalAmount: 150,
-    date: "2025-04-02",
-  },
-  {
-    id: 10,
-    orderId: 104,
-    customerName: "Emidly Davis",
-    totalAmount: 500,
-    date: "2025-03-30",
-  },
-  {
-    id: 11,
-    orderId: 101,
-    customerName: "Johdn wDoe",
-    totalAmount: 120,
-    date: "2025-04-01",
-  },
-  {
-    id: 12,
-    orderId: 102,
-    customerName: "Jande Swmith",
-    totalAmount: 230,
-    date: "2025-03-28",
-  },
-  {
-    id: 13,
-    orderId: 103,
-    customerName: "Samduelw Johnson",
-    totalAmount: 150,
-    date: "2025-04-02",
-  },
-  {
-    id: 14,
-    orderId: 104,
-    customerName: "Emidly wDavis",
-    totalAmount: 500,
-    date: "2025-03-30",
-  },
-];
+  Alert,
+} from 'react-bootstrap';
+import { Delete, Visibility, FileDownload, Add } from '@mui/icons-material';
+import Header from '../DashComponents/Header';
+import { jsPDF } from 'jspdf';
+import { useNavigate } from 'react-router-dom';
+import {
+  getInvoices,
+  getInvoice,
+  createInvoice,
+  deleteInvoice,
+  getBusinessInfo,
+  Invoice,
+  InvoiceDetails,
+  BusinessInfo,
+} from '../../services/api';
 
 const Invoices: React.FC = () => {
-  const [invoices, setInvoices] = useState(initialInvoices);
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
+  const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [invoiceToDelete, setInvoiceToDelete] = useState<number | null>(null);
+  const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null);
   const [newOrder, setNewOrder] = useState({
-    orderId: "",
-    customerName: "",
-    totalAmount: "",
-    date: new Date().toISOString().split("T")[0],
+    customerName: '',
+    totalAmount: '',
+    date: new Date().toISOString().split('T')[0],
   });
-  const [previewInvoice, setPreviewInvoice] = useState<any>(null);
+  const [previewInvoice, setPreviewInvoice] = useState<InvoiceDetails | null>(null);
   const [pdfDataUrl, setPdfDataUrl] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // Sorting state for Amount column
-  const [sortAmountOrder, setSortAmountOrder] = useState<"asc" | "desc" | null>(
-    null
-  );
+  // Sorting state
+  const [sortAmountOrder, setSortAmountOrder] = useState<'asc' | 'desc' | null>(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+
+  // Fetch invoices and business info
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setApiError(null);
+
+        // Fetch invoices
+        const { content, totalPages } = await getInvoices(currentPage - 1, itemsPerPage);
+        setInvoices(content);
+        setTotalPages(totalPages);
+
+        // Fetch business info
+        const info = await getBusinessInfo();
+        setBusinessInfo(info);
+      } catch (err: any) {
+        console.error('Fetch error:', err);
+        setApiError(err.message || 'Failed to load invoices');
+        if (err.message.includes('Session expired')) {
+          navigate('/Login');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPage, navigate]);
 
   // Handle Search/Filter
   const filteredInvoices = invoices.filter(
     (invoice) =>
-      invoice.customerName
-        .toLowerCase()
-        .includes(search.trim().toLowerCase()) ||
-      invoice.orderId.toString().includes(search.trim().toLowerCase()) ||
+      invoice.customerName.toLowerCase().includes(search.trim().toLowerCase()) ||
+      invoice.orderId.includes(search.trim()) ||
       invoice.totalAmount.toString().includes(search.trim()) ||
       invoice.date.includes(search.trim())
   );
 
-  // handle sorting by amount
+  // Handle sorting by amount
   const handleSortAmount = () => {
-    const newOrder = sortAmountOrder === "asc" ? "desc" : "asc";
+    const newOrder = sortAmountOrder === 'asc' ? 'desc' : 'asc';
     setSortAmountOrder(newOrder);
     setCurrentPage(1);
   };
 
-  // Sort the filtered invoices by amount
-  if (sortAmountOrder) {
-    filteredInvoices.sort((a, b) => {
-      if (sortAmountOrder === "asc") {
-        return a.totalAmount - b.totalAmount;
-      } else {
-        return b.totalAmount - a.totalAmount;
-      }
-    });
-  }
+  // Sort filtered invoices
+  const sortedInvoices = [...filteredInvoices].sort((a, b) => {
+    if (!sortAmountOrder) return 0;
+    return sortAmountOrder === 'asc'
+      ? a.totalAmount - b.totalAmount
+      : b.totalAmount - a.totalAmount;
+  });
 
   // Pagination logic
-  const totalItems = filteredInvoices.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentInvoices = filteredInvoices.slice(startIndex, endIndex);
+  const currentInvoices = sortedInvoices;
 
-  // Generate PDF content (used for both preview and download)
-  const generatePDF = (invoice: any) => {
+  // Generate PDF
+  const generatePDF = (invoice: InvoiceDetails) => {
     const doc = new jsPDF();
     doc.setFontSize(20);
-    doc.text("Invoice", 105, 20, { align: "center" });
+    doc.text('Invoice', 105, 20, { align: 'center' });
     doc.setFontSize(12);
-    doc.text("Business Name: XYZ Corp", 10, 30);
-    doc.text("Address: 1234 Business Rd, Suite 100", 10, 35);
-    doc.text("Phone: (123) 456-7890", 10, 40);
-    doc.text("Email: contact@xyzcorp.com", 10, 45);
+    doc.text(`Business Name: ${businessInfo?.name || 'SIMPLE Corp'}`, 10, 30);
+    doc.text(`Address: ${businessInfo?.address || '1234 Business NYC, Suite 100'}`, 10, 35);
+    doc.text(`Phone: ${businessInfo?.phone || '(123) 456-7890'}`, 10, 40);
+    doc.text(`Email: ${businessInfo?.email || 'contact@simple.com'}`, 10, 45);
     doc.text(`Invoice Number: ${invoice.id}`, 10, 60);
     doc.text(`Order Number: ${invoice.orderId}`, 10, 65);
     doc.text(`Customer: ${invoice.customerName}`, 10, 70);
     doc.text(`Date of Issue: ${invoice.date}`, 10, 75);
     doc.line(10, 80, 200, 80);
-    doc.text("Item Description", 10, 90);
-    doc.text("Quantity", 140, 90);
-    doc.text("Unit Price", 160, 90);
-    doc.text("Total", 180, 90);
-    doc.text("Product A", 10, 100);
-    doc.text("1", 140, 100);
-    doc.text("$120.00", 160, 100);
-    doc.text("$120.00", 180, 100);
-    doc.text("Total Amount: ", 140, 120);
-    doc.text(`$${invoice.totalAmount.toFixed(2)}`, 180, 120);
+    doc.text('Item Description', 10, 90);
+    doc.text('Quantity', 140, 90);
+    doc.text('Unit Price', 160, 90);
+    doc.text('Total', 180, 90);
+
+    // Dynamic items
+    let y = 100;
+    invoice.items.forEach((item) => {
+      doc.text(item.productName, 10, y);
+      doc.text(item.quantity.toString(), 140, y);
+      doc.text(`$${item.unitPrice.toFixed(2)}`, 160, y);
+      doc.text(`$${item.totalPrice.toFixed(2)}`, 180, y);
+      y += 10;
+    });
+
+    doc.text('Total Amount: ', 140, y + 10);
+    doc.text(`$${invoice.totalAmount.toFixed(2)}`, 180, y + 10);
     doc.setFontSize(8);
     doc.text(
-      "Terms & Conditions: Payment due within 30 days of the invoice date.",
+      'Terms & Conditions: Return allowed within 30 days of the invoice date.',
       10,
       270
     );
-    doc.text("Thank you for doing business with us!", 10, 275);
+    doc.text('Thank you for doing business with us!', 10, 275);
     return doc;
   };
 
-  // Handle View Details (show preview of the invoice as a PDF)
-  const handleViewDetails = (invoiceId: number) => {
-    const invoice = invoices.find((inv) => inv.id === invoiceId);
-    if (invoice) {
+  // Handle View Details
+  const handleViewDetails = async (invoiceId: string) => {
+    try {
+      const invoice = await getInvoice(invoiceId);
       setPreviewInvoice(invoice);
       const doc = generatePDF(invoice);
-      const pdfUrl = doc.output("datauristring");
+      const pdfUrl = doc.output('datauristring');
       setPdfDataUrl(pdfUrl);
       setShowModal(true);
+    } catch (err: any) {
+      console.error('View error:', err);
+      setErrorMessage('Failed to load invoice details');
     }
   };
 
-  // Handle downloading the PDF
-  const handleDownloadPDF = (invoiceId: number) => {
-    const invoice = invoices.find((inv) => inv.id === invoiceId);
-    if (invoice) {
+  // Handle Download PDF
+  const handleDownloadPDF = async (invoiceId: string) => {
+    try {
+      const invoice = await getInvoice(invoiceId);
       const doc = generatePDF(invoice);
       doc.save(`invoice_${invoice.id}.pdf`);
+    } catch (err: any) {
+      console.error('Download error:', err);
+      setErrorMessage('Failed to download invoice');
     }
   };
 
-  // Handle delete functionality with confirmation
-  const handleDelete = (invoiceId: number) => {
+  // Handle Delete
+  const handleDelete = (invoiceId: string) => {
     setInvoiceToDelete(invoiceId);
     setShowDeleteConfirm(true);
   };
 
-  // Confirm deletion
-  const confirmDelete = () => {
-    if (invoiceToDelete !== null) {
-      setInvoices(invoices.filter((invoice) => invoice.id !== invoiceToDelete));
-      setShowDeleteConfirm(false);
-      setInvoiceToDelete(null);
-      setCurrentPage(1);
+  // Confirm Deletion
+  const confirmDelete = async () => {
+    if (invoiceToDelete) {
+      try {
+        await deleteInvoice(invoiceToDelete);
+        setInvoices(invoices.filter((inv) => inv.id !== invoiceToDelete));
+        setShowDeleteConfirm(false);
+        setInvoiceToDelete(null);
+        setCurrentPage(1);
+      } catch (err: any) {
+        console.error('Delete error:', err);
+        setErrorMessage('Failed to delete invoice');
+      }
     }
   };
 
-  // Cancel deletion
+  // Cancel Deletion
   const cancelDelete = () => {
     setShowDeleteConfirm(false);
     setInvoiceToDelete(null);
   };
 
-  // Handle input change for totalAmount to prevent negative values
+  // Handle Total Amount Input
   const handleTotalAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === "" || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
+    if (value === '' || (parseFloat(value) >= 0 && !isNaN(parseFloat(value)))) {
       setNewOrder({ ...newOrder, totalAmount: value });
-      setErrorMessage("");
+      setErrorMessage('');
     } else {
-      setErrorMessage("Total Amount cannot be negative.");
+      setErrorMessage('Total Amount cannot be negative.');
     }
   };
 
-  // Handle Create Order Form Submission with validation
-  const handleCreateOrder = () => {
+  // Handle Create Invoice
+  const handleCreateOrder = async () => {
     const totalAmount = parseFloat(newOrder.totalAmount);
     if (isNaN(totalAmount) || totalAmount < 0) {
-      setErrorMessage("Please enter a valid non-negative total amount.");
+      setErrorMessage('Please enter a valid non-negative total amount.');
       return;
     }
-
     if (!newOrder.customerName.trim()) {
-      setErrorMessage("Customer Name is required.");
+      setErrorMessage('Customer Name is required.');
       return;
     }
 
-    const uniqueCustomerName = generateUniqueCustomerName(
-      newOrder.customerName
-    );
-    const newInvoice = {
-      ...newOrder,
-      id: invoices.length + 1,
-      orderId:
-        invoices.length > 0
-          ? Math.max(...invoices.map((inv) => inv.orderId)) + 1
-          : 101,
-      totalAmount: totalAmount,
-      customerName: uniqueCustomerName,
-    };
-    setInvoices([...invoices, newInvoice]);
-    setShowCreateModal(false);
-    setNewOrder({
-      orderId: "",
-      customerName: "",
-      totalAmount: "",
-      date: new Date().toISOString().split("T")[0],
-    });
-    setErrorMessage("");
-    setCurrentPage(1);
-  };
-
-  // Function to ensure unique customer name
-  const generateUniqueCustomerName = (name: string) => {
-    const existingNames = invoices.map((inv) => inv.customerName);
-    let uniqueName = name;
-    let counter = 1;
-
-    while (existingNames.includes(uniqueName)) {
-      uniqueName = `${name} (${counter})`;
-      counter++;
+    try {
+      const newInvoice = await createInvoice({
+        customerName: newOrder.customerName,
+        totalAmount,
+        date: newOrder.date,
+      });
+      setInvoices([...invoices, newInvoice]);
+      setShowCreateModal(false);
+      setNewOrder({
+        customerName: '',
+        totalAmount: '',
+        date: new Date().toISOString().split('T')[0],
+      });
+      setErrorMessage('');
+      setCurrentPage(1);
+    } catch (err: any) {
+      console.error('Create error:', err);
+      setErrorMessage('Failed to create invoice');
     }
-
-    return uniqueName;
   };
+
+  if (loading) {
+    return (
+      <div className="Items-background">
+        <Header />
+        <Container className="mt-5">
+          <Alert variant="info">Loading invoices...</Alert>
+        </Container>
+      </div>
+    );
+  }
+
+  if (apiError) {
+    return (
+      <div className="Items-background">
+        <Header />
+        <Container className="mt-5">
+          <Alert variant="danger">
+            {apiError}
+            <div className="mt-3">
+              <Button variant="primary" onClick={() => window.location.reload()}>
+                Try Again
+              </Button>
+            </div>
+          </Alert>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -326,6 +286,11 @@ const Invoices: React.FC = () => {
       <div className="Items-background">
         <Container>
           <h2 className="my-4">Invoices</h2>
+          {errorMessage && (
+            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
+              {errorMessage}
+            </Alert>
+          )}
           <Row className="mb-3">
             <Col>
               <Form.Control
@@ -352,20 +317,20 @@ const Invoices: React.FC = () => {
                 <th>Invoice ID</th>
                 <th>Order ID</th>
                 <th>Customer Name</th>
-                <th onClick={handleSortAmount} style={{ cursor: "pointer" }}>
+                <th onClick={handleSortAmount} style={{ cursor: 'pointer' }}>
                   Total Amount
-                  <span style={{ marginLeft: "8px", fontSize: "0.8em" }}>
+                  <span style={{ marginLeft: '8px', fontSize: '0.8em' }}>
                     <span
                       style={{
-                        color: sortAmountOrder === "asc" ? "black" : "#ccc",
+                        color: sortAmountOrder === 'asc' ? 'black' : '#ccc',
                       }}
                     >
                       ↑
                     </span>
                     <span
                       style={{
-                        marginLeft: "4px",
-                        color: sortAmountOrder === "desc" ? "black" : "#ccc",
+                        marginLeft: '4px',
+                        color: sortAmountOrder === 'desc' ? 'black' : '#ccc',
                       }}
                     >
                       ↓
@@ -391,14 +356,14 @@ const Invoices: React.FC = () => {
                       onClick={() => handleViewDetails(invoice.id)}
                     >
                       <Visibility />
-                    </Button>{" "}
+                    </Button>{' '}
                     <Button
                       variant="info"
                       size="sm"
                       onClick={() => handleDownloadPDF(invoice.id)}
                     >
                       <FileDownload />
-                    </Button>{" "}
+                    </Button>{' '}
                     <Button
                       variant="danger"
                       size="sm"
@@ -445,16 +410,16 @@ const Invoices: React.FC = () => {
         </Container>
       </div>
 
-      {/* Modal for creating new order */}
+      {/* Create Invoice Modal */}
       <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Create New Order</Modal.Title>
+          <Modal.Title>Create New Invoice</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {errorMessage && (
-            <div className="alert alert-danger" role="alert">
+            <Alert variant="danger" onClose={() => setErrorMessage('')} dismissible>
               {errorMessage}
-            </div>
+            </Alert>
           )}
           <Form>
             <Form.Group controlId="customerName">
@@ -496,7 +461,7 @@ const Invoices: React.FC = () => {
             Close
           </Button>
           <Button variant="primary" onClick={handleCreateOrder}>
-            Create Order
+            Create Invoice
           </Button>
         </Modal.Footer>
       </Modal>
@@ -507,10 +472,7 @@ const Invoices: React.FC = () => {
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            Are you sure you want to delete this invoice? This action cannot be
-            undone.
-          </p>
+          <p>Are you sure you want to delete this invoice? This action cannot be undone.</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={cancelDelete}>
@@ -531,7 +493,7 @@ const Invoices: React.FC = () => {
           {pdfDataUrl ? (
             <iframe
               src={pdfDataUrl}
-              style={{ width: "100%", height: "500px", border: "none" }}
+              style={{ width: '100%', height: '500px', border: 'none' }}
               title="Invoice Preview"
             />
           ) : (
@@ -555,5 +517,4 @@ const Invoices: React.FC = () => {
     </>
   );
 };
-
 export default Invoices;

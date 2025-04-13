@@ -61,6 +61,8 @@ public class SecurityConfig {
                                                                                                       // MANAGER and
                                                                                                       // REGULAR to
                                                                                                       // create orders
+
+                        .requestMatchers("/invoices/**").permitAll() // Allow all invoice endpoints
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
