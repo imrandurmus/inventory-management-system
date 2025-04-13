@@ -69,12 +69,8 @@ const Login = () => {
       const data = await response.json();
       const { token } = data;
 
-      // Store token in localStorage or sessionStorage based on remember me
-      if (rememberMe) {
-        localStorage.setItem("token", token);
-      } else {
-        sessionStorage.setItem("token", token);
-      }
+
+      sessionStorage.setItem("token", token);
 
       // Decode JWT to get role
       const decoded: JwtPayload = jwtDecode(token);
@@ -82,11 +78,7 @@ const Login = () => {
       const fullName = await fetchFullName(token);
 
       // Store role in the same storage as token
-      if (rememberMe) {
-        localStorage.setItem("role", role);
-      } else {
-        sessionStorage.setItem("role", role);
-      }
+      localStorage.setItem("role", role);
 
       setErrorMessage("");
       console.log("Logged in with:", { email: decoded.sub, role, fullName, token });
