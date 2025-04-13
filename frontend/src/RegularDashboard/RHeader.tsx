@@ -1,19 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bell } from 'lucide-react';
-import "../CSS/Header.css";
-
-interface User {
-  username: string;
-  profilePic: string;
-}
-
-interface Announcement {
-  id: string;
-  title: string;
-  message: string;
-}
+import { getCurrentEmployee, User, Announcement, getUnreadAnnouncements, getUnreadAnnouncementCount } from '../../services/api';
+import '../CSS/Header.css';
 
 const RHeader: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,43 +11,77 @@ const RHeader: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
+  // Fetch user and announcements
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch user
+        const userData = await getCurrentEmployee();
+        setUser(userData);
+
+        // Initial fetch of announcements
+        await fetchAnnouncements();
+      } catch (err: any) {
+        console.error('Failed to fetch data:', err);
+        if (err.message.includes('Session expired')) {
+          navigate('/Login');
+        }
+      }
+    };
+
+    fetchData();
+
+    // Poll for new announcements every 30 seconds
+    const interval = setInterval(fetchAnnouncements, 30000);
+    return () => clearInterval(interval);
+  }, [navigate]);
+
+  // Fetch unread announcements and count
+  const fetchAnnouncements = async () => {
+    try {
+      const [count, unread] = await Promise.all([
+        getUnreadAnnouncementCount(),
+        getUnreadAnnouncements(),
+      ]);
+      setUnreadCount(count);
+      setAnnouncements(unread);
+    } catch (err) {
+      console.error('Failed to fetch announcements:', err);
+    }
   };
 
+  // Handle clicking outside dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    fetch('/api/user/me', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setUser(data))
-      .catch(err => console.error('Failed to fetch user', err));
+  // Toggle dropdown
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
-    fetch('/api/announcements/unread-count')
-      .then(res => res.json())
-      .then(data => setUnreadCount(data.count))
-      .catch(err => console.error('Failed to fetch unread count', err));
+  // Handle announcement click (navigate only)
+  const handleAnnouncementClick = (announcementId: string) => {
+    setShowDropdown(false);
+    navigate(`/My-Announcements/${announcementId}`);
+  };
 
-    fetch('/api/announcements/unread')
-      .then(res => res.json())
-      .then(data => {
-        setAnnouncements(data);
-        setUnreadCount(data.length);
-      })
-      .catch(err => console.error('Failed to fetch announcements', err));
-  }, []);
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('role');
+    navigate('/Login');
+  };
 
   return (
     <Navbar className="navigationBarr" expand="lg" fixed="top">
@@ -66,9 +90,15 @@ const RHeader: React.FC = () => {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
-            <p className="nav-link-custom ml-2 mr-6 mt-2">Hello, User</p>
-            <Nav.Link as={Link} to="/Regular-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
-            <Nav.Link as={Link} to="/My-Announcements" className="nav-link-custom">Announcements</Nav.Link>
+            <p className="nav-link-custom ml-2 mr-6 mt-2">
+              Hello, {user ? `${user.firstName} ${user.lastName}` : 'User'}
+            </p>
+            <Nav.Link as={Link} to="/Regular-Dashboard" className="nav-link-custom">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link as={Link} to="/My-Announcements" className="nav-link-custom">
+              Announcements
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
 
@@ -79,7 +109,7 @@ const RHeader: React.FC = () => {
             <Dropdown show={showDropdown} onToggle={toggleDropdown}>
               <Dropdown.Toggle
                 as="button"
-                className="icon-button no-caret" // Add a custom class to target this toggle
+                className="icon-button no-caret"
                 style={{ background: 'none', border: 'none', padding: 0 }}
                 aria-label="Toggle announcements dropdown"
               >
@@ -101,12 +131,15 @@ const RHeader: React.FC = () => {
                     {announcements.slice(0, 5).map((announcement) => (
                       <Dropdown.Item
                         key={announcement.id}
-                        as={Link}
-                        to={`/My-Announcements/${announcement.id}`}
-                        onClick={() => setShowDropdown(false)}
+                        onClick={() => handleAnnouncementClick(announcement.id)}
+                        className="announcement-item"
                       >
                         <h6 className="mb-1">{announcement.title}</h6>
-                        <p className="mb-0 text-muted">{announcement.message}</p>
+                        <p className="mb-0 text-muted">
+                          {announcement.content.length > 50
+                            ? `${announcement.content.substring(0, 50)}...`
+                            : announcement.content}
+                        </p>
                       </Dropdown.Item>
                     ))}
                     <Dropdown.Divider />
@@ -128,49 +161,27 @@ const RHeader: React.FC = () => {
             </Dropdown>
           </div>
 
-          {user ? (
-            <NavDropdown
-              title={
-                <img
-                  className="Mprofile"
-                  src={user.profilePic}
-                  alt="Profile"
-                />
-              }
-              id="profile-dropdown"
-              align="end"
-              className="profile-dropdown"
-            >
-              <NavDropdown.Item as={Link} to="/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          ) : (
-            <NavDropdown
-              title={
-                <img
-                  src="/default_profile.jpg"
-                  alt="Profile"
-                  width="32"
-                  height="32"
-                  className="rounded-circle ms-3 profile-img"
-                />
-              }
-              id="profile-dropdown"
-              align="end"
-              className="profile-dropdown"
-            >
-              <NavDropdown.Item as={Link} to="/My-Settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/Landing">
-                Logout
-              </NavDropdown.Item>
-            </NavDropdown>
-          )}
+          <NavDropdown
+            title={
+              <img
+                className="profile-img rounded-circle ms-3"
+                src={user?.profilePicture || 'https://ui-avatars.com/api/?name=Placeholder+User'}
+                alt="Profile"
+                width="32"
+                height="32"
+              />
+            }
+            id="profile-dropdown"
+            align="end"
+            className="profile-dropdown"
+          >
+            <NavDropdown.Item as={Link} to="/My-Settings">
+              Settings
+            </NavDropdown.Item>
+            <NavDropdown.Item onClick={handleLogout}>
+              Logout
+            </NavDropdown.Item>
+          </NavDropdown>
         </div>
       </Container>
     </Navbar>

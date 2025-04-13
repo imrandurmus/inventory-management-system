@@ -47,9 +47,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/product-types/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("MANAGER") // Only managers can access
                                                                                              // this dashboard
-                        .requestMatchers(HttpMethod.POST, "/announcements").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/announcements").hasAnyRole("MANAGER", "REGULAR")
                         .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("MANAGER", "REGULAR")
-                        .requestMatchers("/employees/**").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.GET, "/employees/me").hasAnyRole("MANAGER", "REGULAR") // Allow both
+                                                                                                           // roles for
+                                                                                                           // /me
+                        .requestMatchers("/employees/**").hasRole("MANAGER") // Other /employees endpoints for MANAGER
                         .requestMatchers(HttpMethod.GET, "/orders").hasAnyRole("MANAGER", "REGULAR") // Allow both
                                                                                                      // MANAGER and
                                                                                                      // REGULAR to view

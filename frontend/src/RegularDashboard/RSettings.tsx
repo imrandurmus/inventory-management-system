@@ -1,39 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Row, Col, Card } from 'react-bootstrap';
-import RHeader from "./RHeader";
-
-// Mock Employee Data (in a real app, this would come from an API or context)
-interface Employee {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  assignedItemTypes: string[];
-}
-
-const initialEmployee: Employee = {
-  id: 1,
-  name: 'Alex Johnson',
-  email: 'alex.johnson@example.com',
-  role: 'Inventory Manager',
-  assignedItemTypes: ['Electronics', 'Groceries'],
-};
+import { Container, Form, Row, Col, Card, Alert, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import RHeader from './RHeader';
+import { getCurrentEmployee, User } from '../../services/api';
 
 const RSettings: React.FC = () => {
-  const [employee, setEmployee] = useState<Employee>(initialEmployee);
+  const [employee, setEmployee] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  // Simulate fetching employee data on mount
+  // fetch employee data on mount
   useEffect(() => {
-    // In a real app, fetch from API: fetch('/api/employee/me').then(res => res.json()).then(data => setEmployee(data))
-    setEmployee(initialEmployee);
-  }, []);
+    const fetchEmployee = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getCurrentEmployee();
+        setEmployee(data);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load account settings.');
+        if (err.message.includes('Session expired')) {
+          navigate('/login');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEmployee();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('role');
+    navigate('/login');
+  };
+
+  if (loading) {
+    return (
+      <div className="settings-background">
+        <RHeader />
+        <Container className="mt-5">
+          <Alert variant="info">Loading account settings...</Alert>
+        </Container>
+      </div>
+    );
+  }
+
+  if (error || !employee) {
+    return (
+      <div className="settings-background">
+        <RHeader />
+        <Container className="mt-5">
+          <Alert variant="danger">
+            {error || 'Unable to load employee data. Please try again.'}
+            <div className="mt-3">
+              <Button variant="primary" onClick={() => window.location.reload()}>
+                Try Again
+              </Button>{' '}
+              <Button variant="secondary" onClick={handleLogout}>
+                Log Out
+              </Button>
+            </div>
+          </Alert>
+        </Container>
+      </div>
+    );
+  }
+
+  // Combine firstName and lastName for display
+  const fullName = `${employee.firstName} ${employee.lastName}`;
 
   return (
     <>
       <RHeader />
       <div className="settings-background">
         <Container>
-          <h2 className="my-4">Account Settings - {employee.name}</h2>
+          <h2 className="my-4">Account Settings - {fullName}</h2>
 
           <Card className="mb-4">
             <Card.Body>
@@ -57,7 +102,7 @@ const RSettings: React.FC = () => {
                   <Col md={6}>
                     <Form.Group controlId="name" className="mb-3">
                       <Form.Label>Name</Form.Label>
-                      <Form.Control type="text" value={employee.name} disabled />
+                      <Form.Control type="text" value={fullName} disabled />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -79,7 +124,7 @@ const RSettings: React.FC = () => {
                   <Form.Label>Assigned Types</Form.Label>
                   <Form.Control
                     type="text"
-                    value={employee.assignedItemTypes.join(', ')}
+                    value={employee.assignedProductTypes?.join(', ') || 'None'}
                     disabled
                   />
                 </Form.Group>

@@ -189,6 +189,14 @@ const App: React.FC = () => {
           }
         />
         <Route
+          path="/My-Announcements/:id"
+          element={
+            <ProtectedRoute>
+              <RAnnouncements />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/My-Settings"
           element={
             <ProtectedRoute>

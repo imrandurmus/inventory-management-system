@@ -35,14 +35,9 @@ public class AnnouncementController {
     @PostMapping
     public ResponseEntity<?> createAnnouncement(@RequestBody Announcement announcement) {
         Employee current = getCurrentEmployee();
-
-        System.out.println("🔍 Logged in user: " + current.getEmail() + " | Role: " + current.getRole());
-
-
         if (current.getRole() != Role.MANAGER) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only managers can post announcements.");
         }
-
         announcement.setPostedBy(current);
         Announcement saved = announcementRepo.save(announcement);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -54,48 +49,49 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementRepo.findAll());
     }
 
-    // 3. Get unread announcements (REGULAR only)
+    // 3. Get unread announcements (REGULAR and MANAGER)
     @GetMapping("/unread")
-    public ResponseEntity<?> getUnreadAnnouncements() {
+    public ResponseEntity<List<Announcement>> getUnreadAnnouncements() {
         Employee current = getCurrentEmployee();
-
-        if (current.getRole() != Role.REGULAR) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only regular employees can see unread announcements.");
-        }
-
         List<Long> readIds = readRepo.findByEmployee(current)
                 .stream()
                 .filter(AnnouncementReadStatus::isRead)
                 .map(read -> read.getAnnouncement().getId())
                 .collect(Collectors.toList());
-
         List<Announcement> unread = announcementRepo.findAll()
                 .stream()
                 .filter(a -> !readIds.contains(a.getId()))
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(unread);
     }
 
-    // 4. Mark announcement as read (REGULAR only)
+    // 4. Get unread announcement count (REGULAR and MANAGER)
+    @GetMapping("/unread-count")
+    public ResponseEntity<?> getUnreadCount() {
+        Employee current = getCurrentEmployee();
+        List<Long> readIds = readRepo.findByEmployee(current)
+                .stream()
+                .filter(AnnouncementReadStatus::isRead)
+                .map(read -> read.getAnnouncement().getId())
+                .collect(Collectors.toList());
+        long unreadCount = announcementRepo.findAll()
+                .stream()
+                .filter(a -> !readIds.contains(a.getId()))
+                .count();
+        return ResponseEntity.ok(new UnreadCountResponse(unreadCount));
+    }
+
+    // 5. Mark announcement as read (REGULAR and MANAGER)
     @PostMapping("/{id}/read")
     public ResponseEntity<?> markAsRead(@PathVariable Long id) {
         Employee current = getCurrentEmployee();
-
-        if (current.getRole() != Role.REGULAR) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only regular employees can mark announcements as read.");
-        }
-
         Optional<Announcement> announcementOpt = announcementRepo.findById(id);
         if (announcementOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Announcement not found.");
         }
-
         Announcement announcement = announcementOpt.get();
-
         Optional<AnnouncementReadStatus> existingStatus =
                 readRepo.findByEmployeeAndAnnouncement(current, announcement);
-
         if (existingStatus.isPresent()) {
             AnnouncementReadStatus status = existingStatus.get();
             if (!status.isRead()) {
@@ -103,16 +99,25 @@ public class AnnouncementController {
                 status.setReadAt(LocalDateTime.now());
                 readRepo.save(status);
             }
-            return ResponseEntity.ok("Already marked as read.");
+            return ResponseEntity.ok("Announcement marked as read.");
         }
-
-
         AnnouncementReadStatus status = new AnnouncementReadStatus(current, announcement);
         status.setRead(true);
         status.setReadAt(LocalDateTime.now());
         readRepo.save(status);
+        return ResponseEntity.ok("Announcement marked as read.");
+    }
 
-        return ResponseEntity.ok("Marked as read.");
+    // Helper class for unread count response
+    private static class UnreadCountResponse {
+        private final long count;
+
+        public UnreadCountResponse(long count) {
+            this.count = count;
+        }
+
+        public long getCount() {
+            return count;
+        }
     }
 }
-

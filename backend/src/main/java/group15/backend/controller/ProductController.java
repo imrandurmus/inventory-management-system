@@ -1,30 +1,16 @@
 package group15.backend.controller;
 
-import group15.backend.model.Product;
-import group15.backend.repository.ProductRepository;
-import group15.backend.repository.ProductTypeRepository;
-import group15.backend.model.ProductType;
-import group15.backend.model.Employee;
-import group15.backend.repository.AnnouncementRepository;
-import group15.backend.repository.EmployeeRepository;
-import group15.backend.model.Role;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-import java.util.Map;
 import group15.backend.model.*;
 import group15.backend.repository.*;
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
+import java.util.*;
 
 @RestController
 @RequestMapping("/products")
@@ -321,9 +307,7 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-
-
-@PostMapping("/{id}/report")
+    @PostMapping("/{id}/report")
     public ResponseEntity<?> reportProduct(@PathVariable Long id, @RequestBody Map<String, String> payload) {
         logger.info("Received report request for product ID: {}", id);
         try {
@@ -347,10 +331,9 @@ public class ProductController {
             }
 
             Announcement announcement = new Announcement(
-                "Product Report: " + product.getName(),
-                reason + " (Product ID: " + id + ")",
-                currentEmployee
-            );
+                    "Product Report: " + product.getName(),
+                    reason + " (Product ID: " + id + ")",
+                    currentEmployee);
             announcementRepository.save(announcement);
             logger.info("Created announcement for product report: {}", announcement.getTitle());
 
@@ -360,3 +343,4 @@ public class ProductController {
             return new ResponseEntity<>("Error creating report: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+}

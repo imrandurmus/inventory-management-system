@@ -1,6 +1,6 @@
 .rannouncements-background {
     background-color: #f8f9fa;
-    height: 100vh; /* Set to viewport height */
+    min-height: 100vh; /* Set to viewport height */
     overflow: hidden; /* Prevent scrolling */
     padding-top: 20px;
     display: flex;

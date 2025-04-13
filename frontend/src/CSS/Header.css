@@ -18,6 +18,7 @@
 
 .Dheader-icon{
   margin-top: 10px;
+  margin-right: 15px;
 }
 .clickable-icon {
   cursor: pointer;
@@ -25,10 +26,11 @@
 }
 
 .badge-sm {
-  font-size: 0.6rem;
-  padding: 0.25em 0.4em;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.3rem;
   z-index: 1;
 }
+
 
 /* hidin the default dropdown arrow */
 .profile-dropdown .dropdown-toggle::after {
@@ -102,7 +104,6 @@
 
 
 
-
 @media (max-width: 767px) {
   .menu-toggle {
     display: block;
@@ -123,4 +124,11 @@
   .announcements-dropdown {
     width: 250px;
   }
+}
+
+
+
+.announcement-item {
+  max-width: 300px;
+  white-space: normal;
 }
