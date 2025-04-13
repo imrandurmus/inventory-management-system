@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -37,6 +38,8 @@ public class EmployeeController {
 @Autowired
 private ProductTypeRepository productTypeRepository;
 
+@Autowired
+private PasswordEncoder passwordEncoder;
 
 @PostMapping
 public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
@@ -45,8 +48,11 @@ public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN); // Only managers can add
     }
 
-    System.out.println("Received employee: " + employee);
-    System.out.println("Received assignedTypes: " + employee.getAssignedTypes());
+    if (employee.getPassword() == null || employee.getPassword().isBlank()) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 
     if (employee.getProfileImageUrl() == null || employee.getProfileImageUrl().isBlank()) {
         String initialsUrl = "https://ui-avatars.com/api/?name=" +
@@ -57,18 +63,14 @@ public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
     if (employee.getAssignedTypes() != null && !employee.getAssignedTypes().isEmpty()) {
         Set<ProductType> types = new HashSet<>();
         for (ProductType type : employee.getAssignedTypes()) {
-            System.out.println("Processing type: " + type.getName());
             ProductType existingType = productTypeRepository.findByName(type.getName())
                     .orElseThrow(() -> new RuntimeException("Product type not found: " + type.getName()));
-            System.out.println("Found existing type: " + existingType);
             types.add(existingType);
         }
-        System.out.println("Assigned types set: " + types);
         employee.setAssignedTypes(types);
     }
 
     Employee saved = employeeRepository.save(employee);
-    System.out.println("Saved employee: " + saved);
     return new ResponseEntity<>(saved, HttpStatus.CREATED);
 }
 
@@ -115,7 +117,7 @@ public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
             employee.setLastName(updatedEmployee.getLastName());
             employee.setEmail(updatedEmployee.getEmail());
             if (updatedEmployee.getPassword() != null && !updatedEmployee.getPassword().isBlank()) {
-                employee.setPassword(updatedEmployee.getPassword());
+                employee.setPassword(passwordEncoder.encode(updatedEmployee.getPassword()));
             }
             employee.setRole(updatedEmployee.getRole());
 
