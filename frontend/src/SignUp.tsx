@@ -5,32 +5,26 @@ import {
   Typography,
   Box,
   Divider,
-  MenuItem,
   Grid,
 } from "@mui/material";
-import { Google as GoogleIcon } from "@mui/icons-material";
 import "./CSS/SignUp.css";
-import { signInWithGoogle } from "./firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WBGHeader from "./WBGHeader";
-import { auth } from "./firebaseConfig";
+
+const BASE_URL = "http://localhost:8080"; // Your backend URL
 
 const SignUp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
-    companyName: "",
-    phoneNumber: "",
-    country: "",
-    language: "",
-    companySize: "",
-    interest: "",
   });
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,18 +35,32 @@ const SignUp = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const { email, password, fullName } = formData;
-    if (!email || !password || !fullName) {
+    const { firstName, lastName, email, password } = formData;
+
+    if (!firstName || !lastName || !email || !password) {
       setErrorMessage("All required fields must be filled.");
       return;
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const response = await fetch(`${BASE_URL}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Signup failed.");
+      }
+
       setErrorMessage("");
-      console.log("Signed up with:", formData);
-    } catch (error) {
-      setErrorMessage("Failed to create account. Please try again.");
+      console.log("Signed up successfully:", formData);
+      navigate("/login");
+    } catch (error: any) {
+      setErrorMessage(error.message || "Failed to create account. Please try again.");
     }
   };
 
@@ -92,27 +100,29 @@ const SignUp = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Full Name"
+                    label="First Name"
                     fullWidth
                     variant="outlined"
-                    value={formData.fullName}
-                    onChange={handleChange("fullName")}
+                    value={formData.firstName}
+                    onChange={handleChange("firstName")}
                     required
                     error={!!errorMessage}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Company Name"
+                    label="Last Name"
                     fullWidth
                     variant="outlined"
-                    value={formData.companyName}
-                    onChange={handleChange("companyName")}
+                    value={formData.lastName}
+                    onChange={handleChange("lastName")}
+                    required
+                    error={!!errorMessage}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
-                    label="Work Email"
+                    label="Email"
                     fullWidth
                     type="email"
                     variant="outlined"
@@ -122,14 +132,16 @@ const SignUp = () => {
                     error={!!errorMessage}
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                   <TextField
-                    label="Phone Number"
+                    label="Password"
                     fullWidth
-                    type="tel"
+                    type="password"
                     variant="outlined"
-                    value={formData.phoneNumber}
-                    onChange={handleChange("phoneNumber")}
+                    value={formData.password}
+                    onChange={handleChange("password")}
+                    required
+                    error={!!errorMessage}
                   />
                 </Grid>
               </Grid>
@@ -141,20 +153,7 @@ const SignUp = () => {
                 className="submit-buttonn"
                 sx={{ mt: 3 }}
               >
-                <Link to="/User-Dashboard" className="submit-buttonn">
-                  Create account
-                </Link>
-              </Button>
-
-              <Button
-                className="google-buttonn"
-                variant="outlined"
-                fullWidth
-                startIcon={<GoogleIcon />}
-                sx={{ mt: 1 }}
-                onClick={signInWithGoogle}
-              >
-                Sign up with Google
+                Create Account
               </Button>
 
               <Typography textAlign="center" mt={2} variant="body2" color="textSecondary">
@@ -163,6 +162,11 @@ const SignUp = () => {
                   Privacy Policy
                 </Link>
               </Typography>
+              {errorMessage && (
+                <Typography color="error" mt={2}>
+                  {errorMessage}
+                </Typography>
+              )}
             </form>
           </Box>
         </Box>
