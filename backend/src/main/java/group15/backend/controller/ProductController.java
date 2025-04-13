@@ -5,6 +5,7 @@ import group15.backend.repository.ProductRepository;
 import group15.backend.repository.ProductTypeRepository;
 import group15.backend.model.ProductType;
 import group15.backend.model.Employee;
+import group15.backend.repository.AnnouncementRepository;
 import group15.backend.repository.EmployeeRepository;
 import group15.backend.model.Role;
 
@@ -19,6 +20,11 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Map;
+import group15.backend.model.*;
+import group15.backend.repository.*;
+
+
 
 @RestController
 @RequestMapping("/products")
@@ -34,6 +40,9 @@ public class ProductController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AnnouncementRepository announcementRepository;
 
     private Employee getCurrentEmployee() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -311,4 +320,43 @@ public class ProductController {
         productRepository.deleteById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
-}
+
+
+
+@PostMapping("/{id}/report")
+    public ResponseEntity<?> reportProduct(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        logger.info("Received report request for product ID: {}", id);
+        try {
+            // Validate product
+            Optional<Product> productOpt = productRepository.findById(id);
+            if (productOpt.isEmpty()) {
+                logger.warn("Product not found with ID: {}", id);
+                return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+            }
+            Product product = productOpt.get();
+
+            // Get current employee
+            Employee currentEmployee = getCurrentEmployee();
+            logger.info("Reporting employee: {} (Role: {})", currentEmployee.getEmail(), currentEmployee.getRole());
+
+            // Create announcement
+            String reason = payload.get("reason");
+            if (reason == null || reason.trim().isEmpty()) {
+                logger.warn("Report reason is missing");
+                return new ResponseEntity<>("Reason is required", HttpStatus.BAD_REQUEST);
+            }
+
+            Announcement announcement = new Announcement(
+                "Product Report: " + product.getName(),
+                reason + " (Product ID: " + id + ")",
+                currentEmployee
+            );
+            announcementRepository.save(announcement);
+            logger.info("Created announcement for product report: {}", announcement.getTitle());
+
+            return new ResponseEntity<>("Report submitted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error creating product report: ", e);
+            return new ResponseEntity<>("Error creating report: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
