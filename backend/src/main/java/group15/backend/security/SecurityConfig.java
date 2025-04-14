@@ -38,6 +38,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
                                                                                                               // authentication
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/announcements/**").permitAll() // Allow all announcement endpoints
+                        .requestMatchers(HttpMethod.GET, "/announcements").permitAll() // Allow GET /announcements
+                        .requestMatchers(HttpMethod.POST, "/announcements").permitAll() // Allow POST /announcements
+                        .requestMatchers(HttpMethod.GET, "/announcements/{id:\\d+}").permitAll() // Allow GET /announcements/{id}
+                        .requestMatchers("/announcements/unread").hasAnyRole("MANAGER", "REGULAR") // Require auth for /unread
+                        .requestMatchers("/announcements/**").permitAll() // Catch-all for other announcement endpoints
                         .requestMatchers("/auth/**").permitAll() // Allow public access to login and signup
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // Allow public access to products
                         .requestMatchers(HttpMethod.GET, "/product-types/**").permitAll()
@@ -47,7 +53,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/product-types/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("MANAGER") // Only managers can access
                                                                                              // this dashboard
-                        .requestMatchers(HttpMethod.POST, "/announcements").hasAnyRole("MANAGER", "REGULAR")
                         .requestMatchers(HttpMethod.PUT, "/employees/**").hasAnyRole("MANAGER", "REGULAR")
                         .requestMatchers(HttpMethod.GET, "/employees/me").hasAnyRole("MANAGER", "REGULAR") // Allow both
                                                                                                            // roles for

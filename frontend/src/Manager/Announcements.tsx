@@ -1,3 +1,4 @@
+// frontend/src/Manager/Announcements.tsx
 import React, { useEffect, useState } from 'react';
 import { Button, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,7 +11,6 @@ const Announcements = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<'MANAGER' | 'REGULAR'>('REGULAR');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,32 +20,18 @@ const Announcements = () => {
         setError(null);
         const data = await getAnnouncements();
         setAnnouncements(data);
-        // Set role from storage
-        const role = localStorage.getItem('role') || sessionStorage.getItem('role') || 'REGULAR';
-        setUserRole(role.toUpperCase() as 'MANAGER' | 'REGULAR');
       } catch (err: any) {
         setError(err.message || 'Failed to load announcements.');
-        if (err.message.includes('Session expired')) {
-          navigate('/login');
-        }
       } finally {
         setLoading(false);
       }
     };
     fetchAnnouncements();
-  }, [navigate]);
+  }, []);
 
   const filtered = announcements.filter((a) =>
     a.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('role');
-    navigate('/login');
-  };
 
   if (loading) {
     return (
@@ -68,9 +54,6 @@ const Announcements = () => {
             <div className="mt-3">
               <Button variant="primary" onClick={() => window.location.reload()}>
                 Try Again
-              </Button>{' '}
-              <Button variant="secondary" onClick={handleLogout}>
-                Log Out
               </Button>
             </div>
           </Alert>
@@ -93,11 +76,9 @@ const Announcements = () => {
         </div>
         <div className="announcements-container container">
           <div className="d-flex justify-content-between align-items-center mb-4">
-            {userRole === 'MANAGER' && (
-              <Button as={Link} to="/announcements/new" className="add-btn">
-                Add New
-              </Button>
-            )}
+            <Button as={Link} to="/announcements/new" className="add-btn">
+              Add New
+            </Button>
             <input
               type="text"
               placeholder="Search announcements..."

@@ -269,9 +269,9 @@ export const getProducts = async (
     // Split sortBy into field and direction
     const [sortField, sortDirection] = sortBy.split(',');
     const sortParam = `${sortField},${sortDirection || 'asc'}`;
-    
+
     console.log(`Fetching products from: ${BASE_URL}/products?page=${page}&size=${size}&sort=${sortParam}`);
-    
+
     const response = await fetch(`${BASE_URL}/products?page=${page}&size=${size}&sort=${sortParam}`, {
       method: 'GET',
       headers: {
@@ -281,7 +281,7 @@ export const getProducts = async (
     });
 
     console.log('Response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Error response:', errorText);
@@ -295,7 +295,7 @@ export const getProducts = async (
 
     const data: PageResponse<ProductResponse> = await response.json();
     console.log('Successfully fetched products:', data.content.length);
-    
+
     return {
       products: data.content.map((p) => ({
         id: p.id.toString(),
@@ -323,7 +323,7 @@ export const createProduct = async (product: {
 }): Promise<Product> => {
   try {
     console.log('Creating product:', product);
-    
+
     const response = await fetch(`${BASE_URL}/products`, {
       method: 'POST',
       headers: {
@@ -340,7 +340,7 @@ export const createProduct = async (product: {
     });
 
     console.log('Create product response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Error response:', errorText);
@@ -349,7 +349,7 @@ export const createProduct = async (product: {
 
     const p = await response.json();
     console.log('Successfully created product:', p);
-    
+
     return {
       id: p.id.toString(),
       name: p.name,
@@ -377,7 +377,7 @@ export const updateProduct = async (
 ): Promise<Product> => {
   try {
     console.log('Updating product:', { id, ...product });
-    
+
     const response = await fetch(`${BASE_URL}/products/${id}`, {
       method: 'PUT',
       headers: {
@@ -394,7 +394,7 @@ export const updateProduct = async (
     });
 
     console.log('Update response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Error response:', errorText);
@@ -403,7 +403,7 @@ export const updateProduct = async (
 
     const p = await response.json();
     console.log('Successfully updated product:', p);
-    
+
     return {
       id: p.id.toString(),
       name: p.name,
@@ -432,6 +432,22 @@ export const deleteProduct = async (id: string): Promise<void> => {
     throw new Error(`Failed to delete product: ${response.statusText} Please contact Tech Support`);
   }
 };
+
+
+export async function getProductById(id: string) {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  const response = await fetch(`http://localhost:8080/products/details/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Product not found");
+  }
+
+  return await response.json();
+}
 
 // Product Type Endpoints
 export const getProductTypes = async (): Promise<ProductType[]> => {
@@ -462,7 +478,7 @@ export const getProductTypes = async (): Promise<ProductType[]> => {
 export const createProductType = async (name: string): Promise<ProductType> => {
   try {
     console.log('Creating product type:', name);
-    
+
     const response = await fetch(`${BASE_URL}/product-types`, {
       method: 'POST',
       headers: {
@@ -473,7 +489,7 @@ export const createProductType = async (name: string): Promise<ProductType> => {
     });
 
     console.log('Create product type response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Error response:', errorText);
@@ -482,7 +498,7 @@ export const createProductType = async (name: string): Promise<ProductType> => {
 
     const t = await response.json();
     console.log('Successfully created product type:', t);
-    
+
     return {
       id: t.id.toString(),
       name: t.name,
@@ -512,7 +528,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
       });
 
       console.log('Response status:', response.status);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error response:', errorText);
@@ -526,7 +542,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 
       const data: PageResponse<ProductResponse> = await response.json();
       console.log('Fetched page:', page, 'Products:', data.content.length);
-      
+
       allProducts = allProducts.concat(
         data.content.map((p) => ({
           id: p.id.toString(),
@@ -555,7 +571,7 @@ export const getOrders = async (): Promise<Order[]> => {
   try {
     const token = localStorage.getItem('token');
     console.log('Fetching orders with token:', token ? 'Present' : 'Missing');
-    
+
     if (!token) {
       throw new Error('No authentication token found. Please log in again.');
     }
@@ -569,28 +585,28 @@ export const getOrders = async (): Promise<Order[]> => {
     });
 
     console.log('Orders response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Orders error response:', errorText);
-      
+
       if (response.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
         throw new Error('Authentication failed. Please log in again.');
       }
-      
+
       if (response.status === 403) {
         console.error('Forbidden access. Token:', token);
         throw new Error('Access denied. You do not have permission to view orders.');
       }
-      
+
       throw new Error(`Failed to fetch orders: ${response.status} ${response.statusText}. ${errorText}`);
     }
 
     const orders = await response.json();
     console.log('Successfully fetched orders:', orders);
-    
+
     return orders.map((order: any) => ({
       id: order.id.toString(),
       customerName: order.customerName,
@@ -672,7 +688,7 @@ export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
     console.log('Fetching dashboard metrics');
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     console.log('Using token:', token ? 'Token present' : 'No token found');
-    
+
     const response = await fetch(`${BASE_URL}/dashboard/metrics`, {
       method: 'GET',
       headers: {
@@ -689,7 +705,7 @@ export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
 
     const metrics = await response.json();
     console.log('Successfully fetched dashboard metrics:', metrics);
-    
+
     return {
       totalInventory: metrics.totalInventory,
       productTypes: metrics.productTypes,
@@ -712,7 +728,7 @@ export const deleteOrder = async (id: string): Promise<void> => {
   try {
     const token = localStorage.getItem('token');
     console.log('Deleting order with token:', token ? 'Present' : 'Missing');
-    
+
     if (!token) {
       throw new Error('No authentication token found. Please log in again.');
     }
@@ -726,22 +742,22 @@ export const deleteOrder = async (id: string): Promise<void> => {
     });
 
     console.log('Delete order response status:', response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Delete order error response:', errorText);
-      
+
       if (response.status === 401) {
         localStorage.removeItem('token');
         window.location.href = '/login';
         throw new Error('Authentication failed. Please log in again.');
       }
-      
+
       if (response.status === 403) {
         console.error('Forbidden access. Token:', token);
         throw new Error('Access denied. You do not have permission to delete orders.');
       }
-      
+
       throw new Error(`Failed to delete order: ${response.status} ${response.statusText}. ${errorText}`);
     }
 
@@ -756,41 +772,42 @@ export const deleteOrder = async (id: string): Promise<void> => {
 // added getCurrentEmployee
 export const getCurrentEmployee = async (): Promise<User> => {
   try {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (!token) {
-          throw new Error('No authentication token found. Please log in again.');
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (!token) {
+      throw new Error('No authentication token found. Please log in again.');
+    }
+    const response = await fetch(`${BASE_URL}/employees/me`, { // Line ~763
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        localStorage.removeItem('role');
+        sessionStorage.removeItem('role');
+        window.location.href = '/login';
+        throw new Error('Session expired. Please log in again.');
       }
-      const response = await fetch(`${BASE_URL}/employees/me`, { // Line ~763
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-          },
-      });
-      if (!response.ok) {
-          const errorText = await response.text();
-          if (response.status === 401) {
-              localStorage.removeItem('token');
-              sessionStorage.removeItem('token');
-              localStorage.removeItem('role');
-              sessionStorage.removeItem('role');
-              window.location.href = '/login';
-              throw new Error('Session expired. Please log in again.');
-          }
-          throw new Error(`Failed to fetch employee: ${errorText}`);
-      }
-      const data = await response.json();
-      return {
-          id: data.id.toString(),
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          role: data.role,
-          assignedProductTypes: data.assignedTypes?.map((type: any) => type.name) || [],
-      };
+      throw new Error(`Failed to fetch employee: ${errorText}`);
+    }
+    const data = await response.json();
+    return {
+      id: data.id.toString(),
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      role: data.role,
+      profilePicture: data.profileImageUrl,
+      assignedProductTypes: data.assignedTypes?.map((type: any) => type.name) || [],
+    };
   } catch (error) {
-      console.error('Error in getCurrentEmployee:', error);
-      throw error;
+    console.error('Error in getCurrentEmployee:', error);
+    throw error;
   }
 };
 
@@ -833,6 +850,7 @@ export const reportProduct = async (id: string, reason: string): Promise<void> =
   }
 };
 
+{/** 
 export const getAnnouncements = async (): Promise<Announcement[]> => {
   try {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -877,7 +895,7 @@ export const getAnnouncements = async (): Promise<Announcement[]> => {
     throw error;
   }
 };
-
+*/}
 
 // Get unread announcements
 export const getUnreadAnnouncements = async (): Promise<Announcement[]> => {
@@ -996,6 +1014,111 @@ export const markAnnouncementAsRead = async (id: string): Promise<void> => {
     throw error;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+export const getAnnouncements = async (): Promise<Announcement[]> => {
+  try {
+    const response = await fetch(`${BASE_URL}/announcements`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch announcements: ${response.status} ${errorText}`);
+    }
+    const data = await response.json();
+    return data.map((ann: any) => ({
+      id: ann.id.toString(),
+      title: ann.title,
+      content: ann.content,
+      createdAt: ann.createdAt,
+      postedBy: {
+        id: ann.postedBy.id.toString(),
+        email: ann.postedBy.email,
+      },
+    }));
+  } catch (error) {
+    console.error('Error fetching announcements:', error);
+    throw error;
+  }
+};
+
+// Create announcement (no auth)
+export const createAnnouncement = async (announcement: {
+  title: string;
+  content: string;
+}): Promise<Announcement> => {
+  try {
+    const response = await fetch(`${BASE_URL}/announcements`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(announcement),
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create announcement: ${response.status} ${errorText}`);
+    }
+    const data = await response.json();
+    return {
+      id: data.id.toString(),
+      title: data.title,
+      content: data.content,
+      createdAt: data.createdAt,
+      postedBy: {
+        id: data.postedBy.id.toString(),
+        email: data.postedBy.email,
+      },
+    };
+  } catch (error) {
+    console.error('Error creating announcement:', error);
+    throw error;
+  }
+};
+
+// Get announcement by ID (no auth)
+export const getAnnouncementById = async (id: string): Promise<Announcement> => {
+  try {
+    const response = await fetch(`${BASE_URL}/announcements/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch announcement: ${response.status} ${errorText}`);
+    }
+    const data = await response.json();
+    return {
+      id: data.id.toString(),
+      title: data.title,
+      content: data.content,
+      createdAt: data.createdAt,
+      postedBy: {
+        id: data.postedBy.id.toString(),
+        email: data.postedBy.email,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching announcement:', error);
+    throw error;
+  }
+};
+
 
 export interface Invoice {
   id: string;

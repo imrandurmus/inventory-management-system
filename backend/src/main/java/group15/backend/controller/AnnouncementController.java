@@ -30,7 +30,23 @@ public class AnnouncementController {
         return employeeRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Authenticated employee not found"));
     }
+// Get default manager for postedBy
+private Employee getDefaultManager() {
+    return employeeRepo.findByEmail("alice@company.com")
+            .orElseThrow(() -> new RuntimeException("Default manager not found. Please ensure 'alice@company.com' exists."));
+}
 
+
+// 1. Post announcement (open, but sets manager as postedBy)
+@PostMapping
+public ResponseEntity<?> createAnnouncement(@RequestBody Announcement announcement) {
+    Employee manager = getDefaultManager();
+    announcement.setPostedBy(manager);
+    Announcement saved = announcementRepo.save(announcement);
+    return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+}
+
+{/**
     // 1. Post announcement (Manager only)
     @PostMapping
     public ResponseEntity<?> createAnnouncement(@RequestBody Announcement announcement) {
@@ -42,14 +58,28 @@ public class AnnouncementController {
         Announcement saved = announcementRepo.save(announcement);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
+ */}
 
-    // 2. Get all announcements (Everyone)
-    @GetMapping
-    public ResponseEntity<List<Announcement>> getAll() {
-        return ResponseEntity.ok(announcementRepo.findAll());
-    }
 
-    // 3. Get unread announcements (REGULAR and MANAGER)
+// 2. Get all announcements (Everyone)
+@GetMapping
+public ResponseEntity<List<Announcement>> getAll() {
+    return ResponseEntity.ok(announcementRepo.findAll());
+}
+
+
+ // 3. Get announcement by ID (for modal)
+ @GetMapping("/{id}")
+ public ResponseEntity<?> getAnnouncementById(@PathVariable Long id) {
+     Optional<Announcement> announcementOpt = announcementRepo.findById(id);
+     if (announcementOpt.isEmpty()) {
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Announcement not found.");
+     }
+     return ResponseEntity.ok(announcementOpt.get());
+ }
+
+    
+    // 4. Get unread announcements (requires auth)
     @GetMapping("/unread")
     public ResponseEntity<List<Announcement>> getUnreadAnnouncements() {
         Employee current = getCurrentEmployee();
@@ -65,23 +95,23 @@ public class AnnouncementController {
         return ResponseEntity.ok(unread);
     }
 
-    // 4. Get unread announcement count (REGULAR and MANAGER)
-    @GetMapping("/unread-count")
-    public ResponseEntity<?> getUnreadCount() {
-        Employee current = getCurrentEmployee();
-        List<Long> readIds = readRepo.findByEmployee(current)
-                .stream()
-                .filter(AnnouncementReadStatus::isRead)
-                .map(read -> read.getAnnouncement().getId())
-                .collect(Collectors.toList());
-        long unreadCount = announcementRepo.findAll()
-                .stream()
-                .filter(a -> !readIds.contains(a.getId()))
-                .count();
-        return ResponseEntity.ok(new UnreadCountResponse(unreadCount));
-    }
+   // 5. Get unread announcement count (requires auth)
+   @GetMapping("/unread-count")
+   public ResponseEntity<?> getUnreadCount() {
+       Employee current = getCurrentEmployee();
+       List<Long> readIds = readRepo.findByEmployee(current)
+               .stream()
+               .filter(AnnouncementReadStatus::isRead)
+               .map(read -> read.getAnnouncement().getId())
+               .collect(Collectors.toList());
+       long unreadCount = announcementRepo.findAll()
+               .stream()
+               .filter(a -> !readIds.contains(a.getId()))
+               .count();
+       return ResponseEntity.ok(new UnreadCountResponse(unreadCount));
+   }
 
-    // 5. Mark announcement as read (REGULAR and MANAGER)
+    // 6. Mark announcement as read (requires auth)
     @PostMapping("/{id}/read")
     public ResponseEntity<?> markAsRead(@PathVariable Long id) {
         Employee current = getCurrentEmployee();
@@ -90,25 +120,25 @@ public class AnnouncementController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Announcement not found.");
         }
         Announcement announcement = announcementOpt.get();
-        Optional<AnnouncementReadStatus> existingStatus =
-                readRepo.findByEmployeeAndAnnouncement(current, announcement);
-        if (existingStatus.isPresent()) {
-            AnnouncementReadStatus status = existingStatus.get();
-            if (!status.isRead()) {
-                status.setRead(true);
-                status.setReadAt(LocalDateTime.now());
-                readRepo.save(status);
+        Optional<AnnouncementReadStatus> readStatusOpt = readRepo.findByEmployeeAndAnnouncement(current, announcement);
+        if (readStatusOpt.isEmpty()) {
+            AnnouncementReadStatus readStatus = new AnnouncementReadStatus();
+            readStatus.setEmployee(current);
+            readStatus.setAnnouncement(announcement);
+            readStatus.setRead(true);
+            readRepo.save(readStatus);
+        } else {
+            AnnouncementReadStatus readStatus = readStatusOpt.get();
+            if (!readStatus.isRead()) {
+                readStatus.setRead(true);
+                readRepo.save(readStatus);
             }
-            return ResponseEntity.ok("Announcement marked as read.");
         }
-        AnnouncementReadStatus status = new AnnouncementReadStatus(current, announcement);
-        status.setRead(true);
-        status.setReadAt(LocalDateTime.now());
-        readRepo.save(status);
-        return ResponseEntity.ok("Announcement marked as read.");
+        return ResponseEntity.ok().build();
     }
 
     // Helper class for unread count response
+    // DTO for unread count
     private static class UnreadCountResponse {
         private final long count;
 
