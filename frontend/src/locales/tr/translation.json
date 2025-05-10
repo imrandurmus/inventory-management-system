@@ -1,0 +1,384 @@
+{
+    "header": {
+      "about_us": "Hakkımızda",
+      "contact": "İletişim",
+      "login": "Giriş Yap",
+      "try_now": "Hemen Dene"
+    },
+    "landing": {
+        "main_heading": "Stok Yönetiminizi Zahmetsizce Kolaylaştırın",
+        "subheading": "Sezgisel ve basit yazılımımızla stok süreçlerinizi dönüştürerek zaman kazanın ve hataları azaltın.\nİşletmenizi güçlendiren sorunsuz takip ve yönetimi deneyimleyin.",
+        "get_started": "Başlayın",
+        "feature1_title": "Stok İçgörülerinizi Anında Kolaylaştırmak için Otomatik Raporlar Oluşturun",
+        "landing-feature-heading": "Tüm Satış Platformlarınızla Sorunsuz Entegrasyon için Çok Kanallı Destek",
+        "landing-feature-text": "Stok durumunuz hakkında anlık verilerle bilgi sahibi olun.",
+        "landing-feature-text2": "Operasyonlarınızı geliştirmek için çeşitli satış kanallarına zahmetsizce bağlanın.",
+        "landing-feature-heading3": "Kapsamlı Stok Yönetimi Çözümleriyle İş Akışınızı Optimize Edin",
+        "landing-feature-text3": "Yenilikçi yazılım özelliklerimizle stok yönetimi sürecinizi dönüştürün.",
+        "LM": "Daha Fazla Bilgi",
+        "GS": "Başlayın",
+        "features-heading": "Zahmetsiz Stok Yönetimi ve Kontrolü için Gerçek Zamanlı Takibi Deneyimleyin",
+        "Features-Title": "Gelişmiş Stok Yönetimi Yazılımımızla Verimlilik ve Büyüme Sağlayın",
+        "Features-description": "Yazılımımız stok süreçlerini kolaylaştırır, hataları azaltır ve zaman kazandırır. İşletmeniz için daha iyi doğruluk ve gelişmiş karar alma deneyimi yaşayın.",
+        "CS": "Maliyet Tasarrufu",
+        "feature-subheading": "Doğru stok yönetimi ile fazla stoğu en aza indirin ve maliyetleri azaltın.",
+        "RTI": "Gerçek Zamanlı İçgörüler",
+        "feature-subheading2": "Güncel verilerle bilinçli kararlar alın.",
+        "testimonial-textt": "Bu yazılım stok yönetim sürecimizi dönüştürdü. Hatalarda önemli bir azalma ve genel verimlilikte artış gördük.",
+        "Core-Values": "Temel Değerlerimiz",
+        "valuestext": "Basit, güçlü ve güvenilir stok yönetimi çözümleri sunmaya inanıyoruz. Misyonumuz, işletmelerin süreçlerini verimli ve stressiz hale getirerek büyümelerine yardımcı olmaktır.",
+        "feature1_text": "Stok durumunuz hakkında anlık verilerle bilgi sahibi olun.",
+        "valuestext1": "Yılların deneyimi ve tutkulu bir ekiple, her ölçekten işletme için en iyi araçları sunmaya kararlıyız.",
+        "footer-company": "Modern stok yönetimi çözümümüzle işletmenizi kolaylaştırın.",
+        "QL": "Hızlı Bağlantılar",
+        "AU": "Hakkımızda",
+        "CU": "İletişim",
+        "PP": "Gizlilik Politikası",
+        "FU": "Bizi Takip Edin"
+    },
+    "learn": {
+    "hero": {
+      "title": "Envanterinizi Devrim Yaratın",
+      "subtitle": "Kontrolde kalmanıza yardımcı olacak güçlü, sezgisel araçlar.",
+      "button": "Özellikleri Keşfedin"
+    },
+    "features": {
+      "title": "Temel Özellikler",
+      "items": [
+        {
+          "title": "Stok Takibi",
+          "description": "Envanterinizi gerçek zamanlı olarak izleyin ve işiniz için veri odaklı kararlar alın."
+        },
+        {
+          "title": "Düzen",
+          "description": "Envanterinizi kolayca düzenleyin ve hataları en aza indirerek doğru yönetim sağlayın."
+        },
+        {
+          "title": "Raporlar ve Analitik",
+          "description": "İş performansınızı anlamak için ayrıntılı raporlar ve analizler alın."
+        }
+      ]
+    },
+    "testimonial": {
+      "title": "Müşterilerimiz Ne Diyor",
+      "items": [
+        {
+          "quote": "Bu platform, envanter yönetimini çok daha kolay hale getirdi. Her büyüklükteki işletmelere tavsiye ederim.",
+          "name": "David Wallace",
+          "title": "CEO, Sabre International Corp."
+        },
+        {
+          "quote": "Her hafta manuel çalışmalardan saatler tasarruf etmemizi sağlayan inanılmaz derecede güçlü bir araç. Sistemimizle mükemmel bir şekilde entegre oluyor.",
+          "name": "Jan Levinson",
+          "title": "Kuzeydoğu Satış Başkan Yardımcısı, Dunder Mifflin"
+        }
+      ]
+    },
+    "stats": {
+      "title": "Dünya Çapında Güvenilir",
+      "items": [
+        { "label": "Küresel Kullanıcılar" },
+        { "label": "Hizmet Verilen Ülkeler" },
+        { "label": "Dünyada Çalışanlar" },
+        { "label": "İşletme Yılları" },
+        { "label": "Çözüm" }
+      ]
+    },
+    "cta": {
+      "title": "Envanterinizi Dönüştürmeye Hazır Mısınız?",
+      "button": "Başlayın"
+    }
+  },
+    "signUp": {
+      "promoTitle": "Bir ürünü bir daha asla kaybetmeyin.",
+      "promoSubtitle": "İşletmeler ve ekipler için basit, hızlı ve güçlü envanter yazılımı.",
+      "testimonial": {
+        "quote": "\"Envanteri girmek basit. Kullanımı basit. Özelleştirilmesi kolay. Ekibim çok hızlı uyum sağladı.\"",
+        "name": "Dwight S.",
+        "title": "Yönetici Asistanı"
+      },
+      "trustedText": "Küçük ve büyük işletmelerin güvenerek envanterlerini takip edip yönettikleri platforma katılın!",
+      "createAccount": "Hesap Oluştur",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "createAccountButton": "Hesap Oluştur",
+      "termsText": "'Hesap oluştur' butonuna tıklayarak Simple'ın ",
+      "termsLinkText": "Gizlilik Politikasına kabul etmiş olursunuz",
+      "errors": {
+        "requiredFields": "Tüm gerekli alanlar doldurulmalıdır.",
+        "signupFailed": "Hesap oluşturulamadı. Lütfen tekrar deneyin."
+      }
+    },
+      "aboutUs": {
+        "missionTitle": "Misyonumuz",
+        "missionDescription": "SIMple, büyüyen işletmeler için envanter yönetimini basitleştirerek, stoklarını optimize etmelerine, israfı azaltmalarına ve satışlarını artırmalarına yardımcı olan kullanımı kolay bir platform sunmaktadır.",
+        "meetOurTeam": "Ekibimizi Tanıyın",
+        "teamMembers": {
+          "jihad": { "name": "Jihad", "role": "Dokümantasyon" },
+          "afagh": { "name": "Afagh", "role": "Frontend Lead" },
+          "imran": { "name": "Imran", "role": "Backend Lead" }
+        },
+        "timelineTitle": "Zaman ve Yenilik İçindeki Yolculuğumuz",
+        "timelineDescription": "Kuruluşumuzdan bu yana, envanter yönetimini devrim niteliğinde değiştirmeye kararlıyız. Dönüm noktalarımız, büyümemizi ve mükemmeliyete olan bağlılığımızı yansıtmaktadır.",
+        "timeline": {
+          "2013": "İlk envanter yönetim yazılımımızı piyasaya sürdük ve bu, sektörde yeni bir standart belirledi. Bu, yolculuğumuzun başlangıcını işaret etti.",
+          "2015": "Büyüme için stratejik bir vizyonla şirket, yatırımcı ağını genişletmek ve gelecekteki gelişmeler için gerekli sermayeyi sağlamak için önemli kaynaklar ayırmaktadır.",
+          "2018": "Yazılımımızı çok kanallı envanter yönetimini destekleyecek şekilde genişleterek, işletmelerin verimli bir şekilde ölçeklenmesine yardımcı olduk."
+        },
+        "ctaText": "Bugün envanterinizi kontrol altına alın ve katılın!",
+        "ctaButtonText": "Başlayın"
+      },
+        "contact": {
+          "heading": "Bir şey mi arıyorsunuz?",
+          "successMessage": "Talebiniz başarıyla gönderildi!",
+          "name": "Ad",
+          "phone": "Telefon Numarası",
+          "email": "E-posta",
+          "company": "Şirket",
+          "subject": "Konu",
+          "optionQuestion": "Soru",
+          "optionSupport": "Destek talebi",
+          "companySize": "Şirketinizin büyüklüğü",
+          "size1": "1-10 çalışan",
+          "size2": "11-50 çalışan",
+          "size3": "51-200 çalışan",
+          "size4": "201+ çalışan",
+          "question": "Sorunuz",
+          "privacy1": "Kişisel verilerinizi",
+          "privacyLink": "Gizlilik Politikamız",
+          "privacy2": "doğrultusunda işleyerek sorunuzu yanıtlayacak ve ürünlerimiz ile hizmetlerimiz hakkında bilgi sağlayacağız.",
+          "submit": "Gönder",
+          "contactUs": "Bize Ulaşın",
+          "call": "Arayın veya bir görüntülü toplantı planlayın",
+          "expert": "Bir uzmanla görüşün",
+          "assess": "Envanter ihtiyaçlarınızı değerlendirin.",
+          "help": "Yardım Talebi",
+          "developerHelp": "Yardıma mı ihtiyacınız var? Geliştiricilerle iletişime geçin.",
+          "errorAlert": "Bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        },
+        "login":{
+          "Welcome Back!": "Tekrar Hoşgeldiniz!",
+          "Log in to your account.": "Hesabınıza giriş yapın.",
+          "Email": "E-posta",
+          "Password": "Şifre",
+          "Please enter a valid email.": "Geçerli bir e-posta adresi girin.",
+          "Please enter a valid password.": "Geçerli bir şifre girin.",
+          "Remember me": "Beni hatırla",
+          "Forgot your password?": "Şifrenizi mi unuttunuz?",
+          "Sign in": "Giriş yap",
+          "Signing in...": "Giriş yapılıyor...",
+          "Don't have an account?": "Hesabınız yok mu?",
+          "Sign up": "Kayıt ol",
+          "Forgot Password": "Şifreyi Unuttum",
+          "Close": "Kapat",
+          "Both fields are required.": "Her iki alan da gereklidir.",
+          "Invalid email or password. Please try again.": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin."
+        },
+          "EDash": {
+            "Employee Dashboard": "Çalışan Gösterge Paneli",
+            "Assigned Item Types": "Atanan Ürün Türleri",
+            "Total Items in Stock": "Toplam Stokta Olan Ürünler",
+            "units": "birimler",
+            "Low Stock Alerts": "Düşük Stok Uyarıları",
+            "items": "ürünler",
+            "Total Stock Value": "Toplam Stok Değeri",
+            "Inventory Management": "Envanter Yönetimi",
+            "Search items (ID, Name)": "Ürünleri Ara (ID, Ad)",
+            "Filter by Stock Status": "Stok Durumuna Göre Filtrele",
+            "Low Stock": "Düşük Stok",
+            "Out of Stock": "Tükendi",
+            "Export to CSV": "CSV Olarak Aktar",
+            "Item ID": "Ürün ID",
+            "Item Name": "Ürün Adı",
+            "Item Type": "Ürün Türü",
+            "Quantity in Stock": "Stoktaki Miktar",
+            "Reorder Limit": "Yeniden Sipariş Sınırı",
+            "Last Updated": "Son Güncellenme",
+            "Actions": "İşlemler",
+            "Restock": "Yeniden Stokla",
+            "Report": "Rapor",
+            "Restock Item:": "Ürünü Yeniden Stokla:",
+            "Quantity to Restock": "Yeniden Stoklanacak Miktar",
+            "Enter quantity": "Miktarı girin",
+            "Confirm Restock": "Yeniden Stoklamayı Onayla",
+            "Cancel": "İptal",
+            "In Stock": "Stokta"
+          },
+        
+          "RAnnouncement": {
+            "Announcements": "Duyurular",
+            "Category": "Kategori",
+            "All Categories": "Tüm Kategoriler",
+            "News": "Haberler",
+            "Activities": "Etkinlikler",
+            "Search": "Ara",
+            "No announcements match your filters.": "Filtrelerinize uyan duyuru bulunmamaktadır.",
+            "Date:": "Tarih:",
+            "Close": "Kapat",
+            "Show Unread Only": "Yalnızca Okunmamışları Göster",
+            "Search announcements...": "Duyuruları Ara..."
+          },
+            "RHeader": {
+              "Settings": "Ayarlar",
+              "Logout": "Çıkış Yap",
+              "Hello,": "Merhaba,",
+              "Dashboard": "Gösterge Paneli",
+              "Announcements": "Duyurular",
+              "See All": "Tümünü Gör",
+              "No unread announcements": "Okunmamış duyuru yok"
+          },
+          "RSettings": {
+            "Account Settings": "Hesap Ayarları",
+            "Personal Information": "Kişisel Bilgiler",
+            "Employee ID": "Çalışan ID'si",
+            "Role": "Rol",
+            "Name": "Ad",
+            "Email": "E-posta",
+            "Assigned Item Types": "Atanan Ürün Türleri",
+            "Assigned Types": "Atanan Türler"
+          },
+            "Mhead": {
+              "Welcome!": "Hoş geldiniz!",
+              "Dashboard": "Gösterge Paneli",
+              "Items": "Ürünler",
+              "Users": "Kullanıcılar",
+              "Announcements": "Duyurular",
+              "Product Types": "Ürün Türleri",
+              "Orders": "Siparişler",
+              "Invoices": "Faturalar",
+              "Settings": "Ayarlar",
+              "Logout": "Çıkış Yap",
+              "See All": "Hepsini Gör",
+              "No unread announcements": "Okunmamış duyuru yok"
+            },
+            
+              "Mdash": {
+                "Summary": "Özet",
+                "Total Inventory": "Toplam Stok",
+                "Product Types": "Ürün Türleri",
+                "Sales:": "Satışlar:",
+                "Total Inventory Value": "Toplam Stok Değeri",
+                "Value": "Değer",
+                "Stock Count": "Stok Miktarı",
+                "Top Selling Items": "En Çok Satan Ürünler",
+                "OUT_OF_STOCK": "STOKTA_YOK",
+                "LOW_STOCK": "DÜŞÜK_STOK",
+                "IN_STOCK": "STOKTA"
+              },
+              "Mproducts": {
+                "Search products...": "Ürünleri Ara...",
+                "Add Type": "Tür Ekle",
+                "New Product Type": "Yeni Ürün Türü",
+                "Save Change": "Değişiklikleri Kaydet",
+                "Cancel": "İptal",
+                "Select Type": "Tür Seç",
+                "Type": "Tür",
+                "Quantity": "Miktar",
+                "Price": "Fiyat",
+                "Description": "Açıklama",
+                "Product Name": "Ürün Adı",
+                "": "",
+                "All Types": "Tüm Türler",
+                "Add Product Type": "Ürün Türü Ekle",
+                "Add New Product": "Yeni Ürün Ekle",
+                "Product Management": "Ürün Yönetimi",
+                "Actions": "İşlemler",
+                "Product ID": "Ürün ID"
+          },
+          "Morders": {
+            "Order ID": "Sipariş ID",
+            "Customer Name": "Müşteri Adı",
+            "Products": "Ürünler",
+            "Total Price": "Toplam Fiyat",
+            "Date": "Tarih",
+            "Actions": "Eylemler",
+            "Add New Order": "Yeni Sipariş Ekle",
+            "Manage Orders": "Siparişleri Yönet",
+            "Apply Sort": "Sıralama Uygula",
+            "+ Add New Order": "+ Yeni Sipariş Ekle",
+            "Product: Z-A": "Ürün: Z-A",
+            "Product: A-Z": "Ürün: A-Z",
+            "Sort by Product": "Ürüne Göre Sırala",
+            "Search orders (ID, Customer, Product)": "Siparişleri Ara (ID, Müşteri, Ürün)",
+            "Delete": "Sil",
+            "Cancel": "İptal",
+            "Morders.Are you sure you want to delete this order? This action cannot be undone.": "Morders.Bu siparişi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+            "Confirm Deletion": "Silme Onayı",
+            "Save Order": "Siparişi Kaydet"
+          },
+            "Minvoice": {
+              "Search invoices (Customer, Order)": "Faturaları Ara (Müşteri, Sipariş)",
+              "Create New Order": "Yeni Sipariş Oluştur",
+              "Invoice ID": "Fatura ID",
+              "Total Amount": "Toplam Tutar",
+              "Date Of Issue": "Düzenlenme Tarihi",
+              "Actions": "İşlemler",
+              "Create New Invoice": "Yeni Fatura Oluştur",
+              "Customer Name": "Müşteri Adı",
+              "Enter Total Amount": "Toplam Tutarı Girin",
+              "Date": "Tarih",
+              "Close": "Kapat",
+              "Create Invoice": "Fatura Oluştur",
+              "Confirm Deletion": "Silme İşlemini Onayla",
+              "Are you sure you want to delete this invoice? This action cannot be undone.": "Bu faturayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+              "Invoice Preview": "Fatura Önizlemesi",
+              "Loading PDF preview...": "PDF önizlemesi yükleniyor...",
+              "Download PDF": "PDF İndir"
+            } ,
+             "Musers": {
+              "Search by name or email": "İsme veya e-postaya göre ara",
+              "Sort by Name": "İsme göre sırala",
+              "Sort by Role": "Role göre sırala",
+              "Sort by Assigned Type": "Atanan tipe göre sırala",
+              "Add New User": "Yeni Kullanıcı Ekle",
+              "Profile": "Profil",
+              "First Name": "Ad",
+              "Last Name": "Soyad",
+              "Email": "E-posta",
+              "Role": "Rol",
+              "Assigned Product Types": "Atanan Ürün Tipleri",
+              "Actions": "İşlemler",
+              "View": "Görüntüle",
+              "Edit": "Düzenle",
+              "No users found": "Kullanıcı bulunamadı",
+              "Are you sure you want to delete this user?": "Bu kullanıcıyı silmek istediğinize emin misiniz?",
+              "Confirm Deletion": "Silme İşlemini Onayla",
+              "Add User": "Kullanıcı Ekle",
+              "Manager": "Yönetici",
+              "Regular": "Standart",
+              "Password": "Şifre",
+              "Edit User": "Kullanıcıyı Düzenle",
+              "You cannot edit your own credentials.": "Kendi kimlik bilgilerinizi düzenleyemezsiniz.",
+              "Profile Picture URL": "Profil Resmi URL’si",
+              "Save Changes": "Değişiklikleri Kaydet"
+            },
+           "Mann": {
+            "Loading announcements...": "Duyurular yükleniyor...",
+            "Try Again": "Tekrar Dene",
+            "Add New": "Yeni Ekle",
+            "Announcements": "Duyurular",
+            "Search announcements...": "Duyuru ara...",
+            "No announcements found.": "Hiç duyuru bulunamadı.",
+            "Posted by:": "Yayınlayan:",
+            "Announcement not found": "Duyuru bulunamadı",
+            "Announcement Created Successfully!": "Duyuru başarıyla oluşturuldu!",
+            "Create Announcement": "Duyuru Oluştur",
+            "Enter announcement content": "Duyuru içeriğini girin",
+            "Content": "İçerik",
+            "Enter announcement title": "Duyuru başlığını girin",
+            "Title": "Başlık",
+            "Create New Announcement": "Yeni Duyuru Oluştur"
+          },
+              "MS": {
+                "Your changes have been saved successfully.": "Değişiklikleriniz başarıyla kaydedildi.",
+                "Success!": "Başarılı!",
+                "ID:": "Kimlik No:",
+                "Email:": "E-posta:",
+                "Surname": "Soyadı",
+                "Name:": "Adı:",
+                "Delete Avatar": "Avatarı Sil",
+                "No Avatar": "Avatar Yok"
+              }
+            }  

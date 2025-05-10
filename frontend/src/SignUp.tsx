@@ -1,19 +1,14 @@
 import { useEffect, useState } from "react";
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Divider,
-  Grid,
-} from "@mui/material";
-import "./CSS/SignUp.css";
+import { TextField, Button, Typography, Box, Divider, Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import WBGHeader from "./WBGHeader";
+import { useTranslation } from "react-i18next";  // Import useTranslation
+import "./CSS/SignUp.css";
 
 const BASE_URL = "http://localhost:8080"; // Your backend URL
 
 const SignUp = () => {
+  const { t } = useTranslation();  // Use translation hook
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -38,7 +33,7 @@ const SignUp = () => {
     const { firstName, lastName, email, password } = formData;
 
     if (!firstName || !lastName || !email || !password) {
-      setErrorMessage("All required fields must be filled.");
+      setErrorMessage(t("signUp.errors.requiredFields"));
       return;
     }
 
@@ -53,14 +48,14 @@ const SignUp = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || "Signup failed.");
+        throw new Error(errorText || t("signUp.errors.signupFailed"));
       }
 
       setErrorMessage("");
       console.log("Signed up successfully:", formData);
       navigate("/login");
     } catch (error: any) {
-      setErrorMessage(error.message || "Failed to create account. Please try again.");
+      setErrorMessage(error.message || t("signUp.errors.signupFailed"));
     }
   };
 
@@ -71,21 +66,21 @@ const SignUp = () => {
         {/* Left Promo Section */}
         <Box flex={1} p={5} className="promo-section">
           <Typography variant="h3" fontWeight="bold" gutterBottom className="promo-title">
-            Never lose track of an item again.
+            {t("signUp.promoTitle")}
           </Typography>
           <Typography variant="body1" color="textSecondary" mb={4} className="promo-subtitle">
-            Simple, fast, and powerful inventory software for businesses and teams to stay organized.
+            {t("signUp.promoSubtitle")}
           </Typography>
           <Box className="testimonial">
             <Box className="stars">★★★★★</Box>
             <Typography variant="body2" fontStyle="italic" mb={1}>
-              "Simple to input inventory. Simple to use. Easy to customize. My team adopted very quickly."
+              {t("signUp.testimonial.quote")}
             </Typography>
-            <Typography variant="body2" fontWeight="bold">Dwight S.</Typography>
-            <Typography variant="body2" color="textSecondary">Assistant to the Manager</Typography>
+            <Typography variant="body2" fontWeight="bold">{t("signUp.testimonial.name")}</Typography>
+            <Typography variant="body2" color="textSecondary">{t("signUp.testimonial.title")}</Typography>
           </Box>
           <Typography variant="body2" mt={4} mb={2} className="trusted-text">
-            Join businesses both small and large that trust us to track and manage their inventory!
+            {t("signUp.trustedText")}
           </Typography>
         </Box>
 
@@ -93,14 +88,14 @@ const SignUp = () => {
         <Box flex={1} p={5} display="flex" justifyContent="center" alignItems="center">
           <Box className="form-container" width="100%" maxWidth="600px">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Create an Account
+              {t("signUp.createAccount")}
             </Typography>
             <Divider sx={{ my: 2 }} />
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="First Name"
+                    label={t("signUp.firstName")}
                     fullWidth
                     variant="outlined"
                     value={formData.firstName}
@@ -111,7 +106,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    label="Last Name"
+                    label={t("signUp.lastName")}
                     fullWidth
                     variant="outlined"
                     value={formData.lastName}
@@ -122,7 +117,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Email"
+                    label={t("signUp.email")}
                     fullWidth
                     type="email"
                     variant="outlined"
@@ -134,7 +129,7 @@ const SignUp = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Password"
+                    label={t("signUp.password")}
                     fullWidth
                     type="password"
                     variant="outlined"
@@ -153,13 +148,13 @@ const SignUp = () => {
                 className="submit-buttonn"
                 sx={{ mt: 3 }}
               >
-                Create Account
+                {t("signUp.createAccountButton")}
               </Button>
 
               <Typography textAlign="center" mt={2} variant="body2" color="textSecondary">
-                By clicking on 'Create account' you agree to Simple's{" "}
+                {t("signUp.termsText")}
                 <Link to="/privacy-policy" className="terms-link">
-                  Privacy Policy
+                  {t("signUp.termsLinkText")}
                 </Link>
               </Typography>
               {errorMessage && (

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 import { getCurrentEmployee, User, Announcement, getUnreadAnnouncements, getUnreadAnnouncementCount } from '../../services/api';
 import '../CSS/Header.css';
 
@@ -12,7 +13,11 @@ const RHeader: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+  };
   // Fetch user and announcements
   useEffect(() => {
     const fetchData = async () => {
@@ -87,17 +92,25 @@ const RHeader: React.FC = () => {
     <Navbar className="navigationBarr" expand="lg" fixed="top">
       <Container fluid className="d-flex align-items-center">
         {/* Middle Navigation */}
+        <select
+                onChange={handleLanguageChange}
+                value={i18n.language}
+                className="language-selector"
+              >
+                <option value="en">🇬🇧 EN</option>
+                <option value="tr">🇹🇷 TR</option>
+              </select>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
             <p className="nav-link-custom ml-2 mr-6 mt-2">
-              Hello, {user ? `${user.firstName} ${user.lastName}` : 'User'}
+              {t("RHeader.Hello,")} {user ? `${user.firstName} ${user.lastName}` : 'User'}
             </p>
             <Nav.Link as={Link} to="/Regular-Dashboard" className="nav-link-custom">
-              Dashboard
+              {t("RHeader.Dashboard")} 
             </Nav.Link>
             <Nav.Link as={Link} to="/My-Announcements" className="nav-link-custom">
-              Announcements
+              {t("RHeader.Announcements")} 
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -105,6 +118,7 @@ const RHeader: React.FC = () => {
         {/* Right Side Icons */}
         <div className="d-flex align-items-center">
           <div className="position-relative" ref={dropdownRef}>
+            
             {/* Bell Icon with Dropdown */}
             <Dropdown show={showDropdown} onToggle={toggleDropdown}>
               <Dropdown.Toggle
@@ -123,6 +137,7 @@ const RHeader: React.FC = () => {
                     {unreadCount}
                   </Badge>
                 )}
+                
               </Dropdown.Toggle>
 
               <Dropdown.Menu align="end" className="announcements-dropdown">
@@ -149,16 +164,17 @@ const RHeader: React.FC = () => {
                       onClick={() => setShowDropdown(false)}
                       className="text-center"
                     >
-                      See All
+                      {t("RHeader.See All")}
                     </Dropdown.Item>
                   </>
                 ) : (
                   <Dropdown.ItemText className="text-center">
-                    <p className="text-muted mb-0">No unread announcements</p>
+                    <p className="text-muted mb-0">{t("RHeader.No unread announcements")}</p>
                   </Dropdown.ItemText>
                 )}
               </Dropdown.Menu>
             </Dropdown>
+            
           </div>
 
           <NavDropdown
@@ -176,10 +192,10 @@ const RHeader: React.FC = () => {
             className="profile-dropdown"
           >
             <NavDropdown.Item as={Link} to="/My-Settings">
-              Settings
+               {t("RHeader.Settings")}
             </NavDropdown.Item>
             <NavDropdown.Item onClick={handleLogout}>
-              Logout
+               {t("RHeader.Logout")}
             </NavDropdown.Item>
           </NavDropdown>
         </div>

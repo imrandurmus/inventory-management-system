@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -8,6 +9,7 @@ import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import HHeader from "./HHeader";
 
 const Landing = () => {
+  const { t } = useTranslation();
   const statsRef = useRef<HTMLDivElement | null>(null);
   const [animateStats, setAnimateStats] = useState(false);
   useEffect(() => {
@@ -43,25 +45,21 @@ const Landing = () => {
           <Row className="align-items-center">
             <Col md={6}>
               <h1 className="landing-main-heading">
-                Streamline Your Inventory Management Effortlessly
+                {t('landing.main_heading')}
               </h1>
               <p className="landing-main-subheading">
-              Transform your inventory processes with our intuitive and simple software, saving you time and reducing errors. Experience 
-                seamless tracking and management, empowering your business to thrive.
-                effortlessly.
+                {t('landing.subheading')}
               </p>
               <div className="landing-main-buttons">
                 <Link to="/signup">
-                  <Button variant="primary" className="landing-get-started-btn">
-                    Get Started
-                  </Button>
+                  <Button className='landing-get-started-btn'>{t('landing.get_started')}</Button>
                 </Link>
                 <Link to="/LearnMore">
                   <Button
                     variant="outline-secondary"
                     className="landing-learn-more-btn"
                   >
-                    Learn More
+                    {t('landing.LM')}
                   </Button>
                 </Link>
               </div>
@@ -86,7 +84,7 @@ const Landing = () => {
       {/* Left Column: Large Heading */}
       <Col md={6}>
         <h2 className="features-heading">
-          Experience Real-Time Tracking for Effortless Inventory Management and Control
+        {t('landing.features-heading')}
         </h2>
       </Col>
 
@@ -99,12 +97,12 @@ const Landing = () => {
               <div className="feature-icon">
                 <FaBox /> {/* Using FaBox icon from react-icons */}
               </div>
-              <h4 className="landing-feature-heading">Generate Automatic Reports to Streamline Your Inventory Insights Instantly</h4>
+              <h4 className="landing-feature-heading">{t('landing.feature1_title')}</h4>
               <p className="landing-feature-text">
-                Stay informed with up-to-the-minute data on your inventory status.
+              {t('landing.landing-feature-text')}
               </p>
               <Link to="/LearnMore" className="feature-link">
-                Learn More <span className="arrow">→</span>
+                {t('landing.LM')} <span className="arrow">→</span>
               </Link>
             </div>
           </Col>
@@ -115,12 +113,12 @@ const Landing = () => {
               <div className="feature-icon">
                 <FaFolderOpen /> {/* Using FaFolderOpen icon */}
               </div>
-              <h4 className="landing-feature-heading">Multi-Channel Support for Seamless Integration Across All Your Sales Platforms</h4>
+              <h4 className="landing-feature-heading">{t('landing.landing-feature-heading')}</h4>
               <p className="landing-feature-text">
-                Connect effortlessly with various sales channels to enhance your operations.
+              {t('landing.landing-feature-text2')}
               </p>
               <Link to="/LearnMore" className="feature-link">
-                Learn More <span className="arrow">→</span>
+              {t('landing.LM')} <span className="arrow">→</span>
               </Link>
             </div>
           </Col>
@@ -131,12 +129,12 @@ const Landing = () => {
               <div className="feature-icon">
                 <FaTools /> {/* Using FaTools icon */}
               </div>
-              <h4 className="landing-feature-heading">Optimize Your Workflow with Our Comprehensive Inventory Management Solutions</h4>
+              <h4 className="landing-feature-heading">{t('landing.landing-feature-heading3')}</h4>
               <p className="landing-feature-text">
-                Transform your inventory management process with our innovative software features.
+              {t('landing.landing-feature-text3')}
               </p>
               <Link to="/SignUp" className="feature-link">
-                Get Started <span className="arrow">→</span>
+              {t('landing.GS')} <span className="arrow">→</span>
               </Link>
             </div>
           </Col>
@@ -163,18 +161,18 @@ const Landing = () => {
     <Row className="align-items-center">
       {/* Left Column: Text Content */}
       <Col md={6} className="Features-text">
-        <h2 className="Features-Title">Unlock Efficiency and Growth with Our Advanced Inventory Management Software</h2>
+        <h2 className="Features-Title"> {t('landing.Features-Title')}</h2>
         <p className="Features-description">
-          Our software streamlines inventory processes, reducing errors and saving time. Experience improved accuracy and enhanced decision-making for your business.
+        {t('landing.Features-description')}
         </p>
         <Row className="mt-4">
           <Col md={6}>
-            <h4 className="feature-subheading">Cost Savings</h4>
-            <p>Minimize excess inventory and cut costs with precise stock management.</p>
+            <h4 className="feature-subheading">{t('landing.CS')}</h4>
+            <p>{t('landing.feature-subheading')}</p>
           </Col>
           <Col md={6}>
-            <h4 className="feature-subheading">Real-Time Insights</h4>
-            <p>Make informed decisions with up-to-date data at your fingertips.</p>
+            <h4 className="feature-subheading">{t('landing.RTI')}</h4>
+            <p>{t('landing.feature-subheading2')}</p>
           </Col>
         </Row>
         <div className="mt-5">
@@ -186,7 +184,7 @@ const Landing = () => {
             <FaStar />
           </div>
           <p className="testimonial-textt">
-            "This software has transformed our inventory management process. We've seen a significant reduction in errors and improved efficiency across the board."
+          {t('landing.testimonial-textt')}
           </p>
           <div className="testimonial-author">
             <div>
@@ -215,16 +213,12 @@ const Landing = () => {
   <Container className="values">
     <Row>
       <Col>
-        <h2  className="values-text">Our Core Values</h2>
+        <h2  className="values-text">{t('landing.Core-Values')}</h2>
         <p>
-          We believe in delivering simple, powerful, and reliable inventory
-          management solutions. Our mission is to help businesses thrive by making
-          their inventory processes efficient and stress-free.
+        {t('landing.valuestext')}
         </p>
-        <p>
-          With years of experience and a passionate team, we are dedicated to
-          providing top-notch tools for businesses of all sizes.
-        </p>
+        <p> {t('landing.valuestext1')}
+          </p>
       </Col>
     </Row>
   </Container>
@@ -240,22 +234,22 @@ const Landing = () => {
       {/* Left Column - Company Info */}
       <Col md={4} className="footer-company">
         <h5>SIMple Inventory</h5>
-        <p>Streamline your business with our modern inventory management solution.</p>
+        <p>{t('landing.footer-company')}</p>
       </Col>
 
       {/* Middle Column - Quick Links */}
       <Col md={4} className="footer-links">
-        <h5>Quick Links</h5>
+        <h5>{t('landing.QL')}</h5>
         <ul>
-          <li><Link to="/aboutus">About Us</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
-          <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+          <li><Link to="/aboutus">{t('landing.AU')}</Link></li>
+          <li><Link to="/contact">{t('landing.CU')}</Link></li>
+          <li><Link to="/privacy-policy">{t('landing.PP')}</Link></li>
         </ul>
       </Col>
 
       {/* Right Column - Social Media */}
       <Col md={4} className="footer-social">
-        <h5>Follow Us</h5>
+        <h5>{t('landing.QL')}</h5>
         <div className="social-icons">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
             <FaFacebook size={20} />

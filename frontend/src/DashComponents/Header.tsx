@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Navbar, Nav, Container, NavDropdown, Badge, Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import { Bell } from 'lucide-react';
 import "../CSS/Header.css";
 
@@ -16,12 +17,15 @@ interface Announcement {
 }
 
 const Header: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
+const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    i18n.changeLanguage(e.target.value);
+  };
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -62,19 +66,27 @@ const Header: React.FC = () => {
   return (
     <Navbar className="navigationBarr" expand="lg" fixed="top">
       <Container fluid className="d-flex align-items-center">
+      <select
+                onChange={handleLanguageChange}
+                value={i18n.language}
+                className="language-selector"
+              >
+                <option value="en">🇬🇧 EN</option>
+                <option value="tr">🇹🇷 TR</option>
+              </select>
         {/* Middle Navigation */}
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
-            <p className="nav-link-custom ml-2 mr-6 mt-2">Welcome!</p>
-            <Nav.Link as={Link} to="/User-Dashboard" className="nav-link-custom">Dashboard</Nav.Link>
-            <NavDropdown title="Items" className="nav-link-custom" id="items-dropdown">
-              <NavDropdown.Item as={Link} to="/items/products">Product Types</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/items/orders">Orders</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/items/invoices">Invoices</NavDropdown.Item>
+            <p className="nav-link-custom ml-2 mr-6 mt-2">{t("Mhead.Welcome!")}</p>
+            <Nav.Link as={Link} to="/User-Dashboard" className="nav-link-custom">{t("Mhead.Dashboard")}</Nav.Link>
+            <NavDropdown title={t("Mhead.Items")} className="nav-link-custom" id="items-dropdown">
+              <NavDropdown.Item as={Link} to="/items/products">{t("Mhead.Product Types")}</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/orders">{t("Mhead.Orders")}</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/items/invoices">{t("Mhead.Invoices")}</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link as={Link} to="/users" className="nav-link-custom">Users</Nav.Link>
-            <Nav.Link as={Link} to="/announcements" className="nav-link-custom">Announcements</Nav.Link>
+            <Nav.Link as={Link} to="/users" className="nav-link-custom">{t("Mhead.Users")}</Nav.Link>
+            <Nav.Link as={Link} to="/announcements" className="nav-link-custom">{t("Mhead.Announcements")}</Nav.Link>
           </Nav>
         </Navbar.Collapse>
 
@@ -122,12 +134,12 @@ const Header: React.FC = () => {
                       onClick={() => setShowDropdown(false)}
                       className="text-center"
                     >
-                      See All
+                      {t("Mhead.See All")}
                     </Dropdown.Item>
                   </>
                 ) : (
                   <Dropdown.ItemText className="text-center">
-                    <p className="text-muted mb-0">No unread announcements</p>
+                    <p className="text-muted mb-0">{t("Mhead.No unread announcements")}</p>
                   </Dropdown.ItemText>
                 )}
               </Dropdown.Menu>
@@ -147,10 +159,10 @@ const Header: React.FC = () => {
               className="profile-dropdown"
             >
               <NavDropdown.Item as={Link} to="/settings">
-                Settings
+                {t("Mhead.Settings")}
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/Landing">
-                Logout
+                {t("Mhead.Logout")}
               </NavDropdown.Item>
             </NavDropdown>
           ) : (
@@ -169,10 +181,10 @@ const Header: React.FC = () => {
               className="profile-dropdown"
             >
               <NavDropdown.Item as={Link} to="/settings">
-                Settings
+                {t("Mhead.Settings")}
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/Landing">
-                Logout
+                {t("Mhead.Logout")}
               </NavDropdown.Item>
             </NavDropdown>
           )}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Form, Row, Col, Modal, Button, Pagination, Alert } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import '../CSS/RAnnouncements.css';
 import RHeader from './RHeader';
 import { getAnnouncements, getUnreadAnnouncements, markAnnouncementAsRead, Announcement as BackendAnnouncement } from '../../services/api';
@@ -16,6 +17,7 @@ interface Announcement {
 }
 
 const RAnnouncements: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -183,7 +185,7 @@ const RAnnouncements: React.FC = () => {
             src="/AnnounementsMegaphone.png"
             alt="Announcements Icon"
           />
-          <h2 className="rannouncements-title ms-3 mb-0">Announcements</h2>
+          <h2 className="rannouncements-title ms-3 mb-0">{t("RAnnouncement.Announcements")}</h2>
         </div>
 
         <Container className="rannouncements-container">
@@ -193,7 +195,7 @@ const RAnnouncements: React.FC = () => {
               <Form.Group controlId="filterUnread">
                 <Form.Check
                   type="checkbox"
-                  label="Show Unread Only"
+                  label={t("RAnnouncement.Show Unread Only")}
                   checked={filterUnread}
                   onChange={(e) => {
                     setFilterUnread(e.target.checked);
@@ -204,7 +206,7 @@ const RAnnouncements: React.FC = () => {
             </Col>
             <Col md={4}>
               <Form.Group controlId="categorySelect">
-                <Form.Label>Category</Form.Label>
+                <Form.Label>{t("RAnnouncement.Category")}</Form.Label>
                 <Form.Control
                   as="select"
                   value={activeTab}
@@ -213,18 +215,18 @@ const RAnnouncements: React.FC = () => {
                     setCurrentPage(1);
                   }}
                 >
-                  <option value="All">All Categories</option>
-                  <option value="News">News</option>
-                  <option value="Activities">Activities</option>
+                  <option value="All">{t("RAnnouncement.All Categories")}</option>
+                  <option value="News">{t("RAnnouncement.News")}</option>
+                  <option value="Activities">{t("RAnnouncement.Activities")}</option>
                 </Form.Control>
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group controlId="searchQuery">
-                <Form.Label>Search</Form.Label>
+                <Form.Label>{t("RAnnouncement.Search")}</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Search announcements..."
+                  placeholder={t("RAnnouncement.Search announcements...")}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -240,7 +242,7 @@ const RAnnouncements: React.FC = () => {
             {announcements.length === 0 ? (
               <p>No announcements available.</p>
             ) : currentAnnouncements.length === 0 ? (
-              <p>No announcements match your filters.</p>
+              <p>{t("RAnnouncement.No announcements match your filters.")}</p>
             ) : (
               currentAnnouncements.map((a) => (
                 <div
@@ -301,7 +303,7 @@ const RAnnouncements: React.FC = () => {
           </Modal.Header>
           <Modal.Body>
             <p>
-              <strong>Date:</strong>{' '}
+              <strong>{t("RAnnouncement.Date:")}</strong>{' '}
               {selectedAnnouncement &&
                 new Date(selectedAnnouncement.date).toLocaleDateString('en-US', {
                   month: 'short',
@@ -313,7 +315,7 @@ const RAnnouncements: React.FC = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleCloseModal}>
-              Close
+              {t("RAnnouncement.Close")}
             </Button>
           </Modal.Footer>
         </Modal>

@@ -7,6 +7,7 @@ import Header from '../DashComponents/Header';
 import { User, getEmployeeById, updateEmployee, getProductTypes } from '../../services/api';
 import { jwtDecode } from 'jwt-decode';
 import '../CSS/Users.css';
+import { useTranslation } from "react-i18next";
 
 interface JwtPayload {
   sub: string; // Email of the current user
@@ -14,6 +15,7 @@ interface JwtPayload {
 }
 
 const EditUser: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -108,13 +110,13 @@ const EditUser: React.FC = () => {
       <Container className="edit-user-container">
         <Row>
           <Col>
-            <h2>Edit User</h2>
+            <h2>{t("Musers.Edit User")}</h2>
             {isOwnProfileRestricted && (
-              <p style={{ color: 'red' }}>You cannot edit your own credentials.</p>
+              <p style={{ color: 'red' }}>{t("Musers.You cannot edit your own credentials.")}</p>
             )}
             <TextField
               fullWidth
-              label="First Name"
+              label={t("Musers.First Name")}
               value={formData.firstName}
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
               margin="normal"
@@ -122,7 +124,7 @@ const EditUser: React.FC = () => {
             />
             <TextField
               fullWidth
-              label="Last Name"
+              label={t("Musers.Last Name")}
               value={formData.lastName}
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               margin="normal"
@@ -130,7 +132,7 @@ const EditUser: React.FC = () => {
             />
             <TextField
               fullWidth
-              label="Email"
+              label={t("Musers.Email")}
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -139,7 +141,7 @@ const EditUser: React.FC = () => {
             />
             <TextField
               fullWidth
-              label="Password"
+              label={t("Musers.Password")}
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -157,7 +159,7 @@ const EditUser: React.FC = () => {
             <TextField
               fullWidth
               select
-              label="Role"
+              label={t("Musers.Role")}
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value as 'Regular' | 'Manager' })}
               margin="normal"
@@ -168,7 +170,7 @@ const EditUser: React.FC = () => {
             </TextField>
             <TextField
               fullWidth
-              label="Profile Picture URL"
+              label={t("Musers.Profile Picture URL")}
               value={formData.profileImageUrl}
               onChange={(e) => setFormData({ ...formData, profileImageUrl: e.target.value })}
               margin="normal"
@@ -179,7 +181,7 @@ const EditUser: React.FC = () => {
               <TextField
                 fullWidth
                 select
-                label="Assigned Product Types"
+                label={t("Musers.Assigned Product Types")}
                 value={formData.assignedProductTypes || []}
                 onChange={(e) => setFormData({ ...formData, assignedProductTypes: e.target.value })}
                 SelectProps={{ multiple: true }}
@@ -195,14 +197,14 @@ const EditUser: React.FC = () => {
             )}
             <div className="mt-3">
               <Button variant="secondary" onClick={() => navigate('/users')} className="me-2">
-                Cancel
+                {t("Morders.Cancel")}
               </Button>
               <Button
                 variant="primary"
                 onClick={handleSubmit}
                 disabled={isOwnProfileRestricted}
               >
-                Save Changes
+                {t("Musers.Save Changes")}
               </Button>
             </div>
           </Col>

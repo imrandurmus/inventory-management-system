@@ -36,3 +36,20 @@
   cursor: pointer;
   transition: 0.3s ease-in-out;
 }
+/* Language selector styling */
+.language-selector {
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  padding: 7px 10px;
+  margin-left: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.language-selector:focus {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}

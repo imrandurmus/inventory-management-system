@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Table,
@@ -23,6 +24,7 @@ import {
 } from "../../services/api";
 
 const Orders: React.FC = () => {
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
   const [sortByProduct, setSortByProduct] = useState("");
@@ -257,14 +259,14 @@ const Orders: React.FC = () => {
       <Header />
       <div className="Items-background">
         <Container>
-          <h2 className="ManageOrdersPage">Manage Orders</h2>
+          <h2 className="ManageOrdersPage">{t("Morders.Manage Orders")}</h2>
 
           {/* Search and Sort */}
           <Row className="mb-3 align-items-end">
             <Col md={5}>
               <Form.Control
                 type="text"
-                placeholder="Search orders (ID, Customer, Product)"
+                placeholder={t("Morders.Search orders (ID, Customer, Product)")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -275,31 +277,31 @@ const Orders: React.FC = () => {
                 value={sortByProduct}
                 onChange={(e) => setSortByProduct(e.target.value)}
               >
-                <option value="">Sort by Product</option>
-                <option value="asc">Product: A-Z</option>
-                <option value="desc">Product: Z-A</option>
+                <option value="">{t("Morders.Sort by Product")}</option>
+                <option value="asc">{t("Morders.Product: A-Z")}</option>
+                <option value="desc">{t("Morders.Product: Z-A")}</option>
               </Form.Control>
             </Col>
             <Col md={2}>
               <Button variant="primary" onClick={applySort}>
-                Apply Sort
+                {t("Morders.Apply Sort")}
               </Button>
             </Col>
           </Row>
 
           <Button className="mb-3" variant="primary" onClick={handleShowModal}>
-            + Add New Order
+             {t("Morders.+ Add New Order")}
           </Button>
 
           <Table striped bordered hover responsive>
             <thead>
               <tr>
-                <th>Order ID</th>
-                <th>Customer Name</th>
-                <th>Products</th>
-                <th>Total Price</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th>{t("Morders.Order ID")}</th>
+                <th>{t("Morders.Customer Name")}</th>
+                <th>{t("Morders.Products")}</th>
+                <th>{t("Morders.Total Price")}</th>
+                <th>{t("Morders.Date")}</th>
+                <th>{t("Morders.Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -356,11 +358,11 @@ const Orders: React.FC = () => {
           {/* Modal for New Order */}
           <Modal show={showModal} onHide={handleCloseModal} size="lg">
             <Modal.Header closeButton>
-              <Modal.Title>Add New Order</Modal.Title>
+              <Modal.Title>{t("Morders.Add New Order")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form.Group className="mb-3">
-                <Form.Label>Customer Name</Form.Label>
+                <Form.Label>{t("Morders.Customer Name")}</Form.Label>
                 <Form.Control
                   type="text"
                   name="customerName"
@@ -372,7 +374,7 @@ const Orders: React.FC = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Products</Form.Label>
+                <Form.Label>{t("Morders.Products")}</Form.Label>
                 <div
                   style={{
                     maxHeight: "300px",
@@ -437,7 +439,7 @@ const Orders: React.FC = () => {
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Total Price</Form.Label>
+                <Form.Label>{t("Morders.Total Price")}</Form.Label>
                 <Form.Control
                   type="text"
                   value={`$${calculateTotalPrice().toFixed(2)}`}
@@ -447,10 +449,10 @@ const Orders: React.FC = () => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseModal}>
-                Cancel
+                {t("Morders.Cancel")}
               </Button>
               <Button variant="primary" onClick={handleSaveOrder}>
-                Save Order
+                {t("Morders.Save Order")}
               </Button>
             </Modal.Footer>
           </Modal>
@@ -458,20 +460,19 @@ const Orders: React.FC = () => {
           {/* Delete Confirmation Modal */}
           <Modal show={showDeleteConfirm} onHide={cancelDelete}>
             <Modal.Header closeButton>
-              <Modal.Title>Confirm Deletion</Modal.Title>
+              <Modal.Title>{t("Morders.Confirm Deletion")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <p>
-                Are you sure you want to delete this order? This action cannot
-                be undone.
+                {t("Morders.Are you sure you want to delete this order? This action cannot be undone.")}
               </p>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={cancelDelete}>
-                Cancel
+                {t("Morders.Cancel")}
               </Button>
               <Button variant="danger" onClick={confirmDelete}>
-                Delete
+                {t("Morders.Delete")}
               </Button>
             </Modal.Footer>
           </Modal>

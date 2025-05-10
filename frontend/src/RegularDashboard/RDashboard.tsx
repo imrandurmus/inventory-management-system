@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Table,
@@ -40,6 +41,7 @@ interface Employee {
 }
 
 const RDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const [employee, setEmployee] = useState<Employee | null>(null);
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [search, setSearch] = useState("");
@@ -326,9 +328,9 @@ const RDashboard: React.FC = () => {
       <Container>
         <Row className="my-4">
           <Col>
-            <h2>Employee Dashboard - {employee.name}</h2>
+            <h2>{t("EDash.Employee Dashboard")} - {employee.name}</h2>
             <p>
-              <strong>Assigned Item Types:</strong>{" "}
+              <strong>{t("EDash.Assigned Item Types")}:</strong>{" "}
               {employee.assignedItemTypes.join(", ") || "None"}
             </p>
           </Col>
@@ -339,35 +341,35 @@ const RDashboard: React.FC = () => {
           <Col md={4}>
             <Card>
               <Card.Body>
-                <Card.Title>Total Items in Stock</Card.Title>
-                <Card.Text>{totalStock} units</Card.Text>
+                <Card.Title>{t("EDash.Total Items in Stock")}</Card.Title>
+                <Card.Text>{totalStock} {t("EDash.units")}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
           <Col md={4}>
             <Card>
               <Card.Body>
-                <Card.Title>Low Stock Alerts</Card.Title>
-                <Card.Text>{lowStockItems} items</Card.Text>
+                <Card.Title>{t("EDash.Low Stock Alerts")}</Card.Title>
+                <Card.Text>{lowStockItems} {t("EDash.items")}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
           <Col md={4}>
             <Card>
               <Card.Body>
-                <Card.Title>Total Stock Value</Card.Title>
+                <Card.Title>{t("EDash.Total Stock Value")}</Card.Title>
                 <Card.Text>${totalStockValue.toLocaleString()}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
         </Row>
 
-        <h3>Inventory Management</h3>
+        <h3>{t("EDash.Inventory Management")}</h3>
         <Row className="mb-3">
           <Col md={6}>
             <Form.Control
               type="text"
-              placeholder="Search items (ID, Name)"
+              placeholder={t("EDash.Search items (ID, Name)")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -378,9 +380,9 @@ const RDashboard: React.FC = () => {
               value={stockFilter}
               onChange={(e) => setStockFilter(e.target.value)}
             >
-              <option value="">Filter by Stock Status</option>
-              <option value="Low Stock">Low Stock</option>
-              <option value="Out of Stock">Out of Stock</option>
+              <option value="">{t("EDash.Filter by Stock Status")}</option>
+              <option value="Low Stock">{t("EDash.Low Stock")}</option>
+              <option value="Out of Stock">{t("EDash.Out of Stock")}</option>
             </Form.Control>
           </Col>
           <Col md={2}>
@@ -389,7 +391,7 @@ const RDashboard: React.FC = () => {
               onClick={handleExportCSV}
               className="float-right"
             >
-              Export to CSV
+              {t("EDash.Export to CSV")}
             </Button>
           </Col>
         </Row>
@@ -397,20 +399,20 @@ const RDashboard: React.FC = () => {
         <Table striped bordered hover responsive>
           <thead>
             <tr>
-              <th>Item ID</th>
-              <th>Item Name</th>
-              <th>Item Type</th>
+              <th>{t("EDash.Item ID")}</th>
+              <th>{t("EDash.Item Name")}</th>
+              <th>{t("EDash.Item Type")}</th>
               <th onClick={handleSortQuantity} className="sortable">
-                Quantity in Stock{" "}
+                {t("EDash.Quantity in Stock")}{" "}
                 {sortQuantityOrder === "asc"
                   ? "↑"
                   : sortQuantityOrder === "desc"
                   ? "↓"
                   : ""}
               </th>
-              <th>Reorder Limit</th>
-              <th>Last Updated</th>
-              <th>Actions</th>
+              <th>{t("EDash.Reorder Limit")}</th>
+              <th>{t("EDash.Last Updated")}</th>
+              <th>{t("EDash.Actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -434,7 +436,7 @@ const RDashboard: React.FC = () => {
                       ? "Out of Stock"
                       : item.quantityInStock <= item.reorderLimit
                       ? "Low Stock"
-                      : "In Stock"}
+                      :  t("EDash.In Stock")}
                   </Badge>
                 </td>
                 <td>{item.reorderLimit}</td>
@@ -446,7 +448,7 @@ const RDashboard: React.FC = () => {
                     onClick={() => handleRestock(item)}
                     className="me-1"
                   >
-                    <Add /> Restock
+                    <Add /> {t("EDash.Restock")}
                   </Button>
                   <Button
                     variant="warning"
@@ -454,7 +456,7 @@ const RDashboard: React.FC = () => {
                     onClick={() => handleReport(item)}
                     className="me-1"
                   >
-                    <Report /> Report
+                    <Report /> {t("EDash.Report")}
                   </Button>
                 </td>
               </tr>
@@ -495,15 +497,15 @@ const RDashboard: React.FC = () => {
 
       <Modal show={showRestockModal} onHide={() => setShowRestockModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Restock Item: {restockItem?.name}</Modal.Title>
+          <Modal.Title>{t("EDash.Restock Item:")} {restockItem?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="restockQuantity">
-              <Form.Label>Quantity to Restock</Form.Label>
+              <Form.Label>{t("EDash.Quantity to Restock")}</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter quantity"
+                placeholder= {t("EDash.Enter quantity")}
                 value={restockQuantity}
                 onChange={(e) => setRestockQuantity(e.target.value)}
                 min="1"
@@ -516,10 +518,10 @@ const RDashboard: React.FC = () => {
             variant="secondary"
             onClick={() => setShowRestockModal(false)}
           >
-            Cancel
+            {t("EDash.Cancel")}
           </Button>
           <Button variant="primary" onClick={confirmRestock}>
-            Confirm Restock
+            {t("EDash.Confirm Restock")}
           </Button>
         </Modal.Footer>
       </Modal>

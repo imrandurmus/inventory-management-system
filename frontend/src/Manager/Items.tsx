@@ -10,6 +10,7 @@ import {
   Pagination,
 } from "react-bootstrap";
 import { Edit, Delete } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import Header from "../DashComponents/Header";
 import {
   getProducts,
@@ -24,6 +25,7 @@ import {
 import "../CSS/Items.css";
 
 const Items: React.FC = () => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
@@ -211,26 +213,26 @@ const Items: React.FC = () => {
       <Header />
       <div className="Items-background">
         <Container>
-          <h2 className="ProductManagemnetTitle">Product Management</h2>
+          <h2 className="ProductManagemnetTitle">{t("Mproducts.Product Management")}</h2>
           <Row className="mb-3">
             <Col>
               <Form.Control
                 type="text"
-                placeholder="Search products..."
+                placeholder= {t("Mproducts.Search products...")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </Col>
             <Col>
               <Button variant="primary" onClick={openAddModal}>
-                Add New Product
+                {t("Mproducts.Add New Product")}
               </Button>{" "}
               <Button
                 className="NewProductTypeButton"
                 variant="secondary"
                 onClick={() => setShowTypeModal(true)}
               >
-                Add Product Type
+                {t("Mproducts.Add Product Type")}
               </Button>
             </Col>
           </Row>
@@ -241,7 +243,7 @@ const Items: React.FC = () => {
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
               >
-                <option value="All">All Types</option>
+                <option value= {t("Mproducts.All")} >{t("Mproducts.All Types")}</option>
                 {productTypes.map((type) => (
                   <option key={type.id} value={type.name}>
                     {type.name}
@@ -266,11 +268,11 @@ const Items: React.FC = () => {
           <Table striped bordered hover responsive>
             <thead>
               <tr>
-                <th>Type</th>
-                <th onClick={() => handleSort("id")}>Product ID</th>
-                <th onClick={() => handleSort("name")}>Product Name</th>
+                <th>{t("Mproducts.Type")}</th>
+                <th onClick={() => handleSort("id")}>{t("Mproducts.Product ID")}</th>
+                <th onClick={() => handleSort("name")}>{t("Mproducts.Product Name")}</th>
                 <th onClick={() => handleSort("quantity")}>
-                  Quantity{" "}
+                  {t("Mproducts.Quantity")}{" "}
                   <span style={{ fontSize: "0.8rem" }}>
                     <span
                       style={{
@@ -295,7 +297,7 @@ const Items: React.FC = () => {
                   </span>
                 </th>
                 <th onClick={() => handleSort("price")}>
-                  Price{" "}
+                  {t("Mproducts.Price")}{" "}
                   <span style={{ fontSize: "0.8rem" }}>
                     <span
                       style={{
@@ -319,7 +321,7 @@ const Items: React.FC = () => {
                     </span>
                   </span>
                 </th>
-                <th>Actions</th>
+                <th>{t("Mproducts.Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -385,7 +387,7 @@ const Items: React.FC = () => {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-3">
-                  <Form.Label>Product Name</Form.Label>
+                  <Form.Label>{t("Mproducts.Product Name")}</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
@@ -394,7 +396,7 @@ const Items: React.FC = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Description</Form.Label>
+                  <Form.Label>{t("Mproducts.Description")}</Form.Label>
                   <Form.Control
                     as="textarea"
                     name="description"
@@ -403,7 +405,7 @@ const Items: React.FC = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Price</Form.Label>
+                  <Form.Label>{t("Mproducts.Price")}</Form.Label>
                   <Form.Control
                     type="number"
                     name="price"
@@ -415,7 +417,7 @@ const Items: React.FC = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Quantity</Form.Label>
+                  <Form.Label>{t("Mproducts.Quantity")}</Form.Label>
                   <Form.Control
                     type="number"
                     name="quantity"
@@ -425,13 +427,13 @@ const Items: React.FC = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>Type</Form.Label>
+                  <Form.Label>{t("Mproducts.Type")}</Form.Label>
                   <Form.Select
                     name="productTypeId"
                     value={formValues.productTypeId}
                     onChange={handleFormChange}
                   >
-                    <option value="">Select Type</option>
+                    <option value="">{t("Mproducts.Select Type")}</option>
                     {productTypes.map((type) => (
                       <option key={type.id} value={type.id}>
                         {type.name}
@@ -443,10 +445,10 @@ const Items: React.FC = () => {
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={() => setShowModal(false)}>
-                Cancel
+                {t("Mproducts.Cancel")}
               </Button>
               <Button variant="primary" onClick={handleFormSubmit}>
-                {editingProduct ? "Save Changes" : "Add Product"}
+                {editingProduct ? [t("Mproducts.Save Changes")] : [t("Mproducts.Add Product")] }
               </Button>
             </Modal.Footer>
           </Modal>
@@ -454,12 +456,12 @@ const Items: React.FC = () => {
           {/* Add Product Type Modal */}
           <Modal show={showTypeModal} onHide={() => setShowTypeModal(false)}>
             <Modal.Header closeButton>
-              <Modal.Title>Add Product Type</Modal.Title>
+              <Modal.Title>{t("Mproducts.Add Product Type")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-3">
-                  <Form.Label>New Product Type</Form.Label>
+                  <Form.Label>{t("Mproducts.New Product Type")}</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter type name"
@@ -474,10 +476,10 @@ const Items: React.FC = () => {
                 variant="secondary"
                 onClick={() => setShowTypeModal(false)}
               >
-                Cancel
+                {t("Mproducts.Cancel")}
               </Button>
               <Button variant="primary" onClick={handleAddProductType}>
-                Add Type
+                {t("Mproducts.Add Type")}
               </Button>
             </Modal.Footer>
           </Modal>

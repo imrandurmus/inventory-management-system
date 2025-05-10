@@ -5,6 +5,7 @@ import { Form, Button, Row, Container, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentEmployee, updateEmployee } from '../../services/api'; // Import from api.ts
 import "../CSS/MSettings.css";
+import { useTranslation } from "react-i18next";
 
 interface Settings {
   id: string;
@@ -17,6 +18,8 @@ interface Settings {
 }
 
 const MSettings: React.FC = () => {
+    const { t } = useTranslation();
+  
   const [settings, setSettings] = useState<Settings>({
     id: '',
     firstName: '',
@@ -129,7 +132,7 @@ const MSettings: React.FC = () => {
                     {settings.avatar ? (
                       <img src={settings.avatar} alt="Avatar" className="avatar-img" />
                     ) : (
-                      <div className="avatar-placeholder">No Avatar</div>
+                      <div className="avatar-placeholder">{t("MS.No Avatar")}</div>
                     )}
                     {isEditMode && (
                       <>
@@ -145,7 +148,7 @@ const MSettings: React.FC = () => {
                         />
                         {settings.avatar && (
                           <Button variant="danger" size="sm" onClick={handleAvatarDelete}>
-                            Delete Avatar
+                            {t("MS.Delete Avatar")}
                           </Button>
                         )}
                       </>
@@ -156,7 +159,7 @@ const MSettings: React.FC = () => {
                 {/* Profile Information Section */}
                 <div className="profile-info">
                   <p>
-                    Name:{' '}
+                    {t("MS.Name:")}{' '}
                     {isEditMode ? (
                       <Form.Control
                         type="text"
@@ -168,7 +171,7 @@ const MSettings: React.FC = () => {
                     )}
                   </p>
                   <p>
-                    Surname:{' '}
+                    {t("MS.Surname:")}{' '}
                     {isEditMode ? (
                       <Form.Control
                         type="text"
@@ -180,7 +183,7 @@ const MSettings: React.FC = () => {
                     )}
                   </p>
                   <p>
-                    Email:{' '}
+                    {t("MS.Email:")}{' '}
                     {isEditMode ? (
                       <Form.Control
                         type="email"
@@ -191,11 +194,11 @@ const MSettings: React.FC = () => {
                       settings.email || 'N/A'
                     )}
                   </p>
-                  <p>ID: {settings.id || 'N/A'}</p>
-                  <p>Role: {settings.role || 'N/A'}</p>
+                  <p>{t("MS.ID:")} {settings.id || 'N/A'}</p>
+                  <p>{t("Musers.Role:")} {settings.role || 'N/A'}</p>
                   {settings.assignedProductTypes && settings.assignedProductTypes.length > 0 && (
                     <p>
-                      Assigned Product Types:{' '}
+                      {t("Musers.Assigned Product Types:")}{' '}
                       {settings.assignedProductTypes.join(', ') || 'None'}
                     </p>
                   )}
@@ -208,7 +211,7 @@ const MSettings: React.FC = () => {
                 </Button>
                 {isEditMode && (
                   <Button variant="success" onClick={handleSubmit} className="ms-2">
-                    Save Changes
+                    {t("MS.Save Changes")}
                   </Button>
                 )}
               </div>
@@ -220,8 +223,8 @@ const MSettings: React.FC = () => {
         {/* Success Modal */}
         <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
           <Modal.Body className="text-center">
-            <h4>Success!</h4>
-            <p>Your changes have been saved successfully.</p>
+            <h4>{t("MS.Success!")}</h4>
+            <p>{t("MS.Your changes have been saved successfully.")}</p>
           </Modal.Body>
         </Modal>
       </div>

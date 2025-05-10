@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 interface Announcement {
   id: number;
@@ -11,6 +12,7 @@ interface Announcement {
 }
 
 const AnnouncementModal = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ const AnnouncementModal = () => {
 
   const announcement = announcements.find(a => a.id.toString() === id);
 
-  if (!announcement) return <div>Announcement not found</div>;
+  if (!announcement) return <div>{t("Mann.Announcement not found")}</div>;
 
   return (
     <Modal show={true} onHide={() => navigate('/announcements')}>
@@ -53,7 +55,7 @@ const AnnouncementModal = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => navigate('/announcements')}>
-          Close
+          {t("Minvoice.Close")}
         </Button>
       </Modal.Footer>
     </Modal>

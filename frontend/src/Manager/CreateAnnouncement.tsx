@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../DashComponents/Header';
 import { createAnnouncement } from '../../services/api';
 import '../CSS/Announcements.css';
+import { useTranslation } from "react-i18next";
 
 const CreateAnnouncement = () => {
+  const { t } = useTranslation();  
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [showToast, setShowToast] = useState(false);
@@ -33,10 +35,10 @@ const CreateAnnouncement = () => {
       <Header />
       <div className="create-announcement-page">
         <div className="container">
-          <h2 className="mb-4">Create New Announcement</h2>
+          <h2 className="mb-4">{t("Mann.Create New Announcement")}</h2>
 
           <Button variant="secondary" onClick={() => navigate('/announcements')} className="mb-3">
-            Back to Announcements
+            {t("Mann.Title")}
           </Button>
 
           {error && (
@@ -47,10 +49,10 @@ const CreateAnnouncement = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>{t("Mann.Title")}</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter announcement title"
+                placeholder={t("Mann.Enter announcement title")}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -58,11 +60,11 @@ const CreateAnnouncement = () => {
             </Form.Group>
 
             <Form.Group controlId="formContent" className="mt-3">
-              <Form.Label>Content</Form.Label>
+              <Form.Label>{t("Mann.Content")}</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={5}
-                placeholder="Enter announcement content"
+                placeholder={t("Mann.Enter announcement content")}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
@@ -70,7 +72,7 @@ const CreateAnnouncement = () => {
             </Form.Group>
 
             <Button type="submit" className="mt-4">
-              Create Announcement
+              {t("Mann.Create Announcement")}
             </Button>
           </Form>
 
@@ -81,7 +83,7 @@ const CreateAnnouncement = () => {
             autohide
             className="mt-4"
           >
-            <Toast.Body>Announcement Created Successfully!</Toast.Body>
+            <Toast.Body>{t("Mann.Announcement Created Successfully!")}</Toast.Body>
           </Toast>
         </div>
       </div>

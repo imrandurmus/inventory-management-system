@@ -1,0 +1,411 @@
+{
+  "header": {
+    "about_us": "About us",
+    "contact": "Contact",
+    "login": "Login",
+    "try_now": "Try Now"
+  },
+  "landing": {
+    "main_heading": "Streamline Your Inventory Management Effortlessly",
+    "subheading": "Transform your inventory processes with our intuitive and simple software, saving you time and reducing errors.\nExperience seamless tracking and management, empowering your business to thrive. Effortlessly.",
+    "get_started": "Get Started",
+    "feature1_title": "Generate Automatic Reports to Streamline Your Inventory Insights Instantly",
+    "landing-feature-heading": "Multi-Channel Support for Seamless Integration Across All Your Sales Platforms",
+    "landing-feature-text": "Stay informed with up-to-the-minute data on your inventory status.",
+    "landing-feature-text2": "Connect effortlessly with various sales channels to enhance your operations.",
+    "landing-feature-heading3": "Optimize Your Workflow with Our Comprehensive Inventory Management Solutions",
+    "landing-feature-text3": "Transform your inventory management process with our innovative software features.",
+    "LM": "Learn More",
+    "GS": "Get Started",
+    "features-heading": "Experience Real-Time Tracking for Effortless Inventory Management and Control",
+    "Features-Title": "Unlock Efficiency and Growth with Our Advanced Inventory Management Software",
+    "Features-description": "Our software streamlines inventory processes, reducing errors and saving time. Experience improved accuracy and enhanced decision-making for your business.",
+    "CS": "Cost Savings",
+    "feature-subheading": "Minimize excess inventory and cut costs with precise stock management.",
+    "RTI": "Real-Time Insights",
+    "feature-subheading2": "Make informed decisions with up-to-date data at your fingertips.",
+    "testimonial-textt": "This software has transformed our inventory management process. We've seen a significant reduction in errors and improved efficiency across the board.",
+    "Core-Values": "Our Core Values",
+    "valuestext": "We believe in delivering simple, powerful, and reliable inventory management solutions. Our mission is to help businesses thrive by making their inventory processes efficient and stress-free.",
+    "feature1_text": "Stay informed with up-to-the-minute data on your inventory status.",
+    "valuestext1": "With years of experience and a passionate team, we are dedicated to providing top-notch tools for businesses of all sizes.",
+    "footer-company": "Streamline your business with our modern inventory management solution.",
+    "QL": "Quick Links",
+    "AU": "About Us",
+    "CU": "Contact Us",
+    "PP": "Privacy Policy",
+    "FU": "Follow Us"
+  },
+  "signup": {
+    "signuptitle": "Never lose track of an item again.",
+    "signupsubtitle": "Simple, fast, and powerful inventory software for businesses and teams to stay organized.",
+    "signupaltext": "Simple to input inventory. Simple to use. Easy to customize. My team adopted very quickly.",
+    "signupaltext2": "Join businesses both small and large that trust us to track and manage their inventory!",
+    "createAcc": "Create an Account",
+    "signupbottomtext": "By clicking on 'Create account' you agree to Simple's Privacy Policy",
+    "signupCA": "Create Account"
+  },
+  "learn": {
+    "hero": {
+      "title": "Revolutionize Your Inventory",
+      "subtitle": "Powerful, intuitive tools to help you stay in control.",
+      "button": "Explore Features"
+    },
+    "features": {
+      "title": "Core Features",
+      "items": [
+        {
+          "title": "Stock Tracking",
+          "description": "Track your inventory in real-time and make data-driven decisions for your business."
+        },
+        {
+          "title": "Organization",
+          "description": "Easily organize and accurately manage stock with minimal errors."
+        },
+        {
+          "title": "Reports & Analytics",
+          "description": "Get detailed reports and analytics to gain insights into your business performance."
+        }
+      ]
+    },
+    "testimonial": {
+      "title": "What Our Customers Say",
+      "items": [
+        {
+          "quote": "This platform made inventory management so much easier. I highly recommend it for businesses of any size.",
+          "name": "David Wallace",
+          "title": "CEO, Sabre International Corp."
+        },
+        {
+          "quote": "An incredibly powerful tool that saves us hours of manual work each week. It integrates perfectly with our system.",
+          "name": "Jan Levinson",
+          "title": "VP of Northeast Sales, Dunder Mifflin"
+        }
+      ]
+    },
+    "stats": {
+      "title": "Trusted Worldwide",
+      "items": [
+        {
+          "label": "Global Users"
+        },
+        {
+          "label": "Countries Served"
+        },
+        {
+          "label": "Employees Worldwide"
+        },
+        {
+          "label": "Years in Business"
+        },
+        {
+          "label": "The Solution"
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to Transform Your Inventory?",
+      "button": "Get Started"
+    }
+  },
+  "signUp": {
+    "promoTitle": "Never lose track of an item again.",
+    "promoSubtitle": "Simple, fast, and powerful inventory software for businesses and teams to stay organized.",
+    "testimonial": {
+      "quote": "\"Simple to input inventory. Simple to use. Easy to customize. My team adopted very quickly.\"",
+      "name": "Dwight S.",
+      "title": "Assistant to the Manager"
+    },
+    "trustedText": "Join businesses both small and large that trust us to track and manage their inventory!",
+    "createAccount": "Create an Account",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "createAccountButton": "Create Account",
+    "termsText": "By clicking on 'Create account' you agree to Simple's ",
+    "termsLinkText": "Privacy Policy",
+    "errors": {
+      "requiredFields": "All required fields must be filled.",
+      "signupFailed": "Failed to create account. Please try again."
+    }
+  },
+  "aboutUs": {
+    "missionTitle": "Our Mission",
+    "missionDescription": "SIMple strives to simplify inventory management for growing businesses, helping them optimize their stock, reduce waste, and boost sales through an easy-to-use platform.",
+    "meetOurTeam": "Meet Our Team",
+    "teamMembers": {
+      "jihad": {
+        "name": "Jihad",
+        "role": "Documentation"
+      },
+      "afagh": {
+        "name": "Afagh",
+        "role": "Frontend Lead"
+      },
+      "imran": {
+        "name": "Imran",
+        "role": "Backend Lead"
+      }
+    },
+    "timelineTitle": "Our Journey Through Time and Innovation",
+    "timelineDescription": "Since our inception, we have been committed to revolutionizing inventory management. Our milestones reflect our growth and dedication to excellence.",
+    "timeline": {
+      "2013": "We launched the first inventory management software, setting a new standard in the industry. This marked the beginning of our journey.",
+      "2015": "With a strategic vision for growth, the company is dedicating substantial resources to broadening its investor network and securing the necessary capital for future development.",
+      "2018": "Expanded our software to support multi-channel inventory management, helping businesses scale efficiently."
+    },
+    "ctaText": "Join and take control of your inventory today!",
+    "ctaButtonText": "Get Started"
+  },
+  "contact": {
+    "heading": "Looking for something?",
+    "successMessage": "Your request has been submitted successfully!",
+    "name": "Name",
+    "phone": "Phone Number",
+    "email": "Email",
+    "company": "Company",
+    "subject": "Subject",
+    "optionQuestion": "Question",
+    "optionSupport": "Support request",
+    "companySize": "Your company size",
+    "size1": "1-10 employees",
+    "size2": "11-50 employees",
+    "size3": "51-200 employees",
+    "size4": "201+ employees",
+    "question": "Question",
+    "privacy1": "We will handle your personal data as described in our",
+    "privacyLink": "Privacy Policy",
+    "privacy2": ", to answer your question and provide information about our products and services.",
+    "submit": "Submit",
+    "contactUs": "Contact Us",
+    "call": "Call or Schedule a video conference",
+    "expert": "Meet an expert",
+    "assess": "Assess your inventory needs.",
+    "help": "Request Help",
+    "developerHelp": "Need help? Get in touch with developers.",
+    "errorAlert": "An error occurred. Please try again later."
+  },
+  "login": {
+    "Welcome Back!": "Welcome Back!",
+    "Log in to your account.": "Log in to your account.",
+    "Email": "Email",
+    "Password": "Password",
+    "Please enter a valid email.": "Please enter a valid email.",
+    "Please enter a valid password.": "Please enter a valid password.",
+    "Remember me": "Remember me",
+    "Forgot your password?": "Forgot your password?",
+    "Sign in": "Sign in",
+    "Signing in...": "Signing in...",
+    "Don't have an account?": "Don't have an account?",
+    "Sign up": "Sign up",
+    "Forgot Password": "Forgot Password",
+    "Close": "Close",
+    "Both fields are required.": "Both fields are required.",
+    "Invalid email or password. Please try again.": "Invalid email or password. Please try again."
+  },
+  "EDash": {
+    "Employee Dashboard": "Employee Dashboard",
+    "Assigned Item Types": "Assigned Item Types",
+    "Total Items in Stock": "Total Items in Stock",
+    "units": "units",
+    "Low Stock Alerts": "Low Stock Alerts",
+    "items":"items",
+    "Total Stock Value": "Total Stock Value",
+    "Inventory Management": "Inventory Management",
+    "Search items (ID, Name)": "Search items (ID, Name)",
+    "Filter by Stock Status": "Filter by Stock Status",
+    "Low Stock":"Low Stock",
+    "Out of Stock": "Out of Stock",
+    "Export to CSV": "Export to CSV",
+    "Item ID": "Item ID",
+    "Item Name":"Item Name",
+    "Item Type": "Item Type",
+    "Quantity in Stock": "Quantity in Stock",
+    "Reorder Limit": "Reorder Limit",
+    "Last Updated": "Last Updated",
+    "Actions":"Actions",
+    "Restock": "Restock",
+    "Report":"Report",
+    "Restock Item:": "Restock Item:",
+    "Quantity to Restock":"Quantity to Restock",
+    "Enter quantity":"Enter quantity",
+    "Confirm Restock":"Confirm Restock",
+    "Cancel":"Cancel",
+    "In Stock": "In Stock"
+    },
+
+    "RAnnouncement": {
+      "Announcements": "Announcements",
+      "Category":"Category",
+      "All Categories": "All Categories",
+      "News": "News",
+      "Activities":"Activities",
+      "Search":"Search",
+      "No announcements match your filters.":"No announcements match your filters.",
+      "Date:":"Date:",
+      "Close": "Close",
+      "Show Unread Only":"Show Unread Only",
+      "Search announcements...":"Search announcements..."
+    },
+    "RHeader": {
+      "Settings": "Settings",
+      "Logout":"Logout",
+      "Hello,": "Hello,",
+      "Dashboard": "Dashboard",
+      "Announcements" : "Announcements",
+      "See All": "See All",
+      "No unread announcements":"No unread announcements"
+    },
+    "RSettings": {
+      "Account Settings":"Account Settings",
+      "Personal Information":"Personal Information",
+      "Employee ID":"Employee ID",
+      "Role":"Role",
+      "Name":"Name",
+      "Email":"Email",
+      "Assigned Item Types":"Assigned Item Types",
+      "Assigned Types":"Assigned Types"
+    },
+    "Mhead": {
+      "Welcome!":"Welcome!",
+      "Dashboard":"Dashboard",
+      "Items":"Items",
+      "Users":"Users",
+      "Announcements":"Announcements",
+      "Product Types": "Product Types",
+      "Orders":"Orders",
+      "Invoices":"Invoices",
+      "Settings":"Settings",
+      "Logout":"Logout",
+      "See All":"See All",
+      "No unread announcements":"No unread announcements"
+
+    },
+    "Mdash": {
+      "Summary":"Summary",
+      "Total Inventory":"Total Inventory",
+      "Product Types":"Product Types",
+      "Sales:":"Sales:",
+      "Total Inventory Value":"Total Inventory Value",
+      "Value":"Value",
+      "Stock Count":"Stock Count",
+      "Top Selling Items":"Top Selling Items",
+      "OUT_OF_STOCK":"OUT_OF_STOCK",
+      "LOW_STOCK":"LOW_STOCK",
+      "IN_STOCK":"IN_STOCK"
+    },
+    "Mproducts": {
+      "Search products...":"Search products...",
+      "Add Type":"Add Type",
+      "New Product Type":"New Product Type",
+      "Save Change":"Save Change",
+      "Cancel":"Cancel",
+      "Select Type":"Select Type",
+      "Type":"Type",
+      "Quantity":"Quantity",
+      "Price":"Price",
+      "Description":"Description",
+      "Product Name":"Product Name",
+      "All Types":"All Types",
+      "Add Product Type":"Add Product Type",
+      "Add New Product":"Add New Product",
+      "Product Management":"Product Management",
+      "Actions":"Actions",
+      "Product ID":"Product ID"
+    },
+    "Morders": {
+      "Order ID":"Order ID",
+      "Customer Name":"Customer Name",
+      "Products":"Products",
+      "Total Price":"Total Price",
+      "Date":"Date",
+      "Actions":"Actions",
+      "Add New Order":"Add New Order",
+      "Manage Orders":"Manage Orders",
+      "Apply Sort":"Apply Sort",
+      "+ Add New Order":"+ Add New Order",
+      "Product: Z-A":"Product: Z-A",
+      "Product: A-Z":"Product: A-Z",
+      "Sort by Product":"Sort by Product",
+      "Search orders (ID, Customer, Product)":"Search orders (ID, Customer, Product)",
+      "Delete":"Delete",
+      "Cancel":"Cancel",
+      "Morders.Are you sure you want to delete this order? This action cannot be undone.":"Morders.Are you sure you want to delete this order? This action cannot be undone.",
+      "Confirm Deletion":"Confirm Deletion",
+      "Save Order":"Save Order"
+    },
+    "Minvoice": {
+      "Search invoices (Customer, Order)":"Search invoices (Customer, Order)",
+      "Create New Order":"Create New Order",
+      "Invoice ID":"Invoice ID",
+      "Total Amount":"Total Amount",
+      "Date Of Issue":"Date Of Issue",
+      "Actions":"Actions",
+      "Create New Invoice":"Create New Invoice",
+      "Customer Name":"Customer Name",
+      "Enter Total Amount":"Enter Total Amount",
+      "Date":"Date",
+      "Close":"Close",
+      "Create Invoice":"Create Invoice",
+      "Confirm Deletion":"Confirm Deletion",
+      "Are you sure you want to delete this invoice? This action cannot be undone.":"Are you sure you want to delete this invoice? This action cannot be undone.",
+      "Invoice Preview":"Invoice Preview",
+      "Loading PDF preview...":"Loading PDF preview...",
+      "Download PDF":"Download PDF"
+    },
+    "Musers": {
+      "Search by name or email":"Search by name or email",
+      "Sort by Name":"Sort by Name",
+      "Sort by Role":"Sort by Role",
+      "Sort by Assigned Type":"Sort by Assigned Type",
+      "Add New User":"Add New User",
+      "Profile":"Profile",
+      "First Name":"First Name",
+      "Last Name":"Last Name",
+      "Email":"Email",
+      "Role":"Role",
+      "Assigned Product Types":"Assigned Product Types",
+      "Actions":"Actions",
+      "View":"View",
+      "Edit":"Edit",
+      "No users found":"No users found",
+      "Are you sure you want to delete this user?":"Are you sure you want to delete this user?",
+      "Confirm Deletion":"Confirm Deletion",
+      "Add User":"Add User",
+      "Manager":"Manager",
+      "Regular":"Regular",
+      "Password":"Password",
+      "Edit User":"Edit User",
+      "You cannot edit your own credentials.":"You cannot edit your own credentials.",
+      "Profile Picture URL":"Profile Picture URL",
+      "Save Changes":"Save Changes"
+    },
+    "Mann": {
+      "Loading announcements...":"Loading announcements...",
+      "Try Again":"Try Again",
+      "Add New":"Add New",
+      "Announcements":"Announcements",
+      "Search announcements...":"Search announcements...",
+      "No announcements found.":"No announcements found.",
+      "Posted by:":"Posted by:",
+      "Announcement not found":"Announcement not found",
+      "Announcement Created Successfully!":"Announcement Created Successfully!",
+      "Create Announcement":"Create Announcement",
+      "Enter announcement content":"Enter announcement content",
+      "Content":"Content",
+      "Enter announcement title":"Enter announcement title",
+      "Title":"Title",
+      "Create New Announcement":"Create New Announcement"    
+    },
+    "MS": {
+      "Your changes have been saved successfully.":"Your changes have been saved successfully.",
+      "Success!":"Success!",
+      "ID:":"ID:",
+      "Email:":"Email:",
+      "Surname":"Surname",
+      "Name:":"Name:",
+      "Delete Avatar":"Delete Avatar",
+      "No Avatar":"No Avatar"
+    }
+}

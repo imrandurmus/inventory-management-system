@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import Header from "./Header";
 import {
   People,
@@ -12,6 +13,7 @@ import "../CSS/Dashboard.css";
 import { getDashboardMetrics, DashboardMetrics } from "../../services/api";
 
 const Dashboard: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -112,7 +114,7 @@ const Dashboard: React.FC = () => {
         <Container className="dashboardContainer">
           {/* Stats section */}
           <div className="Summary">
-            <h1 className="Summary-title">Summary</h1>
+            <h1 className="Summary-title">{t("Mdash.Summary")}</h1>
             <Row>
               {Object.entries(stats).map(([key, stat], index) => (
                 <Col xs={12} md={6} lg={3} key={index} className="mb-4">
@@ -137,7 +139,7 @@ const Dashboard: React.FC = () => {
             {/* 1st pie chart - Product Types */}
             <Col md={4}>
               <div className="pie-chart-section">
-                <h2>Product Types</h2>
+                <h2>{t("Mdash.Product Types")}</h2>
                 <PieChart width={400} height={400}>
                   <Pie
                     data={pieChartData1}
@@ -166,7 +168,7 @@ const Dashboard: React.FC = () => {
             {/* 2nd pie chart - Stock Distribution */}
             <Col md={4}>
               <div className="pie-chart-section">
-                <h2>Stock Count</h2>
+                <h2>{t("Mdash.Stock Count")}</h2>
                 <PieChart width={400} height={400}>
                   <Pie
                     data={pieChartData2}
@@ -195,12 +197,12 @@ const Dashboard: React.FC = () => {
             {/* Top selling items section */}
             <Col md={4}>
               <div className="top-selling-items">
-                <h2>Top Selling Items</h2>
+                <h2>{t("Mdash.Top Selling Items")}</h2>
                 <ul className="top-selling-list">
                   {metrics.topSellingItems.map((item, index) => (
                     <li key={index} className="top-selling-item">
                       <span>{item.itemName}</span>{" "}
-                      <span>{item.soldCount} sold</span>
+                      <span>{item.soldCount} {t("Mdash.sold")}</span>
                     </li>
                   ))}
                 </ul>

@@ -5,8 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from '../DashComponents/Header';
 import { getAnnouncements, Announcement } from '../../services/api';
 import '../CSS/Announcements.css';
+import { useTranslation } from "react-i18next";
 
 const Announcements = () => {
+  const { t } = useTranslation();
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ const Announcements = () => {
       <div className="announcements-background">
         <Header />
         <div className="announcements-container container">
-          <Alert variant="info">Loading announcements...</Alert>
+          <Alert variant="info">{t("Mann.Loading announcements...")}</Alert>
         </div>
       </div>
     );
@@ -53,7 +55,7 @@ const Announcements = () => {
             {error}
             <div className="mt-3">
               <Button variant="primary" onClick={() => window.location.reload()}>
-                Try Again
+                {t("Mann.Try Again")}
               </Button>
             </div>
           </Alert>
@@ -72,16 +74,16 @@ const Announcements = () => {
             src="/AnnounementsMegaphone.png"
             alt="Announcements Icon"
           />
-          <h2 className="announcements-title ms-3 mb-0">Announcements</h2>
+          <h2 className="announcements-title ms-3 mb-0">{t("Mann.Announcements")}</h2>
         </div>
         <div className="announcements-container container">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <Button as={Link} to="/announcements/new" className="add-btn">
-              Add New
+              {t("Mann.Add New")}
             </Button>
             <input
               type="text"
-              placeholder="Search announcements..."
+              placeholder={t("Mann.Search announcements...")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="form-control w-25"
@@ -90,7 +92,7 @@ const Announcements = () => {
 
           <div className="announcement-list">
             {filtered.length === 0 ? (
-              <p>No announcements found.</p>
+              <p>{t("Mann.No announcements found.")}</p>
             ) : (
               filtered.map((a) => (
                 <div
@@ -110,7 +112,7 @@ const Announcements = () => {
                     {a.content.slice(0, 100)}...
                   </div>
                   <div className="announcement-posted-by">
-                    Posted by: {a.postedBy.email}
+                    {t("Mann.Posted by:")} {a.postedBy.email}
                   </div>
                 </div>
               ))

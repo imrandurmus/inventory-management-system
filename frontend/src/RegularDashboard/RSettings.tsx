@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Container, Form, Row, Col, Card, Alert, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import RHeader from './RHeader';
+import { useTranslation } from "react-i18next";
 import { getCurrentEmployee, User } from '../../services/api';
 
 const RSettings: React.FC = () => {
+  const { t } = useTranslation();
   const [employee, setEmployee] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,22 +80,22 @@ const RSettings: React.FC = () => {
       <RHeader />
       <div className="settings-background">
         <Container>
-          <h2 className="my-4">Account Settings - {fullName}</h2>
+          <h2 className="my-4">{t("RSettings.Account Settings")} - {fullName}</h2>
 
           <Card className="mb-4">
             <Card.Body>
-              <Card.Title>Personal Information</Card.Title>
+              <Card.Title>{t("RSettings.Personal Information")}</Card.Title>
               <Form>
                 <Row>
                   <Col md={6}>
                     <Form.Group controlId="employeeId" className="mb-3">
-                      <Form.Label>Employee ID</Form.Label>
+                      <Form.Label>{t("RSettings.Employee ID")}</Form.Label>
                       <Form.Control type="text" value={employee.id} disabled />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group controlId="role" className="mb-3">
-                      <Form.Label>Role</Form.Label>
+                      <Form.Label>{t("RSettings.Role")}</Form.Label>
                       <Form.Control type="text" value={employee.role} disabled />
                     </Form.Group>
                   </Col>
@@ -101,13 +103,13 @@ const RSettings: React.FC = () => {
                 <Row>
                   <Col md={6}>
                     <Form.Group controlId="name" className="mb-3">
-                      <Form.Label>Name</Form.Label>
+                      <Form.Label>{t("RSettings.Name")}</Form.Label>
                       <Form.Control type="text" value={fullName} disabled />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group controlId="email" className="mb-3">
-                      <Form.Label>Email</Form.Label>
+                      <Form.Label>{t("RSettings.Email")}</Form.Label>
                       <Form.Control type="email" value={employee.email} disabled />
                     </Form.Group>
                   </Col>
@@ -118,10 +120,10 @@ const RSettings: React.FC = () => {
 
           <Card className="mb-4">
             <Card.Body>
-              <Card.Title>Assigned Item Types</Card.Title>
+              <Card.Title>{t("RSettings.Assigned Item Types")}</Card.Title>
               <Form>
                 <Form.Group controlId="assignedItemTypes" className="mb-3">
-                  <Form.Label>Assigned Types</Form.Label>
+                  <Form.Label>{t("RSettings.Assigned Types")}</Form.Label>
                   <Form.Control
                     type="text"
                     value={employee.assignedProductTypes?.join(', ') || 'None'}

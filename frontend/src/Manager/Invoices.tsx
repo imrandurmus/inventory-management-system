@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Table,
@@ -27,6 +28,7 @@ import {
 } from '../../services/api';
 
 const Invoices: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
@@ -295,7 +297,7 @@ const Invoices: React.FC = () => {
             <Col>
               <Form.Control
                 type="text"
-                placeholder="Search invoices (Customer, Order)"
+                placeholder={t("Minvoice.Search invoices (Customer, Order)")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -306,7 +308,7 @@ const Invoices: React.FC = () => {
                 onClick={() => setShowCreateModal(true)}
                 className="float-right"
               >
-                <Add /> Create New Order
+                <Add /> {t("Minvoice.Create New Order")}
               </Button>
             </Col>
           </Row>
@@ -314,11 +316,11 @@ const Invoices: React.FC = () => {
           <Table striped bordered hover responsive>
             <thead>
               <tr>
-                <th>Invoice ID</th>
-                <th>Order ID</th>
-                <th>Customer Name</th>
+                <th>{t("Minvoice.Invoice ID")}</th>
+                <th>{t("Morders.Order ID")}</th>
+                <th>{t("Morders.Customer Name")}</th>
                 <th onClick={handleSortAmount} style={{ cursor: 'pointer' }}>
-                  Total Amount
+                  {t("Minvoice.Total Amount")}
                   <span style={{ marginLeft: '8px', fontSize: '0.8em' }}>
                     <span
                       style={{
@@ -337,8 +339,8 @@ const Invoices: React.FC = () => {
                     </span>
                   </span>
                 </th>
-                <th>Date Of Issue</th>
-                <th>Actions</th>
+                <th>{t("Minvoice.Date Of Issue")}</th>
+                <th>{t("Minvoice.Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -413,7 +415,7 @@ const Invoices: React.FC = () => {
       {/* Create Invoice Modal */}
       <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Create New Invoice</Modal.Title>
+          <Modal.Title>{t("Minvoice.Create New Invoice")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {errorMessage && (
@@ -423,7 +425,7 @@ const Invoices: React.FC = () => {
           )}
           <Form>
             <Form.Group controlId="customerName">
-              <Form.Label>Customer Name</Form.Label>
+              <Form.Label>{t("Minvoice.Customer Name")}</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Customer Name"
@@ -434,10 +436,10 @@ const Invoices: React.FC = () => {
               />
             </Form.Group>
             <Form.Group controlId="totalAmount">
-              <Form.Label>Total Amount</Form.Label>
+              <Form.Label>{t("Minvoice.Total Amount")}</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter Total Amount"
+                placeholder={t("Minvoice.Enter Total Amount")}
                 value={newOrder.totalAmount}
                 onChange={handleTotalAmountChange}
                 min="0"
@@ -445,7 +447,7 @@ const Invoices: React.FC = () => {
               />
             </Form.Group>
             <Form.Group controlId="date">
-              <Form.Label>Date</Form.Label>
+              <Form.Label>{t("Minvoice.Date")}</Form.Label>
               <Form.Control
                 type="date"
                 value={newOrder.date}
@@ -458,10 +460,10 @@ const Invoices: React.FC = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
-            Close
+            {t("Minvoice.Close")}
           </Button>
           <Button variant="primary" onClick={handleCreateOrder}>
-            Create Invoice
+            {t("Minvoice.Create Invoice")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -469,17 +471,17 @@ const Invoices: React.FC = () => {
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteConfirm} onHide={cancelDelete}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
+          <Modal.Title>{t("Minvoice.Confirm Deletion")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Are you sure you want to delete this invoice? This action cannot be undone.</p>
+          <p>{t("Minvoice.Are you sure you want to delete this invoice? This action cannot be undone.")}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={cancelDelete}>
-            Cancel
+            {t("Morders.Cancel")}
           </Button>
           <Button variant="danger" onClick={confirmDelete}>
-            Delete
+            {t("Morders.Delete")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -487,7 +489,7 @@ const Invoices: React.FC = () => {
       {/* Preview Invoice Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Invoice Preview</Modal.Title>
+          <Modal.Title>{t("Minvoice.Invoice Preview")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {pdfDataUrl ? (
@@ -497,19 +499,19 @@ const Invoices: React.FC = () => {
               title="Invoice Preview"
             />
           ) : (
-            <p>Loading PDF preview...</p>
+            <p>{t("Minvoice.Loading PDF preview...")}</p>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
+            {t("Minvoice.Close")}
           </Button>
           {previewInvoice && (
             <Button
               variant="primary"
               onClick={() => handleDownloadPDF(previewInvoice.id)}
             >
-              Download PDF
+              {t("Minvoice.Download PDF")}
             </Button>
           )}
         </Modal.Footer>

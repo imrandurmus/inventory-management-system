@@ -3,11 +3,16 @@ import { Box, Typography, TextField, MenuItem, Button, Alert } from "@mui/materi
 import { Container, Row, Col } from "react-bootstrap";
 import './CSS/Contact.css';
 import WBGHeader from "./WBGHeader";
+import { useTranslation } from "react-i18next";
+import emailjs from "emailjs-com";
 
 const ContactUs = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to top when component mounts
+    window.scrollTo(0, 0);
   }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -17,7 +22,8 @@ const ContactUs = () => {
     companySize: "",
     question: "",
   });
-  const [showSuccess, setShowSuccess] = useState(false); // For success message
+
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -29,13 +35,24 @@ const ContactUs = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission (replace with actual API call)
+  
     try {
-      // Example: Simulate API call
-      // const response = await fetch("/api/contact", { method: "POST", body: formData });
-      // if (response.ok) {
-      setShowSuccess(true); // Show success message
-      // Reset form fields
+      await emailjs.send(
+        "service_ks75oi7",           // Your EmailJS service ID
+        "template_wsyhs23",          // Your EmailJS template ID
+        {
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          company: formData.company,
+          subject: formData.subject,
+          "company size": formData.companySize, // Match template variable exactly
+          question: formData.question,
+        },
+        "N3hFfiQI42MB-8bQs"           // Your public API key
+      );
+  
+      setShowSuccess(true); // Show success alert
       setFormData({
         name: "",
         phone: "",
@@ -45,40 +62,36 @@ const ContactUs = () => {
         companySize: "",
         question: "",
       });
-      // Hide success message after 3 seconds
+  
       setTimeout(() => setShowSuccess(false), 3000);
-      // } else {
-      //   alert("Failed to submit request. Please try again.");
-      // }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("An error occurred. Please try again later.");
+      console.error("EmailJS error:", error);
+      alert("Failed to send email. Please try again.");
     }
   };
+  
+  
 
   return (
     <div className="contact-page">
-      {/* Header Section */}
       <WBGHeader />
 
-      {/* Main Content */}
       <Container className="contact-container">
         <Row>
-          {/* Left Column: Contact Form */}
           <Col md={8} className="form-section">
             <Typography variant="h4" fontWeight="bold" gutterBottom className="form-title">
-              Looking for something?
+              {t("contact.heading")}
             </Typography>
             {showSuccess && (
               <Alert severity="success" className="success-message">
-                Your request has been submitted successfully!
+                {t("contact.successMessage")}
               </Alert>
             )}
             <form onSubmit={handleSubmit}>
               <Box display="flex" gap={2} mb={2}>
                 <TextField
                   fullWidth
-                  label="Name"
+                  label={t("contact.name")}
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
@@ -87,7 +100,7 @@ const ContactUs = () => {
                 />
                 <TextField
                   fullWidth
-                  label="Phone Number"
+                  label={t("contact.phone")}
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
@@ -100,7 +113,7 @@ const ContactUs = () => {
               <Box display="flex" gap={2} mb={2}>
                 <TextField
                   fullWidth
-                  label="Email"
+                  label={t("contact.email")}
                   name="email"
                   type="email"
                   value={formData.email}
@@ -110,7 +123,7 @@ const ContactUs = () => {
                 />
                 <TextField
                   fullWidth
-                  label="Company"
+                  label={t("contact.company")}
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
@@ -121,38 +134,38 @@ const ContactUs = () => {
                 <TextField
                   fullWidth
                   select
-                  label="Subject"
+                  label={t("contact.subject")}
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
                   required
                   variant="outlined"
                 >
-                  <MenuItem value="Request custom development">Question</MenuItem>
-                  <MenuItem value="Support request">Support request</MenuItem>
+                  <MenuItem value="Request custom development">{t("contact.optionQuestion")}</MenuItem>
+                  <MenuItem value="Support request">{t("contact.optionSupport")}</MenuItem>
                 </TextField>
               </Box>
               <Box mb={2}>
                 <TextField
                   fullWidth
                   select
-                  label="Your company size"
+                  label={t("contact.companySize")}
                   name="companySize"
                   value={formData.companySize}
                   onChange={handleChange}
                   required
                   variant="outlined"
                 >
-                  <MenuItem value="1-10">1-10 employees</MenuItem>
-                  <MenuItem value="11-50">11-50 employees</MenuItem>
-                  <MenuItem value="51-200">51-200 employees</MenuItem>
-                  <MenuItem value="201+">201+ employees</MenuItem>
+                  <MenuItem value="1-10">{t("contact.size1")}</MenuItem>
+                  <MenuItem value="11-50">{t("contact.size2")}</MenuItem>
+                  <MenuItem value="51-200">{t("contact.size3")}</MenuItem>
+                  <MenuItem value="201+">{t("contact.size4")}</MenuItem>
                 </TextField>
               </Box>
               <Box mb={2}>
                 <TextField
                   fullWidth
-                  label="Question"
+                  label={t("contact.question")}
                   name="question"
                   value={formData.question}
                   onChange={handleChange}
@@ -163,41 +176,44 @@ const ContactUs = () => {
                 />
               </Box>
               <Typography variant="body2" color="textSecondary" mb={2}>
-                We will handle your personal data as described in our{" "}
+                {t("contact.privacy1")}{" "}
                 <a href="/privacy-policy" className="privacy-link">
-                  Privacy Policy
-                </a>
-                , to answer your question and provide information about our products and services.
+                  {t("contact.privacyLink")}
+                </a>{" "}
+                {t("contact.privacy2")}
               </Typography>
               <Button type="submit" variant="contained" className="submit-button">
-                Submit
+                {t("contact.submit")}
               </Button>
             </form>
           </Col>
 
-          {/* Right Column:  Contacts */}
           <Col md={4} className="direct-contact-section">
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Contact Us
+              {t("contact.contactUs")}
             </Typography>
             <Box className="contact-option">
               <Typography variant="body1" fontWeight="bold">
-                Call or Schedule a video conference
+                {t("contact.call")}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 +90 551 148 76 50
               </Typography>
             </Box>
             <Box className="contact-option">
-              <Typography variant="body1" fontWeight="bold">Meet an expert</Typography>
+              <Typography variant="body1" fontWeight="bold">
+                {t("contact.expert")}
+              </Typography>
               <Typography variant="body2" color="textSecondary">
-                Assess your inventory needs.
+                {t("contact.assess")}
               </Typography>
             </Box>
             <Box className="contact-option">
-              <Typography variant="body1" fontWeight="bold">Request Help</Typography>
+              <Typography variant="body1" fontWeight="bold">
+                {t("contact.help")}
+              </Typography>
               <Typography variant="body2" color="textSecondary">
-                Need help? Get in touch with developers.
+                {t("contact.developerHelp")}
               </Typography>
             </Box>
           </Col>
