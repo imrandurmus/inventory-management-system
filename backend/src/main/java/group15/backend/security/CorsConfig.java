@@ -20,7 +20,10 @@ public class CorsConfig {
                 "http://localhost:3000",  // React dev port
                 "http://localhost:5173",  // Vite port 1
                 "http://localhost:5174",  // Vite port 2
-                "http://localhost:5175"   // Vite port 3
+                "http://localhost:5175",  // Vite port 3
+                "http://simple.local:5173",
+                "http://simple.local:5174",
+                "http://simple.local:5175"
         ));
 
         // Define allowed HTTP methods

@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
+    static {
+        // Force JavaMail to enable SMTP debug logging
+        System.setProperty("mail.debug", "true");
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
@@ -26,14 +30,16 @@ public class EmailService {
         message.setTo(to);
         message.setSubject("Password Reset Request");
         message.setText("To reset your password, click the link below:\n\n" +
-                "http://localhost:3000/reset-password?token=" + token + "\n\n" +
-                "If you did not request a password reset, please ignore this email.");
-        
+                "http://simple.local:5173/reset-password?token=" + token + "\n\n" +
+               "If you did not request a password reset, please ignore this email.");
+        //message.setText("This is a test message from the backend.");
         // In development mode, just log the token instead of sending an email
         logger.info("Password reset token for {}: {}", to, token);
         logger.info("Reset link: http://localhost:3000/reset-password?token={}", token);
-        
-        // Comment out actual email sending in development
-        // mailSender.send(message);
+
+        logger.info("Using mail sender class: {}", mailSender.getClass().getName());
+
+
+        mailSender.send(message);
     }
 } 
